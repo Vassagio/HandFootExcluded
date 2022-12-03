@@ -17,6 +17,7 @@ public interface IMainPageViewModel
     Command StartCommand { get; }
     Command NextRoundCommand {get;}
     Command PreviousRoundCommand {get;}
+    Command FinishCommand {get;}
 }
 
 internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
@@ -37,6 +38,7 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
     private Command _startCommand;
     private Command _nextRoundCommand;
     private Command _previousRoundCommand;
+    private Command _finishCommand;
 
     public string DefaultPlayer1 { get => _defaultPlayer1; set => SetProperty(ref _defaultPlayer1, value); }
     public string DefaultPlayer2 { get => _defaultPlayer2; set => SetProperty(ref _defaultPlayer2, value); }
@@ -52,6 +54,7 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
     public Command StartCommand => _startCommand ?? new Command(Start, CanStart);
     public Command NextRoundCommand => _nextRoundCommand ?? new Command(NextRound);
     public Command PreviousRoundCommand => _previousRoundCommand ?? new Command(PreviousRound);
+    public Command FinishCommand => _finishCommand ?? new Command(Finish);
 
     public MainPageViewModel(IPlayerBuilder playerBuilder, IGameService gameService)
     {
@@ -74,7 +77,9 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
 
     private void OnGameChanged()
     {
+        EventAggregator.Instance.RegisterHandler<IEnumerable<IPlayerScore>>(Score);
         HasGameStarted = _game is not null;
+        EventAggregator.Instance.RegisterHandler<IEnumerable<IPlayerScore>>(Score);
     }
 
     private bool CanStart() =>
@@ -97,6 +102,12 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
 
         Game = _gameService.Create(players.ToList());
         CurrentRound = Game.First();
+        EventAggregator.Instance.SendMessage("Score");
+    }
+
+    private void Finish()
+    {                
+        Start();
     }
 
     private void NextRound()
@@ -120,5 +131,6 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
         StartCommand.ChangeCanExecute();
         NextRoundCommand.ChangeCanExecute();
         PreviousRoundCommand.ChangeCanExecute();
+        FinishCommand.ChangeCanExecute();
     }
 }

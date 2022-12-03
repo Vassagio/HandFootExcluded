@@ -1,18 +1,20 @@
-﻿using System.Collections;
-using Bertuzzi.MAUI.EventAggregator;
+﻿using Bertuzzi.MAUI.EventAggregator;
+using System.Collections;
+using System.Diagnostics;
 
 namespace HandFootExcluded;
 
 public interface ITeam : ISet<IPlayer>
 {
-    int TopScore {get;}
+    int TopScore { get; }
     int BottomScore { get; }
     int Score { get; }
 }
 
 internal sealed partial class GameService
 {
-    internal sealed class Team : BindableItem, ITeam
+    [DebuggerDisplay("{Display,nq}")]
+    private sealed class Team : BindableItem, ITeam
     {
         private readonly ISet<IPlayer> _players = new HashSet<IPlayer>(2);
 
@@ -43,7 +45,8 @@ internal sealed partial class GameService
 
         void ICollection<IPlayer>.Add(IPlayer player)
         {
-            if (player is null or UnknownPlayer) return;
+            if (player is null or UnknownPlayer)
+                return;
 
             _players.Add(player);
         }
@@ -64,7 +67,12 @@ internal sealed partial class GameService
         public void CopyTo(IPlayer[] array, int arrayIndex) => _players.CopyTo(array, arrayIndex);
         public bool Remove(IPlayer player) => _players.Remove(player);
 
-        public override string ToString() => string.Join(" / ", _players);
-        
+        private string Display => string.Join(" / ", _players);
+
+        public override string ToString() => Display;
+
+
     }
+
+
 }

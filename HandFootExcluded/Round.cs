@@ -1,11 +1,13 @@
 ﻿using Bertuzzi.MAUI.EventAggregator;
 using HandFootExcluded;
+using System.Diagnostics;
 
 namespace HandFootExcluded;
 
 public interface IRound
 {
     int Index {get;}
+    int AmountToOpen {get; }
     IPlayer StartingPlayer { get; }
     IPlayer StartingPartner { get; }
     IPlayer OpposingPlayer { get; }
@@ -23,15 +25,18 @@ public interface IRound
 
 internal sealed partial class GameService
 {
+    [DebuggerDisplay("{Display,nq}")]
     private sealed class Round : BindableItem, IRound
     {
+
+
         private bool _startingPlayerBonus;
         private bool _startingPartnerBonus;
         private bool _opposingPlayerBonus;
         private bool _opposingPartnerBonus;
         
-
         public int Index { get; }
+        public int AmountToOpen {get;}
         public IPlayer StartingPlayer { get; }
         public IPlayer StartingPartner { get; }
         public IPlayer OpposingPlayer { get; }
@@ -47,18 +52,17 @@ internal sealed partial class GameService
         
 
 
-        public Round(int index, IPlayer startingPlayer, IPlayer startingPartner, IPlayer opposingPlayer, IPlayer opposingPartner, IPlayer excludedPlayer)
+        public Round(int index, int amountToOpen, IPlayer startingPlayer, IPlayer startingPartner, IPlayer opposingPlayer, IPlayer opposingPartner, IPlayer excludedPlayer)
         {
             Index = index;
+            AmountToOpen = amountToOpen;
             StartingPlayer = startingPlayer;
             StartingPartner = startingPartner;
             OpposingPlayer = opposingPlayer;
             OpposingPartner = opposingPartner;
             ExcludedPlayer = excludedPlayer;
             StartingTeam = BuildTeam(startingPlayer, startingPartner);
-            OpposingTeam = BuildTeam(opposingPlayer, opposingPartner);
-
-            
+            OpposingTeam = BuildTeam(opposingPlayer, opposingPartner);            
         }
 
         private void OnBonusChanged()
@@ -68,7 +72,11 @@ internal sealed partial class GameService
 
         private static ITeam BuildTeam(IPlayer player, IPlayer partner) => new Team(player, partner);
 
-        public override string ToString() => $"{StartingTeam} vs. {OpposingTeam} ||  ({ExcludedPlayer})";
+        private string Display => $"{StartingTeam} vs. {OpposingTeam} ||  ({ExcludedPlayer})";
+
+        public override string ToString() => Display;
+
+        
     }
 
     public class ScoringHandler { }

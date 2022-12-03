@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 
 namespace HandFootExcluded;
 
@@ -16,6 +17,7 @@ internal sealed partial class PlayerBuilder
 {
     private abstract record PlayerBase(int Position, string FullName, string FirstName, string MiddleName, string LastName, string Initials) : IPlayer;
 
+    [DebuggerDisplay("{Display,nq}")]
     private sealed record Player(int Position, string FirstName, string MiddleName, string LastName) : PlayerBase(Position, GetFullName(FirstName, MiddleName, LastName), FirstName, MiddleName, LastName, GetInitials(FirstName, MiddleName, LastName))
     {
         private static string GetInitials(string firstName, string middleName, string lastName)
@@ -36,6 +38,8 @@ internal sealed partial class PlayerBuilder
             return fullName.ToString();
         }
 
-        public override string ToString() => Initials.PadRight(3, ' ');
+        private string Display => Initials.PadRight(3, ' ');
+
+        public override string ToString() => Display;
     }
 }

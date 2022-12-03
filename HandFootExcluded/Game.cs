@@ -17,6 +17,8 @@ internal sealed partial class GameService
 
         public Game(IList<IPlayer> players, IScoringService scoringService)
         {
+            EventAggregator.Instance.UnregisterHandler<string>(Score);
+
             _scoringService = scoringService;
             Players = players ?? throw new ArgumentNullException(nameof(players));
 
@@ -34,5 +36,7 @@ internal sealed partial class GameService
 
             EventAggregator.Instance.SendMessage(playerScores);
         }
+
+
     }
 }

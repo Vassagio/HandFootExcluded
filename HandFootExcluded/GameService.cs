@@ -11,13 +11,13 @@ internal sealed partial class GameService : IGameService
 {
     private readonly IScoringService _scoringService;
 
-    private static readonly List<(int StartingPlayer, int OpposingPlayer, int StartingPartner, int OpposingPartner)> _roundOrdering = new List<(int, int, int, int)>
+    private static readonly List<(int AmountToOpen, int StartingPlayer, int StartingPartner, int OpposingPlayer, int OpposingPartner)> _roundOrdering = new List<(int, int, int, int, int)>
     {
-        new(1, 5, 2, 4),
-        new(2, 3, 4, 5),
-        new(3, 4, 1, 2),
-        new(4, 1, 5, 3),
-        new(5, 2, 3, 1),
+        new(50, 1, 5, 2, 4),
+        new(75, 2, 3, 4, 5),
+        new(100, 3, 4, 1, 2),
+        new(125, 4, 1, 5, 3),
+        new(150, 5, 2, 3, 1),
     };
 
     public GameService(IScoringService scoringService) => _scoringService = scoringService ?? throw new ArgumentNullException(nameof(scoringService));
@@ -32,7 +32,7 @@ internal sealed partial class GameService : IGameService
         return game;
     }
 
-    private static IRound CreateRound(int index, IReadOnlyList<IPlayer> players, (int StartingPlayer, int OpposingPlayer, int StartingPartner, int OpposingPartner) roundOrder)
+    private static IRound CreateRound(int index, IReadOnlyList<IPlayer> players, (int AmountToOpen, int StartingPlayer, int StartingPartner, int OpposingPlayer, int OpposingPartner) roundOrder)
     {
         var startingPlayer = players.Single(p => p.Position == roundOrder.StartingPlayer);
         var startingPartner = players.Single(p => p.Position == roundOrder.StartingPartner);
@@ -42,6 +42,6 @@ internal sealed partial class GameService : IGameService
         var nonExcludedPlayers = new List<IPlayer> { startingPlayer, startingPartner, opposingPlayer, opposingPartner };
         var excludedPlayer = players.Except(nonExcludedPlayers).Single();
 
-        return new Round(index, startingPlayer, startingPartner, opposingPlayer, opposingPartner, excludedPlayer);
+        return new Round(index, roundOrder.AmountToOpen, startingPlayer, startingPartner, opposingPlayer, opposingPartner, excludedPlayer);
     }
 }
