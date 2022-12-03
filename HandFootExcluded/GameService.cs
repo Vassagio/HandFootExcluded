@@ -9,6 +9,8 @@ internal interface IGameService
 
 internal sealed partial class GameService : IGameService
 {
+    private readonly IScoringService _scoringService;
+
     private static readonly List<(int StartingPlayer, int OpposingPlayer, int StartingPartner, int OpposingPartner)> _roundOrdering = new List<(int, int, int, int)>
     {
         new(1, 5, 2, 4),
@@ -18,9 +20,11 @@ internal sealed partial class GameService : IGameService
         new(5, 2, 3, 1),
     };
 
+    public GameService(IScoringService scoringService) => _scoringService = scoringService ?? throw new ArgumentNullException(nameof(scoringService));
+
     public IGame Create(IReadOnlyList<IPlayer> players)
     {
-        var game = new Game(players.ToList());
+        var game = new Game(players.ToList(), _scoringService);
 
         for (var i = 1; i <= _roundOrdering.Count(); i++)
             game.Add(CreateRound(i, players, _roundOrdering[i-1]));

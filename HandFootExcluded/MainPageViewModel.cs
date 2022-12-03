@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System.Runtime.CompilerServices;
+using Bertuzzi.MAUI.EventAggregator;
+using System.Windows.Input;
 
 namespace HandFootExcluded;
 
@@ -10,8 +12,11 @@ public interface IMainPageViewModel
     string DefaultPlayer4 { get; }
     string DefaultPlayer5 { get; }
     IGame Game {get;}
+    IEnumerable<IPlayerScore> PlayerScores { get; }
     bool HasGameStarted {get;}
-    ICommand StartCommand { get; }
+    Command StartCommand { get; }
+    Command NextRoundCommand {get;}
+    Command PreviousRoundCommand {get;}
 }
 
 internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
@@ -23,8 +28,15 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
     private string _defaultPlayer3 = "Kaelia Shyenne Chronowski";
     private string _defaultPlayer4 = "Korian Alexa Chronowski";
     private string _defaultPlayer5 = "Jay Michael Looney";
+    private IList<string> _defaultPlayers = new List<string>();
     private IGame _game;
+    private IRound _currentRound;
+    private IEnumerable<IPlayerScore> _playerScores = Enumerable.Empty<IPlayerScore>();
     private bool _hasGameStarted;
+
+    private Command _startCommand;
+    private Command _nextRoundCommand;
+    private Command _previousRoundCommand;
 
     public string DefaultPlayer1 { get => _defaultPlayer1; set => SetProperty(ref _defaultPlayer1, value); }
     public string DefaultPlayer2 { get => _defaultPlayer2; set => SetProperty(ref _defaultPlayer2, value); }
@@ -32,15 +44,33 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
     public string DefaultPlayer4 { get => _defaultPlayer4; set => SetProperty(ref _defaultPlayer4, value); }
     public string DefaultPlayer5 { get => _defaultPlayer5; set => SetProperty(ref _defaultPlayer5, value); }
     public IGame Game { get => _game; set => SetProperty(ref _game, value, OnGameChanged); }
+    public IRound CurrentRound {get => _currentRound; set => SetProperty(ref _currentRound, value);}
+    public IEnumerable<IPlayerScore> PlayerScores { get => _playerScores; set => SetProperty(ref _playerScores, value); }
+
     public bool HasGameStarted {get => _hasGameStarted; set => SetProperty(ref _hasGameStarted, value); }
     
-    public ICommand StartCommand => new Command(Start, CanStart);
+    public Command StartCommand => _startCommand ?? new Command(Start, CanStart);
+    public Command NextRoundCommand => _nextRoundCommand ?? new Command(NextRound);
+    public Command PreviousRoundCommand => _previousRoundCommand ?? new Command(PreviousRound);
 
     public MainPageViewModel(IPlayerBuilder playerBuilder, IGameService gameService)
     {
         _playerBuilder = playerBuilder ?? throw new ArgumentNullException(nameof(playerBuilder));
         _gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
+
+        _defaultPlayers = new List<string>
+        {
+            _defaultPlayer1,
+            _defaultPlayer2,
+            _defaultPlayer3,
+            _defaultPlayer4,
+            _defaultPlayer5,
+        };
+
+        EventAggregator.Instance.RegisterHandler<IEnumerable<IPlayerScore>>(Score);
     }
+
+    private void Score(IEnumerable<IPlayerScore> playerScores) => PlayerScores = playerScores.OrderByDescending(ps => ps.Score);
 
     private void OnGameChanged()
     {
@@ -56,24 +86,39 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
 
     private void Start()
     {
-        var defaultPlayers = new List<string>
-        {
-            _defaultPlayer1,
-            _defaultPlayer2,
-            _defaultPlayer3,
-            _defaultPlayer4,
-            _defaultPlayer5,
-        };
-
-        defaultPlayers.Shuffle();
+        _defaultPlayers.Shuffle();
 
         var players = new Players();
-        for (var i = 1; i <= defaultPlayers.Count; i++)
+        for (var i = 1; i <= _defaultPlayers.Count; i++)
         {
-            var player = _playerBuilder.WithPosition(i).WithName(defaultPlayers[i-1]).Build();
+            var player = _playerBuilder.WithPosition(i).WithName(_defaultPlayers[i-1]).Build();
             players.Add(player);
         }
 
         Game = _gameService.Create(players.ToList());
+        CurrentRound = Game.First();
+    }
+
+    private void NextRound()
+    {
+        var nextRound = _game.SingleOrDefault(r => r.Index == _currentRound.Index + 1);
+        if (nextRound != null) 
+            CurrentRound = nextRound;
+    }
+
+    private void PreviousRound()
+    {
+        var previousRound = _game.SingleOrDefault(r => r.Index == _currentRound.Index - 1);
+        if (previousRound != null)
+            CurrentRound = previousRound;
+    }
+
+    protected override void RefreshCommands()
+    {
+        base.RefreshCommands();
+
+        StartCommand.ChangeCanExecute();
+        NextRoundCommand.ChangeCanExecute();
+        PreviousRoundCommand.ChangeCanExecute();
     }
 }

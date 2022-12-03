@@ -39,6 +39,14 @@ public abstract class BindableItem : INotifyPropertyChanged
         return true;
     }
 
-    private void OnPropertyChanged([CallerMemberName] string name = "") =>
+    private void OnPropertyChanged([CallerMemberName] string name = "")
+    {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        RefreshCommands();
+    }
+
+    protected virtual void RefreshCommands()
+    {
+
+    }
 }

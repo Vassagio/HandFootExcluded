@@ -1,4 +1,5 @@
-﻿using HandFootExcluded;
+﻿using Bertuzzi.MAUI.EventAggregator;
+using HandFootExcluded;
 
 namespace HandFootExcluded;
 
@@ -17,16 +18,18 @@ public interface IRound
     bool StartingPartnerBonus { get; }
     bool OpposingPlayerBonus { get; }
     bool OpposingPartnerBonus { get; }
+    
 }
 
 internal sealed partial class GameService
 {
-    internal sealed class Round : BindableItem, IRound
+    private sealed class Round : BindableItem, IRound
     {
         private bool _startingPlayerBonus;
         private bool _startingPartnerBonus;
         private bool _opposingPlayerBonus;
         private bool _opposingPartnerBonus;
+        
 
         public int Index { get; }
         public IPlayer StartingPlayer { get; }
@@ -37,10 +40,12 @@ internal sealed partial class GameService
         public ITeam StartingTeam { get; }
         public ITeam OpposingTeam { get; }
 
-        public bool StartingPlayerBonus { get => _startingPlayerBonus; set => SetProperty(ref _startingPlayerBonus, value); }
-        public bool StartingPartnerBonus { get => _startingPartnerBonus; set => SetProperty(ref _startingPartnerBonus, value); }
-        public bool OpposingPlayerBonus { get => _opposingPlayerBonus; set => SetProperty(ref _opposingPlayerBonus, value); }
-        public bool OpposingPartnerBonus { get => _opposingPartnerBonus; set => SetProperty(ref _opposingPartnerBonus, value); }
+        public bool StartingPlayerBonus { get => _startingPlayerBonus; set => SetProperty(ref _startingPlayerBonus, value, OnBonusChanged); }
+        public bool StartingPartnerBonus { get => _startingPartnerBonus; set => SetProperty(ref _startingPartnerBonus, value, OnBonusChanged); }
+        public bool OpposingPlayerBonus { get => _opposingPlayerBonus; set => SetProperty(ref _opposingPlayerBonus, value, OnBonusChanged); }
+        public bool OpposingPartnerBonus { get => _opposingPartnerBonus; set => SetProperty(ref _opposingPartnerBonus, value, OnBonusChanged); }
+        
+
 
         public Round(int index, IPlayer startingPlayer, IPlayer startingPartner, IPlayer opposingPlayer, IPlayer opposingPartner, IPlayer excludedPlayer)
         {
@@ -52,10 +57,20 @@ internal sealed partial class GameService
             ExcludedPlayer = excludedPlayer;
             StartingTeam = BuildTeam(startingPlayer, startingPartner);
             OpposingTeam = BuildTeam(opposingPlayer, opposingPartner);
+
+            
+        }
+
+        private void OnBonusChanged()
+        {
+            EventAggregator.Instance.SendMessage("Score");
         }
 
         private static ITeam BuildTeam(IPlayer player, IPlayer partner) => new Team(player, partner);
 
         public override string ToString() => $"{StartingTeam} vs. {OpposingTeam} ||  ({ExcludedPlayer})";
     }
+
+    public class ScoringHandler { }
 }
+

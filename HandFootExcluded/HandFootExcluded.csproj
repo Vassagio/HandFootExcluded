@@ -50,6 +50,7 @@
 
 	<ItemGroup>
 	  <PackageReference Include="akgul.Maui.DataGrid" Version="1.0.1" />
+	  <PackageReference Include="Bertuzzi.MAUI.EventAggregator" Version="1.0.0" />
 	</ItemGroup>
 
 </Project>
