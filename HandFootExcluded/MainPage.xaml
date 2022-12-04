@@ -4,7 +4,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:HandFootExcluded"
              x:Class="HandFootExcluded.MainPage">
+    <ContentPage.Resources>
+        <Style TargetType="Border" x:Key="GameOn">
+            <Setter Property="VerticalOptions" Value="Fill"></Setter>
+            <Setter Property="HorizontalOptions" Value="Fill"></Setter>
+            <Setter Property="Stroke" Value="Black"></Setter>
+            <Setter Property="IsVisible" Value="True" />
+            <Style.Triggers>
+                <DataTrigger TargetType="Border" Binding="{Binding HasGameStarted}" Value="True">
+                    <Setter Property="IsVisible" Value="True" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
 
+        <Style TargetType="Border" x:Key="GameOff">
+            <Setter Property="VerticalOptions" Value="Fill"></Setter>
+            <Setter Property="HorizontalOptions" Value="Fill"></Setter>
+            <Setter Property="Stroke" Value="Black"></Setter>
+            <Setter Property="IsVisible" Value="True" />
+            <Style.Triggers>
+                <DataTrigger TargetType="Border" Binding="{Binding HasGameStarted}" Value="True">
+                    <Setter Property="IsVisible" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </ContentPage.Resources>
     <Grid Padding="3" HorizontalOptions="Fill" VerticalOptions="Fill">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -16,45 +40,15 @@
             <ColumnDefinition Width="37*" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="Fill" VerticalOptions="Fill">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="IsVisible" Value="True" />
-                    <Style.Triggers>
-                        <DataTrigger TargetType="Border" Binding="{Binding HasGameStarted}" Value="True">
-                            <Setter Property="IsVisible" Value="False" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource GameOff}">
             <local:SettingsView MinimumHeightRequest="350" />
         </Border>
 
-        <Border Grid.Row="1" Grid.Column="0" VerticalOptions="Fill" HorizontalOptions="Fill" Stroke="Black">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="IsVisible" Value="False" />
-                    <Style.Triggers>
-                        <DataTrigger TargetType="Border" Binding="{Binding HasGameStarted}" Value="True">
-                            <Setter Property="IsVisible" Value="True" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
+        <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource GameOn}">
             <local:RoundView BindingContext="{Binding CurrentRound}" HorizontalOptions="Fill" VerticalOptions="Fill" />
         </Border>
 
-        <Border Grid.Row="1" Grid.Column="1" Stroke="Black" HorizontalOptions="Fill" VerticalOptions="Fill">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="IsVisible" Value="False" />
-                    <Style.Triggers>
-                        <DataTrigger TargetType="Border" Binding="{Binding HasGameStarted}" Value="True">
-                            <Setter Property="IsVisible" Value="True" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
+        <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource GameOn}">
             <local:ScoresView HorizontalOptions="Fill" VerticalOptions="Fill" />
         </Border>
 
