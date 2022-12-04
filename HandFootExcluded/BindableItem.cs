@@ -45,8 +45,5 @@ public abstract class BindableItem : INotifyPropertyChanged
         RefreshCommands();
     }
 
-    protected virtual void RefreshCommands()
-    {
-
-    }
+    protected virtual void RefreshCommands() { }
 }

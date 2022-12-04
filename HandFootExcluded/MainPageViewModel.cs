@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Bertuzzi.MAUI.EventAggregator;
-using System.Windows.Input;
+﻿using Bertuzzi.MAUI.EventAggregator;
 
 namespace HandFootExcluded;
 
@@ -11,13 +9,13 @@ public interface IMainPageViewModel
     string DefaultPlayer3 { get; }
     string DefaultPlayer4 { get; }
     string DefaultPlayer5 { get; }
-    IGame Game {get;}
+    IGame Game { get; }
     IEnumerable<IPlayerScore> PlayerScores { get; }
-    bool HasGameStarted {get;}
+    bool HasGameStarted { get; }
     Command StartCommand { get; }
-    Command NextRoundCommand {get;}
-    Command PreviousRoundCommand {get;}
-    Command FinishCommand {get;}
+    Command NextRoundCommand { get; }
+    Command PreviousRoundCommand { get; }
+    Command FinishCommand { get; }
 }
 
 internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
@@ -29,7 +27,7 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
     private string _defaultPlayer3 = "Kaelia Shyenne Chronowski";
     private string _defaultPlayer4 = "Korian Alexa Chronowski";
     private string _defaultPlayer5 = "Jay Michael Looney";
-    private IList<string> _defaultPlayers = new List<string>();
+    private readonly IList<string> _defaultPlayers = new List<string>();
     private IGame _game;
     private IRound _currentRound;
     private IEnumerable<IPlayerScore> _playerScores = Enumerable.Empty<IPlayerScore>();
@@ -46,11 +44,11 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
     public string DefaultPlayer4 { get => _defaultPlayer4; set => SetProperty(ref _defaultPlayer4, value); }
     public string DefaultPlayer5 { get => _defaultPlayer5; set => SetProperty(ref _defaultPlayer5, value); }
     public IGame Game { get => _game; set => SetProperty(ref _game, value, OnGameChanged); }
-    public IRound CurrentRound {get => _currentRound; set => SetProperty(ref _currentRound, value);}
+    public IRound CurrentRound { get => _currentRound; set => SetProperty(ref _currentRound, value); }
     public IEnumerable<IPlayerScore> PlayerScores { get => _playerScores; set => SetProperty(ref _playerScores, value); }
 
-    public bool HasGameStarted {get => _hasGameStarted; set => SetProperty(ref _hasGameStarted, value); }
-    
+    public bool HasGameStarted { get => _hasGameStarted; set => SetProperty(ref _hasGameStarted, value); }
+
     public Command StartCommand => _startCommand ?? new Command(Start, CanStart);
     public Command NextRoundCommand => _nextRoundCommand ?? new Command(NextRound);
     public Command PreviousRoundCommand => _previousRoundCommand ?? new Command(PreviousRound);
@@ -67,7 +65,7 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
             _defaultPlayer2,
             _defaultPlayer3,
             _defaultPlayer4,
-            _defaultPlayer5,
+            _defaultPlayer5
         };
 
         EventAggregator.Instance.RegisterHandler<IEnumerable<IPlayerScore>>(Score);
@@ -96,7 +94,7 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
         var players = new Players();
         for (var i = 1; i <= _defaultPlayers.Count; i++)
         {
-            var player = _playerBuilder.WithPosition(i).WithName(_defaultPlayers[i-1]).Build();
+            var player = _playerBuilder.WithPosition(i).WithName(_defaultPlayers[i - 1]).Build();
             players.Add(player);
         }
 
@@ -105,15 +103,12 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
         EventAggregator.Instance.SendMessage("Score");
     }
 
-    private void Finish()
-    {                
-        Start();
-    }
+    private void Finish() { Start(); }
 
     private void NextRound()
     {
         var nextRound = _game.SingleOrDefault(r => r.Index == _currentRound.Index + 1);
-        if (nextRound != null) 
+        if (nextRound != null)
             CurrentRound = nextRound;
     }
 

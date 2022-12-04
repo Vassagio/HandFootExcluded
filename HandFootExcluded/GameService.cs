@@ -1,6 +1,4 @@
-﻿using HandFootExcluded;
-
-namespace HandFootExcluded;
+﻿namespace HandFootExcluded;
 
 internal interface IGameService
 {
@@ -9,16 +7,16 @@ internal interface IGameService
 
 internal sealed partial class GameService : IGameService
 {
-    private readonly IScoringService _scoringService;
-
-    private static readonly List<(int AmountToOpen, int StartingPlayer, int StartingPartner, int OpposingPlayer, int OpposingPartner)> _roundOrdering = new List<(int, int, int, int, int)>
+    private static readonly List<(int AmountToOpen, int StartingPlayer, int StartingPartner, int OpposingPlayer, int OpposingPartner)> _roundOrdering = new()
     {
         new(50, 1, 5, 2, 4),
         new(75, 2, 3, 4, 5),
         new(100, 3, 4, 1, 2),
         new(125, 4, 1, 5, 3),
-        new(150, 5, 2, 3, 1),
+        new(150, 5, 2, 3, 1)
     };
+
+    private readonly IScoringService _scoringService;
 
     public GameService(IScoringService scoringService) => _scoringService = scoringService ?? throw new ArgumentNullException(nameof(scoringService));
 
@@ -27,7 +25,7 @@ internal sealed partial class GameService : IGameService
         var game = new Game(players.ToList(), _scoringService);
 
         for (var i = 1; i <= _roundOrdering.Count(); i++)
-            game.Add(CreateRound(i, players, _roundOrdering[i-1]));
+            game.Add(CreateRound(i, players, _roundOrdering[i - 1]));
 
         return game;
     }

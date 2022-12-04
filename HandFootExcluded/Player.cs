@@ -20,6 +20,8 @@ internal sealed partial class PlayerBuilder
     [DebuggerDisplay("{Display,nq}")]
     private sealed record Player(int Position, string FirstName, string MiddleName, string LastName) : PlayerBase(Position, GetFullName(FirstName, MiddleName, LastName), FirstName, MiddleName, LastName, GetInitials(FirstName, MiddleName, LastName))
     {
+        private string Display => Initials.PadRight(3, ' ');
+
         private static string GetInitials(string firstName, string middleName, string lastName)
         {
             var initials = new StringBuilder();
@@ -37,8 +39,6 @@ internal sealed partial class PlayerBuilder
             if (!string.IsNullOrWhiteSpace(lastName)) fullName.Append($" {lastName}");
             return fullName.ToString();
         }
-
-        private string Display => Initials.PadRight(3, ' ');
 
         public override string ToString() => Display;
     }

@@ -1,11 +1,10 @@
-﻿
-using Bertuzzi.MAUI.EventAggregator;
+﻿using Bertuzzi.MAUI.EventAggregator;
 
 namespace HandFootExcluded;
 
 public interface IGame : ISet<IRound>
 {
-    IList<IPlayer> Players { get;}
+    IList<IPlayer> Players { get; }
 }
 
 internal sealed partial class GameService
@@ -27,16 +26,9 @@ internal sealed partial class GameService
 
         private void Score(string obj)
         {
-            var playerScores = new List<IPlayerScore>();
-            foreach (var player in Players)
-            {
-                var playerScore = _scoringService.CalculateFor(this, player);
-                playerScores.Add(playerScore);
-            }
+            var playerScores = Players.Select(player => _scoringService.CalculateFor(this, player)).ToList();
 
             EventAggregator.Instance.SendMessage(playerScores);
         }
-
-
     }
 }

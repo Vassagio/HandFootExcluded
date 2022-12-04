@@ -1,6 +1,4 @@
-﻿using HandFootExcluded;
-
-namespace HandFootExcluded;
+﻿namespace HandFootExcluded;
 
 public interface IPlayerBuilder : IBuilder
 {

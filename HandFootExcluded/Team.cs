@@ -1,6 +1,6 @@
-﻿using Bertuzzi.MAUI.EventAggregator;
-using System.Collections;
+﻿using System.Collections;
 using System.Diagnostics;
+using Bertuzzi.MAUI.EventAggregator;
 
 namespace HandFootExcluded;
 
@@ -28,11 +28,7 @@ internal sealed partial class GameService
         public int BottomScore { get => _bottomScore; set => SetProperty(ref _bottomScore, value, OnScoreChanged); }
         public int Score { get => _score; set => SetProperty(ref _score, value); }
 
-        private void OnScoreChanged()
-        {
-            Score = _topScore + _bottomScore;
-            EventAggregator.Instance.SendMessage("Score");
-        }
+        private string Display => string.Join(" / ", _players);
 
         public Team(IPlayer player, IPlayer partner)
         {
@@ -67,12 +63,12 @@ internal sealed partial class GameService
         public void CopyTo(IPlayer[] array, int arrayIndex) => _players.CopyTo(array, arrayIndex);
         public bool Remove(IPlayer player) => _players.Remove(player);
 
-        private string Display => string.Join(" / ", _players);
+        private void OnScoreChanged()
+        {
+            Score = _topScore + _bottomScore;
+            EventAggregator.Instance.SendMessage("Score");
+        }
 
         public override string ToString() => Display;
-
-
     }
-
-
 }
