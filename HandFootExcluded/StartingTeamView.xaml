@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HandFootExcluded.StartingTeamView">
+    <Grid BackgroundColor="LightBlue">
+        <Grid.Resources>
+            <Style TargetType="Entry" x:Key="HeaderEntry">
+                <Setter Property="IsReadOnly" Value="True"/>
+                <Setter Property="BackgroundColor" Value="LightBlue" />
+                <Setter Property="HorizontalOptions" Value="Fill" />
+                <Setter Property="VerticalOptions" Value="Fill" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="Entry" x:Key="DataEntry">
+                <Setter Property="Margin" Value="2" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="BackgroundColor" Value="LightBlue" />
+                <Setter Property="HorizontalOptions" Value="Fill" />
+                <Setter Property="VerticalOptions" Value="Fill" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="ReturnType" Value="Done" />
+            </Style>
+            <Style TargetType="Switch" x:Key="DataSwitch">
+                <Setter Property="Margin" Value="2" />
+                <Setter Property="ThumbColor" Value="LightBlue"/>
+                <Setter Property="HorizontalOptions" Value="Fill" />
+                <Setter Property="VerticalOptions" Value="Fill" />
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="60" />
+            <ColumnDefinition Width="60" />
+            <ColumnDefinition Width="60" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Entry Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" IsReadOnly="True" Text="Starting Team" BackgroundColor="LightBlue" HorizontalTextAlignment="Center" HorizontalOptions="Fill" VerticalOptions="Fill" />
+
+        <Entry Grid.Row="1" Grid.Column="0" Text="Player" Style="{StaticResource HeaderEntry}"/>
+        <Entry Grid.Row="1" Grid.Column="1" Text="Bonus" Style="{StaticResource HeaderEntry}" />
+        <Entry Grid.Row="1" Grid.Column="2" Text="Partner" Style="{StaticResource HeaderEntry}" />
+        <Entry Grid.Row="1" Grid.Column="3" Text="Bonus" Style="{StaticResource HeaderEntry}" />
+        <Entry Grid.Row="1" Grid.Column="4" Text="Top" Style="{StaticResource HeaderEntry}" />
+        <Entry Grid.Row="1" Grid.Column="5" Text="Bottom" Style="{StaticResource HeaderEntry}" />
+        <Entry Grid.Row="1" Grid.Column="6" Text="Score" Style="{StaticResource HeaderEntry}" />
+
+        <Entry Grid.Row="2" Grid.Column="0" IsReadOnly="True" Text="{Binding StartingPlayer, Mode=OneWay}" Style="{StaticResource DataEntry}"/>
+        <Switch Grid.Row="2" Grid.Column="1" IsToggled="{Binding StartingPlayerBonus, Mode=TwoWay}" />
+        <Entry Grid.Row="2" Grid.Column="2" IsReadOnly="True" Text="{Binding StartingPartner, Mode=OneWay}" Style="{StaticResource DataEntry}" />
+        <Switch Grid.Row="2" Grid.Column="3" IsToggled="{Binding StartingPartnerBonus, Mode=TwoWay}" />
+        <Entry Grid.Row="2" Grid.Column="4" Keyboard="Numeric" Text="{Binding StartingTeam.TopScore, Mode=TwoWay}" Style="{StaticResource DataEntry}" />
+        <Entry Grid.Row="2" Grid.Column="5" Keyboard="Numeric" Text="{Binding StartingTeam.BottomScore, Mode=TwoWay}" Style="{StaticResource DataEntry}" />
+        <Entry Grid.Row="2" Grid.Column="6" FontAttributes="Bold" IsReadOnly="True" Text="{Binding StartingTeam.Score, Mode=OneWay}" Style="{StaticResource DataEntry}" />
+    </Grid>
+</ContentView>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:HandFootExcluded"
+             x:Class="HandFootExcluded.RoundView">
+    <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Grid.RowSpan="8" Grid.Column="0" BackgroundColor="DarkBlue" HorizontalOptions="Fill" VerticalOptions="Fill">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Entry Grid.Row="0" MaximumHeightRequest="35" Text="Round" IsReadOnly="True" TextColor="White" HorizontalOptions="Fill" VerticalOptions="Start" HorizontalTextAlignment="Center" />
+            <Entry Grid.Row="1" MaximumHeightRequest="50" Text="{Binding Index}" IsReadOnly="True" TextColor="White" HorizontalOptions="Fill" VerticalOptions="Start" FontSize="30" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+            <Entry Grid.Row="3" MaximumHeightRequest="35" Text="Open" FontAttributes="Bold" IsReadOnly="True" TextColor="Yellow" HorizontalOptions="Fill" VerticalOptions="End" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
+            <Entry Grid.Row="4" MaximumHeightRequest="35" Text="{Binding AmountToOpen}" IsReadOnly="True" TextColor="Yellow" HorizontalOptions="Fill" VerticalOptions="End" FontSize="12" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
+        </Grid>
+
+        <Grid Grid.Row="0" Grid.Column="1" BackgroundColor="DarkBlue" HorizontalOptions="Fill" VerticalOptions="Fill"></Grid>
+
+        <local:StartingTeamView Grid.Row="1" Grid.Column="1"></local:StartingTeamView>
+        <local:OpposingTeamView Grid.Row="2" Grid.Column="1"></local:OpposingTeamView>
+
+        <Entry Grid.Row="3" Grid.Column="1" IsReadOnly="True" Text="{Binding ExcludedPlayer.FullName}" BackgroundColor="MediumVioletRed" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+    </Grid>
+</ContentView>

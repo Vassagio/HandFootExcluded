@@ -54,7 +54,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="OpposingTeamView.xaml.cs">
+	    <DependentUpon>OpposingTeamView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="StartingTeamView.xaml.cs">
+	    <DependentUpon>StartingTeamView.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="RoundView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="SettingsView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="OpposingTeamView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="StartingTeamView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
