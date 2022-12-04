@@ -66,6 +66,9 @@
 	  <MauiXaml Update="RoundView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="ScoresView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="SettingsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

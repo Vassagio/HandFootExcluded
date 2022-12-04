@@ -6,7 +6,6 @@ public interface IMainPageViewModel
 {
     IGame Game { get; }
     IRound CurrentRound { get; }
-    IEnumerable<IPlayerScore> PlayerScores { get; }
     bool HasGameStarted { get; }
 
     Command NextRoundCommand { get; }
@@ -20,7 +19,7 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
 
     private IGame _game;
     private IRound _currentRound;
-    private IEnumerable<IPlayerScore> _playerScores = Enumerable.Empty<IPlayerScore>();
+    
     private bool _hasGameStarted;
 
     private Command _nextRoundCommand;
@@ -29,7 +28,7 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
 
     public IGame Game { get => _game; set => SetProperty(ref _game, value); }
     public IRound CurrentRound { get => _currentRound; set => SetProperty(ref _currentRound, value); }
-    public IEnumerable<IPlayerScore> PlayerScores { get => _playerScores; set => SetProperty(ref _playerScores, value); }
+    
 
     public bool HasGameStarted { get => _hasGameStarted; set => SetProperty(ref _hasGameStarted, value); }
 
@@ -46,15 +45,11 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
 
     private void OnPlayersCreated(Players players)
     {
-        EventAggregator.Instance.RegisterHandler<IEnumerable<IPlayerScore>>(Score);
         Game = _gameService.Create(players.ToList());
         CurrentRound = Game.First();
         HasGameStarted = true;
         EventAggregator.Instance.SendMessage("Score");
-        EventAggregator.Instance.RegisterHandler<IEnumerable<IPlayerScore>>(Score);
     }
-
-    private void Score(IEnumerable<IPlayerScore> playerScores) => PlayerScores = playerScores.OrderByDescending(ps => ps.Score);
 
     private void Finish() { }
 

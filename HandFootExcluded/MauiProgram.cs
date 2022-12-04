@@ -18,6 +18,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IScoringService, ScoringService>();
         builder.Services.AddSingleton<IMainPageViewModel, MainPageViewModel>();
         builder.Services.AddSingleton<ISettingsViewModel, SettingsViewModel>();
+        builder.Services.AddSingleton<IScoresViewModel, ScoresViewModel>();
 
         return builder.Build();
     }

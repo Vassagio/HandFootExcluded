@@ -12,6 +12,7 @@
                 <Setter Property="VerticalOptions" Value="Fill" />
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
                 <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="FontAttributes" Value="Bold"/>
             </Style>
             <Style TargetType="Entry" x:Key="DataEntry">
                 <Setter Property="Margin" Value="2" />
@@ -45,7 +46,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Entry Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" IsReadOnly="True" Text="Starting Team" BackgroundColor="LightBlue" HorizontalTextAlignment="Center" HorizontalOptions="Fill" VerticalOptions="Fill" />
+        <Entry Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" Text="Starting Team" Style="{StaticResource HeaderEntry}"/>
 
         <Entry Grid.Row="1" Grid.Column="0" Text="Player" Style="{StaticResource HeaderEntry}"/>
         <Entry Grid.Row="1" Grid.Column="1" Text="Bonus" Style="{StaticResource HeaderEntry}" />

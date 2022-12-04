@@ -12,8 +12,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60*" />
-            <ColumnDefinition Width="40*" />
+            <ColumnDefinition Width="63*" />
+            <ColumnDefinition Width="37*" />
         </Grid.ColumnDefinitions>
 
         <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="Fill" VerticalOptions="Fill">
@@ -27,7 +27,7 @@
                     </Style.Triggers>
                 </Style>
             </Border.Style>
-            <local:SettingsView MinimumHeightRequest="350"/>
+            <local:SettingsView MinimumHeightRequest="350" />
         </Border>
 
         <Border Grid.Row="1" Grid.Column="0" VerticalOptions="Fill" HorizontalOptions="Fill" Stroke="Black">
@@ -41,10 +41,10 @@
                     </Style.Triggers>
                 </Style>
             </Border.Style>
-            <local:RoundView BindingContext="{Binding CurrentRound}" HorizontalOptions="Fill" VerticalOptions="Fill"></local:RoundView>
+            <local:RoundView BindingContext="{Binding CurrentRound}" HorizontalOptions="Fill" VerticalOptions="Fill" />
         </Border>
 
-        <Border Grid.Row="1" Grid.Column="1" Stroke="Black" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="LightGray">
+        <Border Grid.Row="1" Grid.Column="1" Stroke="Black" HorizontalOptions="Fill" VerticalOptions="Fill">
             <Border.Style>
                 <Style TargetType="Border">
                     <Setter Property="IsVisible" Value="False" />
@@ -55,38 +55,7 @@
                     </Style.Triggers>
                 </Style>
             </Border.Style>
-            <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Border Grid.Row="0" Stroke="Black" BackgroundColor="LightBlue">
-                    <Label Margin="3,0" Text="Scores" FontSize="30" FontAttributes="Bold" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
-                </Border>
-                <ListView Grid.Row="1" ItemsSource="{Binding PlayerScores}" HasUnevenRows="True" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="AliceBlue">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell Height="50">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="25*" />
-                                        <ColumnDefinition Width="30*" />
-                                        <ColumnDefinition Width="20*" />
-                                        <ColumnDefinition Width="25*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-
-                                    <Entry Grid.Column="0" Text="{Binding Bonus}" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="20" />
-                                    <Entry Grid.Column="1" Text="{Binding Player.FirstName}" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontSize="20" />
-                                    <Entry Grid.Column="2" Text="{Binding Score}" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="20" />
-                                </Grid>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
+            <local:ScoresView HorizontalOptions="Fill" VerticalOptions="Fill" />
         </Border>
 
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalOptions="Fill" HorizontalOptions="Fill">
