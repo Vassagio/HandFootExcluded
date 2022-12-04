@@ -2,6 +2,7 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:HandFootExcluded"
              x:Class="HandFootExcluded.MainPage">
 
     <Grid Padding="3" HorizontalOptions="Fill" VerticalOptions="Fill">
@@ -15,52 +16,19 @@
             <ColumnDefinition Width="40*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="Fill" VerticalOptions="Fill" MinimumHeightRequest="350" BackgroundColor="AliceBlue">
-            <Grid.Style>
-                <Style TargetType="Grid">
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="Fill" VerticalOptions="Fill">
+            <Border.Style>
+                <Style TargetType="Border">
                     <Setter Property="IsVisible" Value="True" />
                     <Style.Triggers>
-                        <DataTrigger TargetType="Grid" Binding="{Binding HasGameStarted}" Value="True">
+                        <DataTrigger TargetType="Border" Binding="{Binding HasGameStarted}" Value="True">
                             <Setter Property="IsVisible" Value="False" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Grid.Style>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalOptions="Fill" HorizontalOptions="Fill" BackgroundColor="LightBlue">
-                <Label Text="Hand, Foot and Ass" VerticalOptions="Fill" HorizontalOptions="Fill" FontSize="40" HorizontalTextAlignment="Center" FontAttributes="Bold" />
-            </Border>
-
-            <Label Grid.Row="1" Grid.Column="0" Text="Player 1:" VerticalOptions="Center" Margin="5,0" FontSize="20" FontAttributes="Bold" />
-            <Entry Grid.Row="1" Grid.Column="1" Margin="5,0" Placeholder="Enter Player 1:" ReturnType="Done" Keyboard="Text" VerticalOptions="Center" HorizontalOptions="Fill" Text="{Binding DefaultPlayer1, Mode=TwoWay}" FontSize="20" />
-
-            <Label Grid.Row="2" Grid.Column="0" Text="Player 2:" VerticalOptions="Center" Margin="5,0" FontSize="20" FontAttributes="Bold" />
-            <Entry Grid.Row="2" Grid.Column="1" Margin="5,0" Placeholder="Enter Player 2:" ReturnType="Done" Keyboard="Text" VerticalOptions="Center" HorizontalOptions="Fill" Text="{Binding DefaultPlayer2, Mode=TwoWay}" FontSize="20" />
-
-            <Label Grid.Row="3" Grid.Column="0" Text="Player 3:" VerticalOptions="Center" Margin="5,0" FontSize="20" FontAttributes="Bold" />
-            <Entry Grid.Row="3" Grid.Column="1" Margin="5,0" Placeholder="Enter Player 3:" ReturnType="Done" Keyboard="Text" VerticalOptions="Center" HorizontalOptions="Fill" Text="{Binding DefaultPlayer3, Mode=TwoWay}" FontSize="20" />
-
-            <Label Grid.Row="4" Grid.Column="0" Text="Player 4:" VerticalOptions="Center" Margin="5,0" FontSize="20" FontAttributes="Bold" />
-            <Entry Grid.Row="4" Grid.Column="1" Margin="5,0" Placeholder="Enter Player 4:" ReturnType="Done" Keyboard="Text" VerticalOptions="Center" HorizontalOptions="Fill" Text="{Binding DefaultPlayer4, Mode=TwoWay}" FontSize="20" />
-
-            <Label Grid.Row="5" Grid.Column="0" Text="Player 5:" VerticalOptions="Center" Margin="5,0" FontSize="20" FontAttributes="Bold" />
-            <Entry Grid.Row="5" Grid.Column="1" Margin="5,0" Placeholder="Enter Player 5:" ReturnType="Done" Keyboard="Text" VerticalOptions="Center" HorizontalOptions="Fill" Text="{Binding DefaultPlayer5, Mode=TwoWay}" FontSize="20" />
-
-            <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Text="Start" HorizontalOptions="Center" Command="{Binding StartCommand}" BackgroundColor="DarkBlue" />
-        </Grid>
+            </Border.Style>
+            <local:SettingsView MinimumHeightRequest="350"/>
+        </Border>
 
         <Border Grid.Row="1" Grid.Column="0" VerticalOptions="Fill" HorizontalOptions="Fill" Stroke="Black">
             <Border.Style>
