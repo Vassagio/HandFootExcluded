@@ -1,4 +1,5 @@
 ﻿using Bertuzzi.MAUI.EventAggregator;
+using HandFootExcluded.Events;
 
 namespace HandFootExcluded;
 
@@ -6,6 +7,7 @@ public enum GameState
 {
     None,
     Started,
+    Summary,
     Finished
 }
 
@@ -17,7 +19,9 @@ public interface IMainPageViewModel
     
     Command NextRoundCommand { get; }
     Command PreviousRoundCommand { get; }
-    Command FinishCommand { get; }
+    Command SummaryCommand { get; }
+    Command NewCommand { get; }
+    Command CloseCommand { get; }
 }
 
 internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
@@ -30,7 +34,9 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
 
     private Command _nextRoundCommand;
     private Command _previousRoundCommand;
-    private Command _finishCommand;
+    private Command _summaryCommand;
+    private Command _newCommand;
+    private Command _closeCommand;
 
     public IGame Game { get => _game; set => SetProperty(ref _game, value); }
     public IRound CurrentRound { get => _currentRound; set => SetProperty(ref _currentRound, value); }
@@ -38,7 +44,9 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
 
     public Command NextRoundCommand => _nextRoundCommand ?? new Command(NextRound);
     public Command PreviousRoundCommand => _previousRoundCommand ?? new Command(PreviousRound);
-    public Command FinishCommand => _finishCommand ?? new Command(Finish);
+    public Command SummaryCommand => _summaryCommand ?? new Command(Summary);
+    public Command NewCommand => _newCommand ?? new Command(New);
+    public Command CloseCommand => _closeCommand ?? new Command(Close);
 
     public MainPageViewModel(IGameService gameService)
     {
@@ -48,6 +56,12 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
 
         EventAggregator.Instance.RegisterHandler<Players>(OnPlayersCreated);
         EventAggregator.Instance.RegisterHandler<NewGameEvent>(OnNewGame);
+        EventAggregator.Instance.RegisterHandler<CloseSummaryEvent>(OnCloseSummary);
+    }
+
+    private void OnCloseSummary(CloseSummaryEvent obj)
+    {
+        GameState = GameState.Started;
     }
 
     private void OnPlayersCreated(Players players)
@@ -65,9 +79,9 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
         GameState = GameState.None;
     }
 
-    private void Finish()
+    private void Summary()
     {
-        GameState = GameState.Finished;
+        GameState = GameState.Summary;
         EventAggregator.Instance.SendMessage(new GameFinishedEvent(Game));
     }
 
@@ -85,12 +99,18 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
             CurrentRound = previousRound;
     }
 
+    private static void New() => EventAggregator.Instance.SendMessage(NewGameEvent.Instance);
+
+    private static void Close() => Application.Current?.Quit();
+
     protected override void RefreshCommands()
     {
         base.RefreshCommands();
 
         NextRoundCommand.ChangeCanExecute();
         PreviousRoundCommand.ChangeCanExecute();
-        FinishCommand.ChangeCanExecute();
+        SummaryCommand.ChangeCanExecute();
+        NewCommand.ChangeCanExecute();
+        CloseCommand.ChangeCanExecute();
     }
 }

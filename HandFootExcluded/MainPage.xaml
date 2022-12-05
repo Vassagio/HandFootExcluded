@@ -29,6 +29,18 @@
             </Style.Triggers>
         </Style>
 
+        <Style TargetType="Border" x:Key="GameSummary">
+            <Setter Property="VerticalOptions" Value="Fill"></Setter>
+            <Setter Property="HorizontalOptions" Value="Fill"></Setter>
+            <Setter Property="Stroke" Value="Black"></Setter>
+            <Setter Property="IsVisible" Value="False" />
+            <Style.Triggers>
+                <DataTrigger TargetType="Border" Binding="{Binding GameState}" Value="{x:Static local:GameState.Summary}">
+                    <Setter Property="IsVisible" Value="True" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
         <Style TargetType="Border" x:Key="GameFinished">
             <Setter Property="VerticalOptions" Value="Fill"></Setter>
             <Setter Property="HorizontalOptions" Value="Fill"></Setter>
@@ -71,7 +83,7 @@
             <local:ScoresView HorizontalOptions="Fill" VerticalOptions="Fill" />
         </Border>
 
-        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource GameFinished}">
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource GameSummary}">
             <local:SummaryView HorizontalOptions="Fill" VerticalOptions="Fill"/>
         </Border>
 
@@ -91,10 +103,12 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Text="Previous" HorizontalOptions="Fill" Command="{Binding PreviousRoundCommand}" />
             <Button Grid.Column="1" Text="Next" HorizontalOptions="Fill" Command="{Binding NextRoundCommand}" />
-            <Button Grid.Column="3" Text="Finish" HorizontalOptions="End" Command="{Binding FinishCommand}">
+            <Button Grid.Column="3" Text="Summary" HorizontalOptions="End" Command="{Binding SummaryCommand}">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="VerticalOptions" Value="Fill"></Setter>
@@ -110,6 +124,23 @@
                     </Style>
                 </Button.Style>
             </Button>
+            <Button Grid.Column="4" Text="New" HorizontalOptions="End" Command="{Binding NewCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="VerticalOptions" Value="Fill"></Setter>
+                        <Setter Property="Margin" Value="3,0"></Setter>
+                        <Setter Property="HeightRequest" Value="40"></Setter>
+                        <Setter Property="BackgroundColor" Value="DarkBlue"></Setter>
+                        <Setter Property="IsVisible" Value="False" />
+                        <Style.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding CurrentRound.Index}" Value="5">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Grid.Column="5" Text="Close" HorizontalOptions="Fill" Command="{Binding CloseCommand}" />
         </Grid>
     </Grid>
 

@@ -1,4 +1,4 @@
-﻿namespace HandFootExcluded;
+﻿namespace HandFootExcluded.Events;
 
 public sealed class NewGameEvent
 {

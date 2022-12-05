@@ -1,4 +1,5 @@
 ﻿using Bertuzzi.MAUI.EventAggregator;
+using HandFootExcluded.Events;
 using HandFootExcluded.ScoreLines;
 
 namespace HandFootExcluded;
@@ -6,7 +7,6 @@ namespace HandFootExcluded;
 public interface ISummaryViewModel
 {
     IGame Game { get; }
-    Command NewCommand { get; }
     Command CloseCommand { get; }
 }
 
@@ -21,14 +21,12 @@ internal sealed class SummaryViewModel : BindableItem, ISummaryViewModel
     private IGame _game;
     private IEnumerable<Line> _lines = Enumerable.Empty<Line>();
     
-
-    private Command _newCommand;
     private Command _closeCommand;
 
     public IGame Game { get => _game; set => SetProperty(ref _game, value); }
     public IEnumerable<Line> Lines {get => _lines; set => SetProperty(ref _lines, value);}
 
-    public Command NewCommand => _newCommand ?? new Command(New);
+    
     public Command CloseCommand => _closeCommand ?? new Command(Close);
 
     public SummaryViewModel(IScoringService scoringService)
@@ -101,6 +99,5 @@ internal sealed class SummaryViewModel : BindableItem, ISummaryViewModel
         return (name, player1Value, player2Value, player3Value, player4Value, player5Value);
     }
 
-    private static void New() => EventAggregator.Instance.SendMessage(NewGameEvent.Instance);
-    private static void Close() => Application.Current?.Quit();
+    private static void Close() => EventAggregator.Instance.SendMessage(CloseSummaryEvent.Instance);
 }
