@@ -1,6 +1,6 @@
 ﻿using HandFootExcluded.ScoreLines;
 
-namespace HandFootExcluded;
+namespace HandFootExcluded.Services;
 
 internal interface IScoringService
 {
@@ -36,6 +36,7 @@ internal sealed class ScoringService : IScoringService
         foreach (var player in game.Players)
         {
             var gameScore = 0;
+            var cumulativeScore = 0;
             foreach (var round in game)
             {
                 var roundScore = 0;
@@ -59,6 +60,11 @@ internal sealed class ScoringService : IScoringService
 
                     roundScore += round.StartingTeam.TopScore + round.StartingTeam.BottomScore;
                     scoreLines.Add(new RoundTotalScore(player, round, roundScore));
+
+                    cumulativeScore += roundScore;
+                    scoreLines.Add(new CumulativeTotalScore(player, round, cumulativeScore));
+
+                    scoreLines.Add(new BlankScore(player, round));
                 }
                 else if (round.OpposingTeam.Contains(player))
                 {
@@ -80,6 +86,11 @@ internal sealed class ScoringService : IScoringService
 
                     roundScore += round.OpposingTeam.TopScore + round.OpposingTeam.BottomScore;
                     scoreLines.Add(new RoundTotalScore(player, round, roundScore));
+
+                    cumulativeScore += roundScore;
+                    scoreLines.Add(new CumulativeTotalScore(player, round, cumulativeScore));
+
+                    scoreLines.Add(new BlankScore(player, round));
                 }
                 else
                 {
@@ -87,6 +98,8 @@ internal sealed class ScoringService : IScoringService
                     scoreLines.Add(new TopScore(player, round, 0));
                     scoreLines.Add(new BottomScore(player, round, 0));
                     scoreLines.Add(new RoundTotalScore(player, round, 0));
+                    scoreLines.Add(new CumulativeTotalScore(player, round, cumulativeScore));
+                    scoreLines.Add(new BlankScore(player, round));
                 }
 
                 gameScore += roundScore;

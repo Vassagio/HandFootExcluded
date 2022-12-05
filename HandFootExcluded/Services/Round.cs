@@ -2,7 +2,7 @@
 using Bertuzzi.MAUI.EventAggregator;
 using HandFootExcluded.Events;
 
-namespace HandFootExcluded;
+namespace HandFootExcluded.Services;
 
 public interface IRound
 {
@@ -64,7 +64,7 @@ internal sealed partial class GameService
 
         private void OnBonusChanged() => EventAggregator.Instance.SendMessage(PlayerScoreEvent.Yes);
 
-        private static ITeam BuildTeam(IPlayer player, IPlayer partner) => new Team(player, partner);
+        private static ITeam BuildTeam(IPlayer player, IPlayer partner) => new GameService.Team(player, partner);
 
         public override string ToString() => Display;
     }

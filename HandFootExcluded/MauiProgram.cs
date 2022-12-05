@@ -1,4 +1,6 @@
-﻿namespace HandFootExcluded;
+﻿using HandFootExcluded.Services;
+
+namespace HandFootExcluded;
 
 public static class MauiProgram
 {
@@ -13,6 +15,7 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
+        builder.Services.AddSingleton<IAlertService, AlertService>();
         builder.Services.AddSingleton<IPlayerBuilder, PlayerBuilder>();
         builder.Services.AddSingleton<IGameService, GameService>();
         builder.Services.AddSingleton<IScoringService, ScoringService>();

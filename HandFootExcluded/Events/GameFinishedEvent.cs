@@ -1,4 +1,6 @@
-﻿namespace HandFootExcluded.Events;
+﻿using HandFootExcluded.Services;
+
+namespace HandFootExcluded.Events;
 
 public sealed class GameFinishedEvent
 {

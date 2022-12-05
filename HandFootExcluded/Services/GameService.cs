@@ -1,4 +1,4 @@
-﻿namespace HandFootExcluded;
+﻿namespace HandFootExcluded.Services;
 
 internal interface IGameService
 {
@@ -22,7 +22,7 @@ internal sealed partial class GameService : IGameService
 
     public IGame Create(IReadOnlyList<IPlayer> players)
     {
-        var game = new Game(players.ToList(), _scoringService);
+        var game = new GameService.Game(players.ToList(), _scoringService);
 
         for (var i = 1; i <= _roundOrdering.Count(); i++)
             game.Add(CreateRound(i, players, _roundOrdering[i - 1]));
@@ -40,6 +40,6 @@ internal sealed partial class GameService : IGameService
         var nonExcludedPlayers = new List<IPlayer> { startingPlayer, startingPartner, opposingPlayer, opposingPartner };
         var excludedPlayer = players.Except(nonExcludedPlayers).Single();
 
-        return new Round(index, roundOrder.AmountToOpen, startingPlayer, startingPartner, opposingPlayer, opposingPartner, excludedPlayer);
+        return new GameService.Round(index, roundOrder.AmountToOpen, startingPlayer, startingPartner, opposingPlayer, opposingPartner, excludedPlayer);
     }
 }

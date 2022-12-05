@@ -27,7 +27,7 @@
                             </Grid.RowDefinitions>
 
                             <Entry Grid.Column="0" Text="{Binding Bonus}" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="20" />
-                            <Entry Grid.Column="1" Text="{Binding Player.FirstName}" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontSize="20" />
+                            <Entry Grid.Column="1" Text="{Binding Player.Initials}" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontSize="20" />
                             <Entry Grid.Column="2" Text="{Binding Score}" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="20" />
                         </Grid>
                     </ViewCell>

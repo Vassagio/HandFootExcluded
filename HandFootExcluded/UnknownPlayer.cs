@@ -1,4 +1,6 @@
-﻿namespace HandFootExcluded;
+﻿using HandFootExcluded.Services;
+
+namespace HandFootExcluded;
 
 public sealed class UnknownPlayer : IPlayer
 {

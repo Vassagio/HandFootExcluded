@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 
-namespace HandFootExcluded;
+namespace HandFootExcluded.Services;
 
 public interface IPlayer
 {

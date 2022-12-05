@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Bertuzzi.MAUI.EventAggregator;
 using HandFootExcluded.Events;
 
-namespace HandFootExcluded;
+namespace HandFootExcluded.Services;
 
 public interface ITeam : ISet<IPlayer>
 {

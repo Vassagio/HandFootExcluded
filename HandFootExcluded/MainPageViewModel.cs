@@ -1,5 +1,6 @@
 ﻿using Bertuzzi.MAUI.EventAggregator;
 using HandFootExcluded.Events;
+using HandFootExcluded.Services;
 
 namespace HandFootExcluded;
 
@@ -27,6 +28,7 @@ public interface IMainPageViewModel
 internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
 {
     private readonly IGameService _gameService;
+    private readonly IAlertService _alertService;
 
     private IGame _game;
     private IRound _currentRound;
@@ -48,9 +50,10 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
     public Command NewCommand => _newCommand ?? new Command(New);
     public Command CloseCommand => _closeCommand ?? new Command(Close);
 
-    public MainPageViewModel(IGameService gameService)
+    public MainPageViewModel(IGameService gameService, IAlertService alertService)
     {
         _gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
+        _alertService = alertService ?? throw new ArgumentNullException(nameof(alertService));
 
         GameState = GameState.None;
 
@@ -99,9 +102,24 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
             CurrentRound = previousRound;
     }
 
-    private static void New() => EventAggregator.Instance.SendMessage(NewGameEvent.Instance);
+    private void New()
+    {
+        Action<bool> Callback() => result =>
+        {
+            if (result) EventAggregator.Instance.SendMessage(NewGameEvent.Instance);
+        };
 
-    private static void Close() => Application.Current?.Quit();
+        _alertService.ShowConfirmation("New Game", "Are you sure you want to start a new game?", Callback());
+    }
+
+    private void Close()
+    {
+        Action<bool> Callback() => result =>
+        {
+            if (result) Application.Current?.Quit();
+        };
+        _alertService.ShowConfirmation("End Game", "Are you sure you want to quit?", Callback());
+    }
 
     protected override void RefreshCommands()
     {

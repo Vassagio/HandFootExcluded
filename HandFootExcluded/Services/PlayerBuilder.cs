@@ -1,4 +1,4 @@
-﻿namespace HandFootExcluded;
+﻿namespace HandFootExcluded.Services;
 
 public interface IPlayerBuilder : IBuilder
 {
@@ -28,7 +28,7 @@ internal sealed partial class PlayerBuilder : BuilderBase<PlayerBuilder>, IPlaye
 
         var parsedName = Parse(_name);
 
-        return new Player(_position, parsedName.FirstName, parsedName.MiddleName, parsedName.LastName);
+        return new PlayerBuilder.Player(_position, parsedName.FirstName, parsedName.MiddleName, parsedName.LastName);
     }
 
     public IPlayerBuilderBuild WithName(string name) => SetProperty(ref _name, name);

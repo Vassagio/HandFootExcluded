@@ -19,23 +19,24 @@
 
         <Grid Grid.Row="0" Grid.RowSpan="8" Grid.Column="0" BackgroundColor="DarkBlue" HorizontalOptions="Fill" VerticalOptions="Fill">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="30" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Entry Grid.Row="0" MaximumHeightRequest="35" Text="Round" IsReadOnly="True" TextColor="White" HorizontalOptions="Fill" VerticalOptions="Start" HorizontalTextAlignment="Center" />
-            <Entry Grid.Row="1" MaximumHeightRequest="50" Text="{Binding Index}" IsReadOnly="True" TextColor="White" HorizontalOptions="Fill" VerticalOptions="Start" FontSize="30" FontAttributes="Bold" HorizontalTextAlignment="Center" />
-            <Entry Grid.Row="3" MaximumHeightRequest="35" Text="Open" FontAttributes="Bold" IsReadOnly="True" TextColor="Yellow" HorizontalOptions="Fill" VerticalOptions="End" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
-            <Entry Grid.Row="4" MaximumHeightRequest="35" Text="{Binding AmountToOpen}" IsReadOnly="True" TextColor="Yellow" HorizontalOptions="Fill" VerticalOptions="End" FontSize="12" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="End" />
+            <Entry Grid.Row="1" MaximumHeightRequest="35" Text="Round" IsReadOnly="True" TextColor="White" HorizontalOptions="Fill" VerticalOptions="Start" HorizontalTextAlignment="Center" />
+            <Entry Grid.Row="2" MaximumHeightRequest="55" Text="{Binding Index}" IsReadOnly="True" TextColor="White" HorizontalOptions="Fill" VerticalOptions="Start" FontSize="30" FontAttributes="Bold" HorizontalTextAlignment="Center" />
         </Grid>
 
-        <Grid Grid.Row="0" Grid.Column="1" BackgroundColor="DarkBlue" HorizontalOptions="Fill" VerticalOptions="Fill"></Grid>
+        <Grid Grid.Row="0" Grid.Column="1" BackgroundColor="DarkBlue" HorizontalOptions="Fill" VerticalOptions="Fill">
+            <HorizontalStackLayout BackgroundColor="DarkBlue" HorizontalOptions="End" VerticalOptions="Center">
+                <Entry Margin="3,0" Text="Open:" FontAttributes="Bold" IsReadOnly="True" TextColor="Yellow" HorizontalOptions="Fill" VerticalOptions="Fill" FontSize="14" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                <Entry Margin="0,0,10,0" Text="{Binding AmountToOpen}" IsReadOnly="True" TextColor="Yellow" HorizontalOptions="Fill" VerticalOptions="Fill" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+            </HorizontalStackLayout>
+        </Grid>
 
         <local:StartingTeamView Grid.Row="1" Grid.Column="1"></local:StartingTeamView>
         <local:OpposingTeamView Grid.Row="2" Grid.Column="1"></local:OpposingTeamView>
 
-        <Entry Grid.Row="3" Grid.Column="1" IsReadOnly="True" Text="{Binding ExcludedPlayer.FullName}" BackgroundColor="MediumVioletRed" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+        <Entry Grid.Row="3" Grid.Column="1" IsReadOnly="True" Text="{Binding ExcludedPlayer.Initials}" BackgroundColor="MediumVioletRed" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  FontAttributes="Bold"/>
     </Grid>
 </ContentView>
