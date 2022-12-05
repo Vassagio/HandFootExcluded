@@ -16,16 +16,18 @@ internal sealed partial class GameService
 
         public Game(IList<IPlayer> players, IScoringService scoringService)
         {
-            EventAggregator.Instance.UnregisterHandler<string>(Score);
+            EventAggregator.Instance.UnregisterHandler<PlayerScoreEvent>(Score);
 
             _scoringService = scoringService;
             Players = players ?? throw new ArgumentNullException(nameof(players));
 
-            EventAggregator.Instance.RegisterHandler<string>(Score);
+            EventAggregator.Instance.RegisterHandler<PlayerScoreEvent>(Score);
         }
 
-        private void Score(string obj)
+        private void Score(PlayerScoreEvent scoreEvent)
         {
+            if (!scoreEvent.Score) return;
+
             var playerScores = Players.Select(player => _scoringService.CalculateFor(this, player)).ToList();
 
             EventAggregator.Instance.SendMessage(playerScores);

@@ -61,12 +61,10 @@ internal sealed partial class GameService
             OpposingTeam = BuildTeam(opposingPlayer, opposingPartner);
         }
 
-        private void OnBonusChanged() { EventAggregator.Instance.SendMessage("Score"); }
+        private void OnBonusChanged() => EventAggregator.Instance.SendMessage(PlayerScoreEvent.Yes);
 
         private static ITeam BuildTeam(IPlayer player, IPlayer partner) => new Team(player, partner);
 
         public override string ToString() => Display;
     }
-
-    public class ScoringHandler { }
 }

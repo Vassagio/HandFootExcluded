@@ -2,12 +2,19 @@
 
 namespace HandFootExcluded;
 
+public enum GameState
+{
+    None,
+    Started,
+    Finished
+}
+
 public interface IMainPageViewModel
 {
     IGame Game { get; }
     IRound CurrentRound { get; }
-    bool HasGameStarted { get; }
-
+    GameState GameState { get; }
+    
     Command NextRoundCommand { get; }
     Command PreviousRoundCommand { get; }
     Command FinishCommand { get; }
@@ -19,8 +26,7 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
 
     private IGame _game;
     private IRound _currentRound;
-    
-    private bool _hasGameStarted;
+    private GameState _gameState;
 
     private Command _nextRoundCommand;
     private Command _previousRoundCommand;
@@ -28,9 +34,7 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
 
     public IGame Game { get => _game; set => SetProperty(ref _game, value); }
     public IRound CurrentRound { get => _currentRound; set => SetProperty(ref _currentRound, value); }
-    
-
-    public bool HasGameStarted { get => _hasGameStarted; set => SetProperty(ref _hasGameStarted, value); }
+    public GameState GameState { get => _gameState; set => SetProperty(ref _gameState, value); }
 
     public Command NextRoundCommand => _nextRoundCommand ?? new Command(NextRound);
     public Command PreviousRoundCommand => _previousRoundCommand ?? new Command(PreviousRound);
@@ -40,18 +44,32 @@ internal sealed class MainPageViewModel : BindableItem, IMainPageViewModel
     {
         _gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
 
+        GameState = GameState.None;
+
         EventAggregator.Instance.RegisterHandler<Players>(OnPlayersCreated);
+        EventAggregator.Instance.RegisterHandler<NewGameEvent>(OnNewGame);
     }
 
     private void OnPlayersCreated(Players players)
     {
         Game = _gameService.Create(players.ToList());
         CurrentRound = Game.First();
-        HasGameStarted = true;
-        EventAggregator.Instance.SendMessage("Score");
+        GameState = GameState.Started;
+        EventAggregator.Instance.SendMessage(PlayerScoreEvent.Yes);
     }
 
-    private void Finish() { }
+    private void OnNewGame(NewGameEvent newGameEvent)
+    {
+        CurrentRound = null;
+        Game = null;
+        GameState = GameState.None;
+    }
+
+    private void Finish()
+    {
+        GameState = GameState.Finished;
+        EventAggregator.Instance.SendMessage(new GameFinishedEvent(Game));
+    }
 
     private void NextRound()
     {

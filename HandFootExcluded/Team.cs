@@ -66,7 +66,7 @@ internal sealed partial class GameService
         private void OnScoreChanged()
         {
             Score = _topScore + _bottomScore;
-            EventAggregator.Instance.SendMessage("Score");
+            EventAggregator.Instance.SendMessage(PlayerScoreEvent.Yes);
         }
 
         public override string ToString() => Display;

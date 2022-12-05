@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HandFootExcluded.SummaryView">
+    <ContentView.Resources>
+        <Style TargetType="Button">
+            <Setter Property="VerticalOptions" Value="Fill" />
+            <Setter Property="Margin" Value="3,0" />
+            <Setter Property="HeightRequest" Value="40" />
+            <Setter Property="BackgroundColor" Value="DarkBlue" />
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Fill" />
+            <Setter Property="HorizontalOptions" Value="Fill" />
+            <Setter Property="HorizontalTextAlignment" Value="End" />
+            <Setter Property="VerticalTextAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontAttributes" Value="None" />
+            <Style.Triggers>
+                <DataTrigger TargetType="Label" Binding="{Binding IsBold}" Value="True">
+                    <Setter Property="FontAttributes" Value="Bold" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </ContentView.Resources>
+    <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ScrollView Grid.Row="0" Grid.Column="0" VerticalOptions="Fill" HorizontalOptions="Fill">
+            <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <ListView Grid.Row="0" ItemsSource="{Binding Lines}" HasUnevenRows="True" SelectionMode="None" Margin="3" MaximumHeightRequest="300">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Column="0" Text="{Binding RowHeader}" HorizontalTextAlignment="Start" FontAttributes="Bold" BackgroundColor="{Binding BackgroundColor}"/>
+                                    <Label Grid.Column="1" Text="{Binding Player1Value}" BackgroundColor="{Binding BackgroundColor}" />
+                                    <Label Grid.Column="2" Text="{Binding Player2Value}" BackgroundColor="{Binding BackgroundColor}" />
+                                    <Label Grid.Column="3" Text="{Binding Player3Value}" BackgroundColor="{Binding BackgroundColor}" />
+                                    <Label Grid.Column="4" Text="{Binding Player4Value}" BackgroundColor="{Binding BackgroundColor}" />
+                                    <Label Grid.Column="5" Text="{Binding Player5Value}" BackgroundColor="{Binding BackgroundColor}" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </ScrollView>
+        <HorizontalStackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="End" MinimumHeightRequest="40">
+            <Button Text="New" Command="{Binding NewCommand}" />
+            <Button Text="Close" Command="{Binding CloseCommand}" />
+        </HorizontalStackLayout>
+    </Grid>
+</ContentView>

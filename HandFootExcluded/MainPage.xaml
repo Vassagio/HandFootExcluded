@@ -5,28 +5,47 @@
              xmlns:local="clr-namespace:HandFootExcluded"
              x:Class="HandFootExcluded.MainPage">
     <ContentPage.Resources>
-        <Style TargetType="Border" x:Key="GameOn">
+        <Style TargetType="Border" x:Key="GameStarted">
             <Setter Property="VerticalOptions" Value="Fill"></Setter>
             <Setter Property="HorizontalOptions" Value="Fill"></Setter>
             <Setter Property="Stroke" Value="Black"></Setter>
-            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="IsVisible" Value="False" />
             <Style.Triggers>
-                <DataTrigger TargetType="Border" Binding="{Binding HasGameStarted}" Value="True">
+                <DataTrigger TargetType="Border" Binding="{Binding GameState}" Value="{x:Static local:GameState.Started}">
                     <Setter Property="IsVisible" Value="True" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-        <Style TargetType="Border" x:Key="GameOff">
+        <Style TargetType="Border" x:Key="GameNone">
             <Setter Property="VerticalOptions" Value="Fill"></Setter>
             <Setter Property="HorizontalOptions" Value="Fill"></Setter>
             <Setter Property="Stroke" Value="Black"></Setter>
-            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="IsVisible" Value="False" />
             <Style.Triggers>
-                <DataTrigger TargetType="Border" Binding="{Binding HasGameStarted}" Value="True">
-                    <Setter Property="IsVisible" Value="False" />
+                <DataTrigger TargetType="Border" Binding="{Binding GameState}" Value="{x:Static local:GameState.None}">
+                    <Setter Property="IsVisible" Value="True" />
                 </DataTrigger>
             </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Border" x:Key="GameFinished">
+            <Setter Property="VerticalOptions" Value="Fill"></Setter>
+            <Setter Property="HorizontalOptions" Value="Fill"></Setter>
+            <Setter Property="Stroke" Value="Black"></Setter>
+            <Setter Property="IsVisible" Value="False" />
+            <Style.Triggers>
+                <DataTrigger TargetType="Border" Binding="{Binding GameState}" Value="{x:Static local:GameState.Finished}">
+                    <Setter Property="IsVisible" Value="True" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="VerticalOptions" Value="Fill"></Setter>
+            <Setter Property="Margin" Value="3,0"></Setter>
+            <Setter Property="HeightRequest" Value="40"></Setter>
+            <Setter Property="BackgroundColor" Value="DarkBlue"></Setter>
         </Style>
     </ContentPage.Resources>
     <Grid Padding="3" HorizontalOptions="Fill" VerticalOptions="Fill">
@@ -40,16 +59,20 @@
             <ColumnDefinition Width="37*" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource GameOff}">
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource GameNone}">
             <local:SettingsView MinimumHeightRequest="350" />
         </Border>
 
-        <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource GameOn}">
+        <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource GameStarted}">
             <local:RoundView BindingContext="{Binding CurrentRound}" HorizontalOptions="Fill" VerticalOptions="Fill" />
         </Border>
 
-        <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource GameOn}">
+        <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource GameStarted}">
             <local:ScoresView HorizontalOptions="Fill" VerticalOptions="Fill" />
+        </Border>
+
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource GameFinished}">
+            <local:SummaryView HorizontalOptions="Fill" VerticalOptions="Fill"/>
         </Border>
 
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalOptions="Fill" HorizontalOptions="Fill">
@@ -57,7 +80,7 @@
                 <Style TargetType="Grid">
                     <Setter Property="IsVisible" Value="False" />
                     <Style.Triggers>
-                        <DataTrigger TargetType="Grid" Binding="{Binding HasGameStarted}" Value="True">
+                        <DataTrigger TargetType="Grid" Binding="{Binding GameState}" Value="{x:Static local:GameState.Started}">
                             <Setter Property="IsVisible" Value="True" />
                         </DataTrigger>
                     </Style.Triggers>
@@ -69,11 +92,15 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Text="Previous" Margin="3,0" HeightRequest="40" HorizontalOptions="Fill" VerticalOptions="Fill" Command="{Binding PreviousRoundCommand}" BackgroundColor="DarkBlue" />
-            <Button Grid.Column="1" Text="Next" Margin="3,0" HeightRequest="40" HorizontalOptions="Fill" VerticalOptions="Fill" Command="{Binding NextRoundCommand}" BackgroundColor="DarkBlue" />
-            <Button Grid.Column="3" Text="Finish" Margin="3,0" HeightRequest="40" HorizontalOptions="End" VerticalOptions="Fill" Command="{Binding FinishCommand}" BackgroundColor="DarkBlue">
+            <Button Grid.Column="0" Text="Previous" HorizontalOptions="Fill" Command="{Binding PreviousRoundCommand}" />
+            <Button Grid.Column="1" Text="Next" HorizontalOptions="Fill" Command="{Binding NextRoundCommand}" />
+            <Button Grid.Column="3" Text="Finish" HorizontalOptions="End" Command="{Binding FinishCommand}">
                 <Button.Style>
                     <Style TargetType="Button">
+                        <Setter Property="VerticalOptions" Value="Fill"></Setter>
+                        <Setter Property="Margin" Value="3,0"></Setter>
+                        <Setter Property="HeightRequest" Value="40"></Setter>
+                        <Setter Property="BackgroundColor" Value="DarkBlue"></Setter>
                         <Setter Property="IsVisible" Value="False" />
                         <Style.Triggers>
                             <DataTrigger TargetType="Button" Binding="{Binding CurrentRound.Index}" Value="5">
