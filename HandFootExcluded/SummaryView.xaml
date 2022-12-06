@@ -25,7 +25,7 @@
             </Style.Triggers>
         </Style>
     </ContentView.Resources>
-    <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
+    <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Margin="3">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -62,8 +62,8 @@
                 </ListView>
             </Grid>
         </ScrollView>
-        <HorizontalStackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="End" MinimumHeightRequest="40">
-            <Button Text="Close" Command="{Binding CloseCommand}" />
+        <HorizontalStackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="End" >
+            <Button Text="Close" Command="{Binding CloseCommand}" Margin="3"/>
         </HorizontalStackLayout>
     </Grid>
 </ContentView>

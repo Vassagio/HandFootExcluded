@@ -18,8 +18,8 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalOptions="Fill" HorizontalOptions="Fill" BackgroundColor="LightBlue">
-            <Label Text="Hand, Foot and Ass" VerticalOptions="Fill" HorizontalOptions="Fill" FontSize="40" HorizontalTextAlignment="Center" FontAttributes="Bold" />
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalOptions="Fill" HorizontalOptions="Fill" BackgroundColor="DarkBlue">
+            <Label Text="{Binding Title}" VerticalOptions="Fill" HorizontalOptions="Fill" FontSize="40" HorizontalTextAlignment="Center" FontAttributes="Bold" TextColor="White"/>
         </Border>
 
         <Label Grid.Row="1" Grid.Column="0" Text="Player 1:" VerticalOptions="Center" Margin="5,0" FontSize="20" FontAttributes="Bold" />
