@@ -1,4 +1,6 @@
-﻿namespace HandFootExcluded.Services;
+﻿using HandFootExcluded.Common;
+
+namespace HandFootExcluded.Services;
 
 public interface IPlayerBuilder : IBuilder
 {
@@ -15,13 +17,13 @@ public interface IPlayerBuilderBuild : IBuilder
     IPlayer Build();
 }
 
-internal sealed partial class PlayerBuilder : BuilderBase<PlayerBuilder>, IPlayerBuilder, IPlayerBuilderPosition, IPlayerBuilderBuild
+internal sealed partial class PlayerBuilder : BuilderBase<PlayerBuilder, IPlayer>, IPlayerBuilder, IPlayerBuilderPosition, IPlayerBuilderBuild
 {
     private string _name = string.Empty;
     private int _position = 1;
     public IPlayerBuilderPosition WithPosition(int position) => SetProperty(ref _position, position);
 
-    public IPlayer Build()
+    protected override IPlayer BuildInternal() 
     {
         if (_position <= 0) return UnknownPlayer.Instance;
         if (string.IsNullOrWhiteSpace(_name)) return UnknownPlayer.Instance;
@@ -30,6 +32,7 @@ internal sealed partial class PlayerBuilder : BuilderBase<PlayerBuilder>, IPlaye
 
         return new PlayerBuilder.Player(_position, parsedName.FirstName, parsedName.MiddleName, parsedName.LastName);
     }
+
 
     public IPlayerBuilderBuild WithName(string name) => SetProperty(ref _name, name);
 

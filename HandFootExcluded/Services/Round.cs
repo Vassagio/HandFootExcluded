@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Bertuzzi.MAUI.EventAggregator;
+using HandFootExcluded.Common;
 using HandFootExcluded.Events;
 
 namespace HandFootExcluded.Services;

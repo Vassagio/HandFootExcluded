@@ -4,5 +4,8 @@ public interface IStartingPlayer : IPositionalPlayer { }
 
 internal sealed partial class PositionalPlayerFactory
 {
-    private record StartingPlayer(INonPositionalPlayer NonPositionalPlayer) : PositionalPlayerBase(1, NonPositionalPlayer.FullName, NonPositionalPlayer.FirstName, NonPositionalPlayer.MiddleName, NonPositionalPlayer.LastName, NonPositionalPlayer.Initials), IStartingPlayer { }
+    private record StartingPlayer(IOrderedPlayer OrderedPlayer) : PositionalPlayerBase(PlayerPositionType.StartingPlayer, OrderedPlayer.Order, OrderedPlayer.FullName, OrderedPlayer.FirstName, OrderedPlayer.MiddleName, OrderedPlayer.LastName, OrderedPlayer.Initials), IStartingPlayer
+    {
+        protected override string Display => $"Starting Player: {Initials,-3}";
+    }
 }

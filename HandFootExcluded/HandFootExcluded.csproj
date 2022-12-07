@@ -39,7 +39,7 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\hfa.png" BaseSize="168,208" />
+		<MauiImage Update="Resources\Images\hfa.jpg" BaseSize="168,208" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -51,6 +51,11 @@
 	<ItemGroup>
 	  <PackageReference Include="akgul.Maui.DataGrid" Version="1.0.1" />
 	  <PackageReference Include="Bertuzzi.MAUI.EventAggregator" Version="1.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\HandFootExcluded.Common\HandFootExcluded.Common.csproj" />
+	  <ProjectReference Include="..\HandFootExcluded.Core\HandFootExcluded.Core.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

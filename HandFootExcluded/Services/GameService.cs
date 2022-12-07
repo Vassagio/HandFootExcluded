@@ -10,7 +10,7 @@ internal sealed partial class GameService : IGameService
     private static readonly List<(int AmountToOpen, int StartingPlayer, int StartingPartner, int OpposingPlayer, int OpposingPartner)> _roundOrdering = new()
     {
         new(50, 1, 5, 2, 4),
-        new(75, 2, 3, 4, 5),
+        new(75,  2, 3, 4, 5),
         new(100, 3, 4, 1, 2),
         new(125, 4, 1, 5, 3),
         new(150, 5, 2, 3, 1)

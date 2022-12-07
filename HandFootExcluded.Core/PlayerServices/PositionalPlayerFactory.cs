@@ -2,19 +2,19 @@
 
 public interface IPositionalPlayerFactory
 {
-    IPositionalPlayer Create<TPositionalPlayer>(INonPositionalPlayer nonPositionalPlayer) where TPositionalPlayer : IPositionalPlayer
+    IPositionalPlayer Create<TPositionalPlayer>(IOrderedPlayer orderedPlayer) where TPositionalPlayer : IPositionalPlayer;
 }
 
-internal sealed partial class PositionalPlayerFactory
+internal sealed partial class PositionalPlayerFactory : IPositionalPlayerFactory
 {
-    public IPositionalPlayer Create<TPositionalPlayer>(INonPositionalPlayer nonPositionalPlayer) where TPositionalPlayer : IPositionalPlayer =>
+    public IPositionalPlayer Create<TPositionalPlayer>(IOrderedPlayer orderedPlayer) where TPositionalPlayer : IPositionalPlayer =>
         typeof(TPositionalPlayer).Name switch
         {
-            nameof(IStartingPlayer)  => new StartingPlayer(nonPositionalPlayer),
-            nameof(IStartingPartner) => new StartingPartner(nonPositionalPlayer),
-            nameof(IOpposingPlayer)  => new OpposingPlayer(nonPositionalPlayer),
-            nameof(IOpposingPartner) => new OpposingPartner(nonPositionalPlayer),
-            nameof(IExcludedPlayer)  => new ExcludedPlayer(nonPositionalPlayer),
+            nameof(IStartingPlayer)  => new StartingPlayer(orderedPlayer),
+            nameof(IStartingPartner) => new StartingPartner(orderedPlayer),
+            nameof(IOpposingPlayer)  => new OpposingPlayer(orderedPlayer),
+            nameof(IOpposingPartner) => new OpposingPartner(orderedPlayer),
+            nameof(IExcludedPlayer)  => new ExcludedPlayer(orderedPlayer),
             _                        => UnknownPlayer.Instance
         };
 }

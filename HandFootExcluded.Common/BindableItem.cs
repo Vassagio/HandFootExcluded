@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace HandFootExcluded;
+namespace HandFootExcluded.Common;
 
-public abstract class BindableItem : INotifyPropertyChanged
+public interface IBindableItem { }
+
+public abstract class BindableItem : INotifyPropertyChanged, IBindableItem
 {
     public event PropertyChangedEventHandler PropertyChanged;
 

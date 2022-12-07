@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<v:PageBase x:TypeArguments="vm:IMainPageViewModel" 
+            xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:v="using:HandFootExcluded.UI.Views"
+            xmlns:vm="using:HandFootExcluded.UI.ViewModels"
+            x:Class="HandFootExcluded.UI.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout VerticalOptions="Center">
+            <Label Text="Hand Foot Ass" SemanticProperties.HeadingLevel="Level1" FontSize="32" HorizontalOptions="Center" />
+
+            <Image Source="hfa.jpg" HeightRequest="200" HorizontalOptions="Center">
+                <Image.Clip>
+                    <EllipseGeometry RadiusX="90" RadiusY="90" Center="100,100" />
+                </Image.Clip>
+            </Image>
+
+
+            <Button Text="Start" SemanticProperties.Hint="Start a game of Hand Foot Ass" HorizontalOptions="Center" Command="{Binding StartCommand}"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</v:PageBase>

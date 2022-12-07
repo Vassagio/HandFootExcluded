@@ -1,8 +1,8 @@
-﻿namespace HandFootExcluded.Core;
+﻿namespace HandFootExcluded.Common;
 
 public interface IBuilder { }
 
-public interface IBuilder<TType>
+public interface IBuilder<out TType>
 {
     TType Build();
 }
@@ -21,7 +21,7 @@ public delegate void PreSetAction<in TType1, in TType2>(TType1 storage, TType2 v
 
 public delegate void PostSetAction<in TType>(TType storage);
 
-public abstract class BuilderBase<TBuilder, TBuild> : BuilderBase, IBuilder<TBuild> where TBuilder : class, IBuilder
+public abstract class BuilderBase<TBuilder> : BuilderBase where TBuilder : class, IBuilder
 {
     protected TBuilder SetProperty<TType>(ref TType storage, TType value) => SetProperty(ref storage, value, null, null);
     protected TBuilder SetProperty<TType>(ref TType storage, TType value, PreSetAction<TType>? preSetAction = null) => SetProperty(ref storage, value, preSetAction, null);
@@ -38,7 +38,10 @@ public abstract class BuilderBase<TBuilder, TBuild> : BuilderBase, IBuilder<TBui
 
         return this as TBuilder ?? throw new ArgumentNullException(nameof(BuilderBase));
     }
+}
 
+public abstract class BuilderBase<TBuilder, TBuild> : BuilderBase<TBuilder>, IBuilder<TBuild> where TBuilder : class, IBuilder
+{
     public TBuild Build()
     {
         var result = BuildInternal();

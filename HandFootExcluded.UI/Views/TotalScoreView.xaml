@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<v:ViewBase x:TypeArguments="vm:ITotalScoreViewModel"
+            xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:v="using:HandFootExcluded.UI.Views"
+            xmlns:vm="using:HandFootExcluded.UI.ViewModels"
+            x:Class="HandFootExcluded.UI.Views.TotalScoreView">
+    <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Stroke="White" BackgroundColor="DarkBlue" VerticalOptions="Fill" HorizontalOptions="Fill" Margin="10,0,10,5">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="40,0,0,40" />
+            </Border.StrokeShape>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,.7" EndPoint="1,.9">
+                    <GradientStop Color="DarkBlue" Offset="0.003" />
+                    <GradientStop Color="MediumVioletRed" Offset=".8" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Text="Scores" TextColor="White" VerticalOptions="Fill" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="20" Margin="0,10,0,0" />
+                <ListView Grid.Row="1" ItemsSource="{Binding ScoreLines}" VerticalOptions="Fill" HorizontalOptions="Fill" Margin="0,10,0,0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Margin="20,5,5,5" Text="{Binding Initials, StringFormat='{0}:'}" TextColor="White" VerticalOptions="Center" />
+                                    <Label Grid.Column="1" Margin="5,5,20,5" Text="{Binding Value}" TextColor="White" HorizontalTextAlignment="End" VerticalOptions="Center" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Border>
+        <Button Grid.Row="1" Text="Summary" Margin="10,0" BackgroundColor="DarkBlue" Command="{Binding SummaryCommand}" >
+            <Button.BorderColor>White</Button.BorderColor>
+            <Button.BorderWidth>1</Button.BorderWidth>
+        </Button>
+    </Grid>
+</v:ViewBase>
