@@ -1,0 +1,31 @@
+﻿using HandFootExcluded.Core.PlayerServices;
+
+namespace HandFootExcluded.Core.TeamServices;
+
+public interface ITeam
+{
+    IPositionalPlayer Player { get; }
+    IPositionalPlayer Partner { get; }
+}
+
+public interface ITeam<out TPlayer, out TPartner> : ITeam where TPlayer : IPositionalPlayer where TPartner : IPositionalPlayer
+{
+    new TPlayer Player { get; }
+    new TPartner Partner { get; }
+}
+
+internal abstract class Team<TPlayer, TPartner> : ITeam<TPlayer, TPartner> where TPlayer : IPositionalPlayer where TPartner : IPositionalPlayer
+{
+    public TPlayer Player { get; }
+    public TPartner Partner { get; }
+
+    IPositionalPlayer ITeam.Partner => Partner;
+    IPositionalPlayer ITeam.Player => Player;
+
+    protected Team(TPlayer player, TPartner partner)
+    {
+        Player = player;
+        Partner = partner;
+    }
+}
+
