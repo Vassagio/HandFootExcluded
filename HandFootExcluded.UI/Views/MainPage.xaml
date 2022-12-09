@@ -17,7 +17,7 @@
             </Image>
 
 
-            <Button Text="Start" SemanticProperties.Hint="Start a game of Hand Foot Ass" HorizontalOptions="Center" Command="{Binding StartCommand}"/>
+            <Button Text="Start" SemanticProperties.Hint="Start a game of Hand Foot Ass" HorizontalOptions="Center" Command="{Binding StartCommand}" BackgroundColor="DarkBlue"/>
 
         </VerticalStackLayout>
     </ScrollView>

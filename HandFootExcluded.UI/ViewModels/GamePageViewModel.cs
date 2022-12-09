@@ -4,15 +4,14 @@ using HandFootExcluded.Core.PlayerServices;
 using HandFootExcluded.Core.RoundServices;
 using HandFootExcluded.Core.TeamServices;
 using HandFootExcluded.UI.Eventing;
-using HandFootExcluded.UI.Extensions;
 using HandFootExcluded.UI.Services.ScoringServices;
 
 namespace HandFootExcluded.UI.ViewModels;
 
 public interface IGamePageViewModel : IViewModel
 {
-    IGame Game {get;}
-    IEnumerable<IRoundViewModel> Rounds {get;}
+    IGame Game { get; }
+    IEnumerable<IRoundViewModel> Rounds { get; }
     ITotalScoreViewModel TotalScore { get; }
 }
 
@@ -23,9 +22,9 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
 
     private IGame _game;
     private IEnumerable<IRoundViewModel> _rounds;
-    private ITotalScoreViewModel _totalScore = new TotalScoreViewModel(new ScoreLines());
+    private ITotalScoreViewModel _totalScore;
 
-    public IGame Game {get => _game; set => SetProperty(ref _game, value);}
+    public IGame Game { get => _game; set => SetProperty(ref _game, value); }
     public IEnumerable<IRoundViewModel> Rounds { get => _rounds; set => SetProperty(ref _rounds, value); }
     public ITotalScoreViewModel TotalScore { get => _totalScore; set => SetProperty(ref _totalScore, value); }
 
@@ -33,6 +32,8 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
     {
         _gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
         _scoringService = scoringService ?? throw new ArgumentNullException(nameof(scoringService));
+
+        _totalScore = new TotalScoreViewModel(new ScoreLines());
 
         EventAggregator.Instance.RegisterHandler<PlayersChangedEvent>(OnPlayersChanged);
         EventAggregator.Instance.RegisterHandler<ScoreChangedEvent>(OnScoreChanged);
@@ -52,25 +53,25 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
             var rounds = Game.Rounds.Select(ToViewModel).ToList();
             Rounds = rounds;
         }
+
         OnScoreChanged(new ScoreChangedEvent());
     }
 
-    private static IRoundViewModel ToViewModel(IRound round) =>
-        new RoundViewModel
+    private IRoundViewModel ToViewModel(IRound round) =>
+        new RoundViewModel()
         {
             Order = round.Order,
             OpenAmount = round.OpenAmount,
             StartingTeam = ToViewModel(round.Teams.Find<IStartingTeam>()),
             OpposingTeam = ToViewModel(round.Teams.Find<IOpposingTeam>()),
-            ExcludedPlayerInitials = round.Players?.Find<IExcludedPlayer>()?.Initials ?? string.Empty,
+            ExcludedPlayerInitials = round.Players?.Find<IExcludedPlayer>()?.Initials ?? string.Empty
         };
 
-    private static ITeamViewModel ToViewModel(ITeam team) =>
-        new TeamViewModel
+    private ITeamViewModel ToViewModel(ITeam team) =>
+        new TeamViewModel()
         {
             TeamName = team.Name,
             PlayerInitials = team.Player.Initials,
             PartnerInitials = team.Partner.Initials
         };
-    
 }

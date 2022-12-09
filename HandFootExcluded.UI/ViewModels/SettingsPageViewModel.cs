@@ -34,6 +34,8 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
 
     public ICommand OkCommand => _okCommand ?? new Command(Ok);
 
+
+
     private void Ok()
     {
         var players = new List<string>

@@ -9,13 +9,14 @@ public partial class AppShell : Shell
     public AppShell(IDeviceOrientationService deviceOrientationService)
     {
         _deviceOrientationService = deviceOrientationService ?? throw new ArgumentNullException(nameof(deviceOrientationService));
+
         InitializeComponent();
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
-
+        
         _deviceOrientationService.SetOrientation();
     }
 

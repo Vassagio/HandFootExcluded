@@ -35,7 +35,7 @@ internal sealed class TeamViewModel : ViewModelBase, ITeamViewModel
     public int BottomScore { get => _bottomScore; set => SetProperty(ref _bottomScore, value, OnScoreChanged); }
     public int Score { get => _score; set => SetProperty(ref _score, value); }
 
-
+ 
 
     private void OnScoreChanged()
     {

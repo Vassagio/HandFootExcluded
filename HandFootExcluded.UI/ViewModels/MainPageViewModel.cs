@@ -13,6 +13,8 @@ internal sealed class MainPageViewModel : ViewModelBase, IMainPageViewModel
     private ICommand _startCommand;
     public ICommand StartCommand => _startCommand ?? new Command(Start);
 
+
+
     private static void Start()
     {
         Navigate<ISettingsPage>();

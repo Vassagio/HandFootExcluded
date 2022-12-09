@@ -28,11 +28,13 @@ public static class MauiProgram
            .AddViews();
         
         var result = builder.Build();
-
-        Services = result.Services;
-
+        
+        Services = result.Services; 
+        
         return result;
     }
+
+    
 
     private static IServiceCollection AddServices(this IServiceCollection serviceCollection) =>
         serviceCollection.AddSingleton<IAlertService, AlertService>()
@@ -47,7 +49,8 @@ public static class MauiProgram
                          .AddSingleton<IGamePageViewModel, GamePageViewModel>()
                          .AddSingleton<IRoundViewModel, RoundViewModel>()
                          .AddSingleton<ITeamViewModel, TeamViewModel>()
-                         .AddSingleton<ITotalScoreViewModel, TotalScoreViewModel>();
+                         .AddSingleton<ITotalScoreViewModel, TotalScoreViewModel>()
+                         .AddSingleton<ISummaryPageViewModel, SummaryPageViewModel>();
 
     private static IServiceCollection AddViews(this IServiceCollection serviceCollection) =>
         serviceCollection.AddSingleton<IMainPage, MainPage>()
@@ -55,5 +58,6 @@ public static class MauiProgram
                          .AddSingleton<IGamePage, GamePage>()
                          .AddSingleton<IRoundView, RoundView>()
                          .AddSingleton<ITeamView, TeamView>()
-                         .AddSingleton<ITotalScoreView, TotalScoreView>();
+                         .AddSingleton<ITotalScoreView, TotalScoreView>()
+                         .AddSingleton<ISummaryPage, SummaryPage>();
 }

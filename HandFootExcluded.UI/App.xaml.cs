@@ -11,6 +11,6 @@ public partial class App : Application
         _deviceOrientationService = deviceOrientationService;
         InitializeComponent();
 
-        MainPage = new NavigationPage(new AppShell(_deviceOrientationService));
+        MainPage = new AppShell(_deviceOrientationService);
     }
 }
