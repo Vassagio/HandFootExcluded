@@ -2,7 +2,7 @@
 
 public interface IGrandTotalScoreLine : IScoreLine
 {
-    IEnumerable<ICumulativeScoreLine> CumulativeScoreLines { get; }
+    ICumulativeScoreLine CumulativeScoreLine { get; }
 }
 
 internal sealed class GrandTotalScoreLine : ScoreLineBase, IGrandTotalScoreLine
@@ -10,9 +10,9 @@ internal sealed class GrandTotalScoreLine : ScoreLineBase, IGrandTotalScoreLine
     public override int Order => int.MaxValue;
     public override string Name => "Grand Total";
     protected override string Display => $"{Initials} {Name}: {Value}";
-    public IEnumerable<ICumulativeScoreLine> CumulativeScoreLines { get; }
+    public ICumulativeScoreLine CumulativeScoreLine { get; }
 
-    public GrandTotalScoreLine(string initials, IEnumerable<ICumulativeScoreLine> cumulativeScoreLines) : base(initials, GetValue(cumulativeScoreLines)) => CumulativeScoreLines = cumulativeScoreLines;
+    public GrandTotalScoreLine(string initials, ICumulativeScoreLine cumulativeScoreLine) : base(initials, GetValue(cumulativeScoreLine)) => CumulativeScoreLine = cumulativeScoreLine;
 
-    private static int GetValue(IEnumerable<ICumulativeScoreLine> cumulativeScoreLines) => cumulativeScoreLines.Sum(l => l.Value);
+    private static int GetValue(ICumulativeScoreLine cumulativeScoreLine) => cumulativeScoreLine.Value;
 }

@@ -9,7 +9,6 @@
     <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
 
         <Grid.ColumnDefinitions>
-            <!--<ColumnDefinition Width="150" />-->
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -18,15 +17,6 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
-        <!--<Grid Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" BackgroundColor="DarkBlue" HorizontalOptions="Fill" VerticalOptions="Fill">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Entry Grid.Row="0" Grid.Column="0" MaximumHeightRequest="55" Text="{Binding Order, StringFormat='Round {0}'}" IsReadOnly="True" TextColor="White" HorizontalOptions="Fill" VerticalOptions="Start" FontSize="30" FontAttributes="Bold" HorizontalTextAlignment="Center" />
-            <v:TotalScoreView Grid.Row="1" Grid.Column="0" BindingContext="{Binding TotalScore}"></v:TotalScoreView>
-        </Grid>-->
 
         <Grid Grid.Row="0" Grid.Column="1" BackgroundColor="DarkBlue" HorizontalOptions="Fill" VerticalOptions="Fill">
             <Grid.ColumnDefinitions>

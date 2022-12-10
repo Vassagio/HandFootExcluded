@@ -13,12 +13,13 @@
                 <Setter Property="BackgroundColor" Value="DarkBlue"/>
                 <Setter Property="BorderColor" Value="White"></Setter>
                 <Setter Property="BorderWidth" Value="1"></Setter>
-                <Setter Property="Margin" Value="10,0"></Setter>
+                <Setter Property="Margin" Value="13,0"></Setter>
             </Style>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" BackgroundColor="DarkBlue" HorizontalOptions="Fill" VerticalOptions="Fill">
@@ -47,5 +48,7 @@
                 <Button Grid.Column="1" Text="Next" Command="{Binding NextCommand}" Margin="3,0"></Button>
             </Grid>
         </Grid>
+
+        <Grid Grid.Column="2" BackgroundColor="DarkBlue" WidthRequest="10"></Grid>
     </Grid>
 </v:PageBase>

@@ -26,7 +26,7 @@ internal sealed class ScoreLineFactory : IScoreLineFactory
         return CreateGrandTotalScore(scoreLines);
     }
 
-    private IScoreLines CreatePlayerScores(IRoundViewModel round)
+    private static IScoreLines CreatePlayerScores(IRoundViewModel round)
     {
         var startingTeamScoreLines = CreateTeamScores(round, round.StartingTeam);
         var opposingTeamScoreLines = CreateTeamScores(round, round.OpposingTeam);
@@ -66,8 +66,10 @@ internal sealed class ScoreLineFactory : IScoreLineFactory
     {
         foreach (var player in _players)
             foreach (var roundOrder in _roundOrders)
-                scoreLines.Add(new CumulativeScoreLine(roundOrder, player, GetRoundTotalScoreLines(scoreLines, roundOrder, player)));
-        
+            {
+                var roundScoreLines = GetRoundTotalScoreLines(scoreLines, roundOrder, player);
+                scoreLines.Add(new CumulativeScoreLine(roundOrder, player, roundScoreLines));
+            }
         return scoreLines;
     }
 
@@ -81,8 +83,8 @@ internal sealed class ScoreLineFactory : IScoreLineFactory
     private static IEnumerable<IRoundTotalScoreLine> GetRoundTotalScoreLines(IScoreLines scoreLines, int roundOrder, string player) =>
         scoreLines.OfType<IRoundTotalScoreLine>()
                   .Where(l => l.Initials.Equals(player) &&
-                              l.RoundOrder.Equals(roundOrder));
+                              l.RoundOrder <= roundOrder);
 
-    private static IEnumerable<ICumulativeScoreLine> GetCumulativeScoreLines(IScoreLines scoreLines, string player) =>
-        scoreLines.OfType<ICumulativeScoreLine>().Where(l => l.Initials.Equals(player));
+    private static ICumulativeScoreLine GetCumulativeScoreLines(IScoreLines scoreLines, string player) =>
+        scoreLines.OfType<ICumulativeScoreLine>().Last(l => l.Initials.Equals(player));
 }
