@@ -13,4 +13,11 @@ public partial class RoundView : ViewBase<IRoundViewModel>, IRoundView
 	{
 		InitializeComponent();
 	}
+
+    protected override async void OnBindingContextChanged()
+    {
+        await this.TranslateTo(800, 0, 800, Easing.CubicIn);
+        base.OnBindingContextChanged();
+        await this.TranslateTo(0, 0, 800, Easing.CubicOut);
+    }
 }

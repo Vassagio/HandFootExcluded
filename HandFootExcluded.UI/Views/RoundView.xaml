@@ -7,7 +7,6 @@
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
             x:Class="HandFootExcluded.UI.Views.RoundView">
     <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -25,7 +24,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Entry Grid.Column="0" MaximumHeightRequest="55" Text="{Binding Order, StringFormat='Round {0}'}" IsReadOnly="True" TextColor="White" HorizontalOptions="Fill" VerticalOptions="Center" FontSize="30" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+            <Entry x:Name="roundLabel" Grid.Column="0" MaximumHeightRequest="55" Text="{Binding Order, StringFormat='Round {0}'}" IsReadOnly="True" TextColor="White" HorizontalOptions="Fill" VerticalOptions="Center" FontSize="30" FontAttributes="Bold" HorizontalTextAlignment="Center" />
             <HorizontalStackLayout Grid.Column="2" BackgroundColor="DarkBlue" HorizontalOptions="End" VerticalOptions="Fill">
                 <Entry Margin="3,0" Text="Open:" FontAttributes="Bold" IsReadOnly="True" TextColor="Yellow" HorizontalOptions="Fill" VerticalOptions="Fill" FontSize="14" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
                 <Entry Margin="0,0,10,0" Text="{Binding OpenAmount}" IsReadOnly="True" TextColor="Yellow" HorizontalOptions="Fill" VerticalOptions="Fill" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />

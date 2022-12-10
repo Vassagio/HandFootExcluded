@@ -10,14 +10,18 @@
         <VerticalStackLayout VerticalOptions="Center">
             <Label Text="Hand Foot Ass" SemanticProperties.HeadingLevel="Level1" FontSize="32" HorizontalOptions="Center" />
 
-            <Image Source="hfa.jpg" HeightRequest="200" HorizontalOptions="Center">
+            <!--<Image Source="hfa.jpg" HeightRequest="200" HorizontalOptions="Center">
                 <Image.Clip>
                     <EllipseGeometry RadiusX="90" RadiusY="90" Center="100,100" />
                 </Image.Clip>
-            </Image>
+            </Image>-->
 
 
-            <Button Text="Start" SemanticProperties.Hint="Start a game of Hand Foot Ass" HorizontalOptions="Center" Command="{Binding StartCommand}" BackgroundColor="DarkBlue"/>
+            <ImageButton Source="hfa.jpg" HeightRequest="200" SemanticProperties.Hint="Start a game of Hand Foot Ass" HorizontalOptions="Center" Command="{Binding StartCommand}" BackgroundColor="DarkBlue">
+                <ImageButton.Clip>
+                    <EllipseGeometry RadiusX="90" RadiusY="90" Center="100,100" />
+                </ImageButton.Clip>
+            </ImageButton>
 
         </VerticalStackLayout>
     </ScrollView>

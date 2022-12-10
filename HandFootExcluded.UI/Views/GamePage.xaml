@@ -47,9 +47,10 @@
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" >
-                <v:RoundView BindingContext="{Binding CurrentRound}" />
-            </Grid>
+            
+                <Grid Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" >
+                    <v:RoundView BindingContext="{Binding CurrentRound}" />
+                </Grid>
             <Grid Grid.Row="1" HorizontalOptions="End" VerticalOptions="Fill" BackgroundColor="DarkBlue" Margin="3,3,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
