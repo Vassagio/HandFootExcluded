@@ -2,6 +2,7 @@
 
 public interface IScoreLine
 {
+    int Order {get;}
     string Name {get;}
     string Initials { get; }
     int Value { get; }
@@ -9,6 +10,7 @@ public interface IScoreLine
 
 internal abstract class ScoreLineBase : IScoreLine
 {
+    public abstract int Order {get;}
     public abstract string Name { get; }
     public string Initials { get; }
     public int Value { get; }

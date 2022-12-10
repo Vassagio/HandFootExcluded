@@ -9,6 +9,7 @@ public interface IRoundTotalScoreLine : IRoundScoreLine
 
 internal sealed class RoundTotalScoreLine : RoundScoreLineBase, IRoundTotalScoreLine
 {
+    public override int Order => 4;
     public override string Name => "Round";
     public IBonusScoreLine BonusScore { get; }
     public ITopScoreLine TopScore { get; }

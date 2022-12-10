@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 
 namespace HandFootExcluded.Core.PlayerServices;
 
@@ -11,6 +12,7 @@ public interface INonPositionalPlayer
     string Initials { get; }
 }
 
+[DebuggerDisplay("{Display,nq}")]
 internal abstract record NonPositionalPlayerBase(string FullName, string FirstName, string MiddleName, string LastName, string Initials) : INonPositionalPlayer
 {
     private string Display => Initials.PadRight(3, ' ');

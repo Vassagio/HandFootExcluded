@@ -5,6 +5,8 @@ using HandFootExcluded.Core.RoundServices;
 using HandFootExcluded.Core.TeamServices;
 using HandFootExcluded.UI.Eventing;
 using HandFootExcluded.UI.Services.ScoringServices;
+using HandFootExcluded.UI.Views;
+using System.Windows.Input;
 
 namespace HandFootExcluded.UI.ViewModels;
 
@@ -12,7 +14,12 @@ public interface IGamePageViewModel : IViewModel
 {
     IGame Game { get; }
     IEnumerable<IRoundViewModel> Rounds { get; }
+    IRoundViewModel CurrentRound {get;}
     ITotalScoreViewModel TotalScore { get; }
+
+    ICommand SummaryCommand { get; }
+    ICommand PreviousCommand { get; }
+    ICommand NextCommand { get; }
 }
 
 internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
@@ -22,11 +29,21 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
 
     private IGame _game;
     private IEnumerable<IRoundViewModel> _rounds;
+    private IRoundViewModel _currentRound;
     private ITotalScoreViewModel _totalScore;
+
+    private ICommand _summaryCommand;
+    private ICommand _previousCommand;
+    private ICommand _nextCommand;
 
     public IGame Game { get => _game; set => SetProperty(ref _game, value); }
     public IEnumerable<IRoundViewModel> Rounds { get => _rounds; set => SetProperty(ref _rounds, value); }
+    public IRoundViewModel CurrentRound {get =>_currentRound; set => SetProperty(ref _currentRound, value);}
     public ITotalScoreViewModel TotalScore { get => _totalScore; set => SetProperty(ref _totalScore, value); }
+
+    public ICommand SummaryCommand => _summaryCommand ?? new Command(Summary);
+    public ICommand PreviousCommand => _summaryCommand ?? new Command(Previous);
+    public ICommand NextCommand => _summaryCommand ?? new Command(Next);
 
     public GamePageViewModel(IGameService gameService, IScoringService scoringService)
     {
@@ -52,6 +69,7 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
         {
             var rounds = Game.Rounds.Select(ToViewModel).ToList();
             Rounds = rounds;
+            CurrentRound = Rounds.FirstOrDefault();
         }
 
         OnScoreChanged(new ScoreChangedEvent());
@@ -74,4 +92,25 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
             PlayerInitials = team.Player.Initials,
             PartnerInitials = team.Partner.Initials
         };
+
+    private void Summary()
+    {
+        var scoreLines = _scoringService.Score(Game, Rounds).Result;
+        EventAggregator.Instance.PostMessage(new ScoreLinesChangedEvent(scoreLines));
+        Navigate<ISummaryPage>();
+    }
+
+    private void Previous()
+    {
+        var previousRound = Rounds.SingleOrDefault(r => r.Order == _currentRound.Order - 1);
+        if (previousRound != null)
+            CurrentRound = previousRound;
+    }
+
+    private void Next()
+    {
+        var nextRound = Rounds.SingleOrDefault(r => r.Order == _currentRound.Order + 1);
+        if (nextRound != null)
+            CurrentRound = nextRound;
+    }
 }

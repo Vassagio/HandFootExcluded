@@ -7,6 +7,7 @@ public interface IBonusScoreLine : IRoundScoreLine { }
 
 internal sealed class BonusScoreLine : RoundScoreLineBase, IBonusScoreLine
 {
+    public override int Order => 1;
     public static readonly int BONUS_AMOUNT = 100;
     public override string Name => "Bonus";
     

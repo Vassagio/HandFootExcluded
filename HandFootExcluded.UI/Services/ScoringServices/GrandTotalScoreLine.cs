@@ -7,6 +7,7 @@ public interface IGrandTotalScoreLine : IScoreLine
 
 internal sealed class GrandTotalScoreLine : ScoreLineBase, IGrandTotalScoreLine
 {
+    public override int Order => int.MaxValue;
     public override string Name => "Grand Total";
     protected override string Display => $"{Initials} {Name}: {Value}";
     public IEnumerable<ICumulativeScoreLine> CumulativeScoreLines { get; }

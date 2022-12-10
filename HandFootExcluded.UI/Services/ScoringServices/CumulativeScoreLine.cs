@@ -7,6 +7,7 @@ public interface ICumulativeScoreLine : IRoundScoreLine
 
 internal sealed class CumulativeScoreLine : RoundScoreLineBase, ICumulativeScoreLine
 {
+    public override int Order => 5;
     public override string Name => "Cumulative";
     protected override string Display => $"{Initials} {Name}: {Value}";
     public IEnumerable<IRoundTotalScoreLine> RoundTotalScoreLines { get; }

@@ -7,23 +7,45 @@
             xmlns:v="using:HandFootExcluded.UI.Views"
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
             Title="GamePage">
-
-    <Grid>
+    <Grid VerticalOptions="Fill" HorizontalOptions="Fill" BackgroundColor="DarkBlue">
+        <Grid.Resources>
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="DarkBlue"/>
+                <Setter Property="BorderColor" Value="White"></Setter>
+                <Setter Property="BorderWidth" Value="1"></Setter>
+                <Setter Property="Margin" Value="10,0"></Setter>
+            </Style>
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
+
         <Grid Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" BackgroundColor="DarkBlue" HorizontalOptions="Fill" VerticalOptions="Fill">
-            <v:TotalScoreView Grid.Row="1" Grid.Column="0" BindingContext="{Binding TotalScore}" WidthRequest="150" Margin="3,37,3,0" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <v:TotalScoreView Grid.Row="0" BindingContext="{Binding TotalScore}" WidthRequest="150" Margin="3,37,3,0" />
+            <Button Grid.Row="1" Text="Summary" Command="{Binding SummaryCommand}"/>
         </Grid>
 
-        <CarouselView Grid.Column="1" ItemsSource="{Binding Rounds}" HorizontalOptions="Fill" VerticalOptions="Fill" IsBounceEnabled="False" Loop="False">
-            <CarouselView.ItemTemplate>
-                <DataTemplate>
-                    <v:RoundView BindingContext="{Binding}" />
-                </DataTemplate>
-            </CarouselView.ItemTemplate>
-        </CarouselView>
+        <Grid Grid.Column="1" HorizontalOptions="Fill" VerticalOptions="Fill">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" >
+                <v:RoundView BindingContext="{Binding CurrentRound}" />
+            </Grid>
+            <Grid Grid.Row="1" HorizontalOptions="End" VerticalOptions="Fill" BackgroundColor="DarkBlue" Margin="3,3,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Text="Previous" Command="{Binding PreviousCommand}" Margin="3,0"></Button>
+                <Button Grid.Column="1" Text="Next" Command="{Binding NextCommand}" Margin="3,0"></Button>
+            </Grid>
+        </Grid>
     </Grid>
 </v:PageBase>

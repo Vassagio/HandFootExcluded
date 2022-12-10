@@ -6,13 +6,32 @@
             x:Class="HandFootExcluded.UI.Views.SummaryPage"
             xmlns:v="using:HandFootExcluded.UI.Views"
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
+            xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
             Title="SummaryPage">
-<Grid>
+<Grid HorizontalOptions="Fill" VerticalOptions="Fill" >
     <Grid.RowDefinitions>
         <RowDefinition Height="*"></RowDefinition>
         <RowDefinition Height="Auto"></RowDefinition>
     </Grid.RowDefinitions>
 
-    <Button Text="Close" BackgroundColor="DarkBlue" Command="{Binding CloseCommand}"></Button>
+    <ScrollView Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill">
+    <dg:DataGrid ItemsSource="{Binding SummaryLines}" SelectionEnabled="False" HorizontalOptions="Fill" VerticalOptions="Fill" RowHeight="20" Margin="10">
+        <dg:DataGrid.Columns>
+            <dg:DataGridColumn Title="Description" PropertyName="Description" HorizontalContentAlignment="Start"></dg:DataGridColumn>
+            <dg:DataGridColumn Title="{Binding Player1Name}" PropertyName="Player1Score"></dg:DataGridColumn>
+            <dg:DataGridColumn Title="{Binding Player2Name}" PropertyName="Player2Score"></dg:DataGridColumn>
+            <dg:DataGridColumn Title="{Binding Player3Name}" PropertyName="Player3Score"></dg:DataGridColumn>
+            <dg:DataGridColumn Title="{Binding Player4Name}" PropertyName="Player4Score"></dg:DataGridColumn>
+            <dg:DataGridColumn Title="{Binding Player5Name}" PropertyName="Player5Score"></dg:DataGridColumn>
+        </dg:DataGrid.Columns>
+        <dg:DataGrid.RowsBackgroundColorPalette>
+            <dg:PaletteCollection>
+                <Color>#F2F2F2</Color>
+                <Color>#FFFFFF</Color>
+            </dg:PaletteCollection>
+        </dg:DataGrid.RowsBackgroundColorPalette>
+    </dg:DataGrid>
+    </ScrollView>
+    <Button Grid.Row="1" Text="Close" BackgroundColor="DarkBlue" Command="{Binding CloseCommand}" HorizontalOptions="Center" VerticalOptions="Fill" Margin="3"></Button>
 </Grid>
 </v:PageBase>
