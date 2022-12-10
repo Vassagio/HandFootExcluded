@@ -15,12 +15,14 @@ public interface ISummaryLine
     string Player3Score { get; }
     string Player4Score { get; }
     string Player5Score { get; }
+    bool IsBold { get; }
+    int FontSize {get; }
 }
 
-internal sealed record SummaryLine(string RoundOrder, string Description, string Player1Score, string Player2Score, string Player3Score, string Player4Score, string Player5Score) : ISummaryLine
+internal sealed record SummaryLine(string RoundOrder, string Description, string Player1Score, string Player2Score, string Player3Score, string Player4Score, string Player5Score, bool IsBold, int FontSize) : ISummaryLine
 {
     private const string ZERO = "0";
-    public static readonly SummaryLine EMPTY = new SummaryLine(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty);
+    public static readonly SummaryLine EMPTY = new SummaryLine(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, false, 12);
 }
 
 public interface ISummaryPageViewModel : IViewModel
@@ -70,15 +72,20 @@ internal sealed class SummaryPageViewModel : ViewModelBase, ISummaryPageViewMode
         var player3Score = string.Empty;
         var player4Score = string.Empty;
         var player5Score = string.Empty;
+        var isBold = false;
+        var fontSize = 12;
         var summaryLines = new List<ISummaryLine>();
         for (var roundIndex = 1; roundIndex <= 5; roundIndex++)
         {
             roundOrder = roundIndex.ToString();
-            summaryLines.Add(new SummaryLine(roundOrder, $"Round {roundOrder}", string.Empty, string.Empty, string.Empty, string.Empty, string.Empty));
+            summaryLines.Add(new SummaryLine(roundOrder, $"Round {roundOrder}", string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, true, 20));
             for (var scoreIndex = 1; scoreIndex <= 5; scoreIndex++)
             {
                 var scores = roundScoreLines.Where(l => l.RoundOrder == roundIndex && l.Order == scoreIndex).ToList();
-                description = scores.First().Name;
+                var score = scores.First();
+                description = score.Name;
+                isBold = score.IsBold;
+                fontSize = score.FontSize;
                 for (var playerIndex = 1; playerIndex <= playerOrder.Count(); playerIndex++)
                 {
                     switch (playerIndex)
@@ -92,7 +99,11 @@ internal sealed class SummaryPageViewModel : ViewModelBase, ISummaryPageViewMode
                     }
                 }
 
-                var summaryLine = new SummaryLine(roundOrder.ToString(), $"\t\t{description}", player1Score, player2Score, player3Score, player4Score, player5Score);
+                ISummaryLine summaryLine;
+                if (score is IRoundTotalScoreLine || score is ICumulativeScoreLine)
+                    summaryLine = new SummaryLine(roundOrder.ToString(), $"{description}", player1Score, player2Score, player3Score, player4Score, player5Score, isBold, fontSize);
+                else
+                    summaryLine = new SummaryLine(roundOrder.ToString(), $"\t\t{description}", player1Score, player2Score, player3Score, player4Score, player5Score, isBold, fontSize);
                 summaryLines.Add(summaryLine);
             }
             summaryLines.Add(SummaryLine.EMPTY);
@@ -127,7 +138,7 @@ internal sealed class SummaryPageViewModel : ViewModelBase, ISummaryPageViewMode
         }
 
         summaryLines.Add(SummaryLine.EMPTY);
-        var grandTotalLine = new SummaryLine(string.Empty, "Total", grandTotal1Score, grandTotal2Score, grandTotal3Score, grandTotal4Score, grandTotal5Score);
+        var grandTotalLine = new SummaryLine(string.Empty, "Total", grandTotal1Score, grandTotal2Score, grandTotal3Score, grandTotal4Score, grandTotal5Score, true, 20);
         summaryLines.Add(grandTotalLine);
         SummaryLines = summaryLines;
     }

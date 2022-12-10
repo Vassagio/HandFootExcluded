@@ -14,6 +14,8 @@ internal sealed class RoundTotalScoreLine : RoundScoreLineBase, IRoundTotalScore
     public IBonusScoreLine BonusScore { get; }
     public ITopScoreLine TopScore { get; }
     public IBottomScoreLine BottomScore { get; }
+    public override bool IsBold => true;
+    public override int FontSize => 18;
 
     public RoundTotalScoreLine(int roundOrder, string initials, IBonusScoreLine bonusScoreLine, ITopScoreLine topScoreLine, IBottomScoreLine bottomScoreLine) : base(roundOrder, initials, GetValue(bonusScoreLine, topScoreLine, bottomScoreLine))
     {

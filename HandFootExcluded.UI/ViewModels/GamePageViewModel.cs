@@ -7,6 +7,7 @@ using HandFootExcluded.UI.Eventing;
 using HandFootExcluded.UI.Services.ScoringServices;
 using HandFootExcluded.UI.Views;
 using System.Windows.Input;
+using HandFootExcluded.UI.Services;
 
 namespace HandFootExcluded.UI.ViewModels;
 
@@ -20,12 +21,14 @@ public interface IGamePageViewModel : IViewModel
     ICommand SummaryCommand { get; }
     ICommand PreviousCommand { get; }
     ICommand NextCommand { get; }
+    ICommand CloseCommand { get; }
 }
 
 internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
 {
     private readonly IGameService _gameService;
     private readonly IScoringService _scoringService;
+    private readonly IAlertService _alertService;
 
     private IGame _game;
     private IEnumerable<IRoundViewModel> _rounds;
@@ -35,6 +38,7 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
     private ICommand _summaryCommand;
     private ICommand _previousCommand;
     private ICommand _nextCommand;
+    private ICommand _closeCommand;
 
     public IGame Game { get => _game; set => SetProperty(ref _game, value); }
     public IEnumerable<IRoundViewModel> Rounds { get => _rounds; set => SetProperty(ref _rounds, value); }
@@ -44,11 +48,13 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
     public ICommand SummaryCommand => _summaryCommand ?? new Command(Summary);
     public ICommand PreviousCommand => _summaryCommand ?? new Command(Previous);
     public ICommand NextCommand => _summaryCommand ?? new Command(Next);
+    public ICommand CloseCommand => _summaryCommand ?? new Command(Close);
 
-    public GamePageViewModel(IGameService gameService, IScoringService scoringService)
+    public GamePageViewModel(IGameService gameService, IScoringService scoringService, IAlertService alertService)
     {
         _gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
         _scoringService = scoringService ?? throw new ArgumentNullException(nameof(scoringService));
+        _alertService = alertService ?? throw new ArgumentNullException(nameof(alertService));
 
         _totalScore = new TotalScoreViewModel(new ScoreLines());
 
@@ -112,5 +118,26 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
         var nextRound = Rounds.SingleOrDefault(r => r.Order == _currentRound.Order + 1);
         if (nextRound != null)
             CurrentRound = nextRound;
+    }
+
+    private void Close()
+    {
+        Action<bool> Callback1() => result =>
+        {
+            if (result) 
+            {
+                Game = null;
+                Rounds = new List<IRoundViewModel>();
+                CurrentRound = null;
+                Navigate<ISettingsPage>();
+            }
+        };
+
+        Action<bool> Callback2() => result =>
+        {
+            if (result) Application.Current?.Quit();
+        };
+
+        _alertService.ShowActionSheet("What Next?", "New Game", Callback1(), "Quit Game", Callback2());
     }
 }

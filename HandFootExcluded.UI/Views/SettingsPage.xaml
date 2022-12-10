@@ -6,8 +6,25 @@
             xmlns:v="using:HandFootExcluded.UI.Views"
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
             Title="SettingsPage" >
-     <Grid HorizontalOptions="Center" VerticalOptions="Fill" >
-        <Grid.RowDefinitions>
+    <Border HorizontalOptions="Fill" VerticalOptions="Fill">
+    <Grid HorizontalOptions="Center" VerticalOptions="Center" >
+         <Grid.Resources>
+             <Style TargetType="Editor">
+                 <Setter Property="Margin" Value="10,0"></Setter>
+                 <Setter Property="Keyboard" Value="Text"></Setter>
+                 <Setter Property="VerticalOptions" Value="Fill"></Setter>
+                 <Setter Property="HorizontalOptions" Value="Fill"></Setter>
+                 <Setter Property="FontSize" Value="20"></Setter>
+             </Style>
+             <Style TargetType="Label">
+                 <Setter Property="Margin" Value="10,0"></Setter>
+                 <Setter Property="VerticalOptions" Value="Center"></Setter>
+                 <Setter Property="HorizontalOptions" Value="Fill"></Setter>
+                 <Setter Property="FontSize" Value="20"></Setter>
+                 <Setter Property="FontAttributes" Value="Bold"></Setter>
+             </Style>
+         </Grid.Resources>
+         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -19,26 +36,27 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
 
-        <Label Grid.Row="1" Grid.Column="0" Text="Player 1:" VerticalOptions="Center" Margin="5,0" FontSize="20" FontAttributes="Bold" />
-        <Editor Grid.Row="1" Grid.Column="1" Margin="5,0" Placeholder="Enter Player 1:" Keyboard="Text" VerticalOptions="Center" HorizontalOptions="Fill" Text="{Binding DefaultPlayer1, Mode=TwoWay}" FontSize="20" />
+        <Label Grid.Row="1" Grid.Column="0" Text="Player 1:" />
+        <Editor Grid.Row="1" Grid.Column="1" Placeholder="Enter Player 1:" Text="{Binding DefaultPlayer1, Mode=TwoWay}"  />
 
-        <Label Grid.Row="2" Grid.Column="0" Text="Player 2:" VerticalOptions="Center" Margin="5,0" FontSize="20" FontAttributes="Bold" />
-        <Editor Grid.Row="2" Grid.Column="1" Margin="5,0" Placeholder="Enter Player 2:"  Keyboard="Text" VerticalOptions="Center" HorizontalOptions="Fill" Text="{Binding DefaultPlayer2, Mode=TwoWay}" FontSize="20" />
+        <Label Grid.Row="2" Grid.Column="0" Text="Player 2:"/>
+        <Editor Grid.Row="2" Grid.Column="1" Placeholder="Enter Player 2:"  Text="{Binding DefaultPlayer2, Mode=TwoWay}" />
 
-        <Label Grid.Row="3" Grid.Column="0" Text="Player 3:" VerticalOptions="Center" Margin="5,0" FontSize="20" FontAttributes="Bold" />
-        <Editor Grid.Row="3" Grid.Column="1" Margin="5,0" Placeholder="Enter Player 3:"  Keyboard="Text" VerticalOptions="Center" HorizontalOptions="Fill" Text="{Binding DefaultPlayer3, Mode=TwoWay}" FontSize="20" />
+        <Label Grid.Row="3" Grid.Column="0" Text="Player 3:"/>
+        <Editor Grid.Row="3" Grid.Column="1" Placeholder="Enter Player 3:"  Text="{Binding DefaultPlayer3, Mode=TwoWay}" />
 
-        <Label Grid.Row="4" Grid.Column="0" Text="Player 4:" VerticalOptions="Center" Margin="5,0" FontSize="20" FontAttributes="Bold" />
-        <Editor Grid.Row="4" Grid.Column="1" Margin="5,0" Placeholder="Enter Player 4:"  Keyboard="Text" VerticalOptions="Center" HorizontalOptions="Fill" Text="{Binding DefaultPlayer4, Mode=TwoWay}" FontSize="20" />
+        <Label Grid.Row="4" Grid.Column="0" Text="Player 4:"/>
+        <Editor Grid.Row="4" Grid.Column="1" Placeholder="Enter Player 4:"  Text="{Binding DefaultPlayer4, Mode=TwoWay}" />
 
-        <Label Grid.Row="5" Grid.Column="0" Text="Player 5:" VerticalOptions="Center" Margin="5,0" FontSize="20" FontAttributes="Bold" />
-        <Editor Grid.Row="5" Grid.Column="1" Margin="5,0" Placeholder="Enter Player 5:" Keyboard="Text" VerticalOptions="Center" HorizontalOptions="Fill" Text="{Binding DefaultPlayer5, Mode=TwoWay}" FontSize="20" />
+        <Label Grid.Row="5" Grid.Column="0" Text="Player 5:"/>
+        <Editor Grid.Row="5" Grid.Column="1" Placeholder="Enter Player 5:" Text="{Binding DefaultPlayer5, Mode=TwoWay}" />
 
         <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Text="Ok" HorizontalOptions="Center" Command="{Binding OkCommand}" BackgroundColor="DarkBlue" />
     </Grid>
+    </Border>
 </v:PageBase>

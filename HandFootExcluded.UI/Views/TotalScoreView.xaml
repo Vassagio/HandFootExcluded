@@ -9,7 +9,7 @@
 
     <Border Stroke="White" BackgroundColor="DarkBlue" VerticalOptions="Fill" HorizontalOptions="Fill" Margin="10,0,10,5">
         <Border.StrokeShape>
-            <RoundRectangle CornerRadius="40,0,0,40" />
+            <RoundRectangle CornerRadius="0,40,40,0" />
         </Border.StrokeShape>
         <Border.Background>
             <LinearGradientBrush StartPoint="0,.7" EndPoint="1,.9">
@@ -24,7 +24,7 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Text="Scores" TextColor="White" VerticalOptions="Fill" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="20" Margin="0,10,0,0" />
-            <ListView Grid.Row="1" ItemsSource="{Binding ScoreLines}" VerticalOptions="Fill" HorizontalOptions="Fill" Margin="0,10,0,0">
+            <ListView Grid.Row="1" ItemsSource="{Binding ScoreLines}" VerticalOptions="Fill" HorizontalOptions="Fill" Margin="0,10,0,0" RowHeight="100" HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -33,8 +33,8 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Margin="20,5,5,5" Text="{Binding Initials, StringFormat='{0}:'}" TextColor="White" VerticalOptions="Center" />
-                                <Label Grid.Column="1" Margin="5,5,20,5" Text="{Binding Value}" TextColor="White" HorizontalTextAlignment="End" VerticalOptions="Center" />
+                                <Label Grid.Column="0" Margin="20,9,5,9" Text="{Binding Initials, StringFormat='{0}:'}" TextColor="White" VerticalOptions="Center" />
+                                <Label Grid.Column="1" Margin="5,9,20,9" Text="{Binding Value}" TextColor="White" HorizontalTextAlignment="End" VerticalOptions="Center" />
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

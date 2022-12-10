@@ -11,6 +11,8 @@ internal sealed class GrandTotalScoreLine : ScoreLineBase, IGrandTotalScoreLine
     public override string Name => "Grand Total";
     protected override string Display => $"{Initials} {Name}: {Value}";
     public ICumulativeScoreLine CumulativeScoreLine { get; }
+    public override bool IsBold => true;
+    public override int FontSize => 20;
 
     public GrandTotalScoreLine(string initials, ICumulativeScoreLine cumulativeScoreLine) : base(initials, GetValue(cumulativeScoreLine)) => CumulativeScoreLine = cumulativeScoreLine;
 

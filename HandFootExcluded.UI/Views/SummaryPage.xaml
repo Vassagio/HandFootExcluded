@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 
-<v:PageBase x:TypeArguments="vm:ISummaryPageViewModel" 
+<v:PageBase x:TypeArguments="vm:ISummaryPageViewModel"
             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             x:Class="HandFootExcluded.UI.Views.SummaryPage"
@@ -8,30 +8,80 @@
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
             xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
             Title="SummaryPage">
-<Grid HorizontalOptions="Fill" VerticalOptions="Fill" >
-    <Grid.RowDefinitions>
-        <RowDefinition Height="*"></RowDefinition>
-        <RowDefinition Height="Auto"></RowDefinition>
-    </Grid.RowDefinitions>
+    <ContentPage.Resources>
+        <Style TargetType="Label" x:Key="DataLabel">
+            <Setter Property="VerticalOptions" Value="Fill" />
+            <Setter Property="HorizontalOptions" Value="Fill" />
+            <Setter Property="VerticalTextAlignment" Value="Center" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="{Binding FontSize}" />
+            <Setter Property="FontAttributes" Value="None" />
+            <Style.Triggers>
+                <DataTrigger TargetType="Label" Binding="{Binding IsBold}" Value="True">
+                    <Setter Property="FontAttributes" Value="Bold" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </ContentPage.Resources>
+    <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-    
-    <dg:DataGrid Grid.Row="0" ItemsSource="{Binding SummaryLines}" SelectionEnabled="False" HorizontalOptions="Fill" VerticalOptions="Fill" RowHeight="20" Margin="10">
-        <dg:DataGrid.Columns>
-            <dg:DataGridColumn Title="Description" PropertyName="Description" HorizontalContentAlignment="Start"></dg:DataGridColumn>
-            <dg:DataGridColumn Title="{Binding Player1Name}" PropertyName="Player1Score"></dg:DataGridColumn>
-            <dg:DataGridColumn Title="{Binding Player2Name}" PropertyName="Player2Score"></dg:DataGridColumn>
-            <dg:DataGridColumn Title="{Binding Player3Name}" PropertyName="Player3Score"></dg:DataGridColumn>
-            <dg:DataGridColumn Title="{Binding Player4Name}" PropertyName="Player4Score"></dg:DataGridColumn>
-            <dg:DataGridColumn Title="{Binding Player5Name}" PropertyName="Player5Score"></dg:DataGridColumn>
-        </dg:DataGrid.Columns>
-        <dg:DataGrid.RowsBackgroundColorPalette>
-            <dg:PaletteCollection>
-                <Color>#F2F2F2</Color>
-                <Color>#FFFFFF</Color>
-            </dg:PaletteCollection>
-        </dg:DataGrid.RowsBackgroundColorPalette>
-    </dg:DataGrid>
-    
-    <Button Grid.Row="1" Text="Close" BackgroundColor="DarkBlue" Command="{Binding CloseCommand}" HorizontalOptions="Center" VerticalOptions="Fill" Margin="3"></Button>
-</Grid>
+        <dg:DataGrid Grid.Row="0" ItemsSource="{Binding SummaryLines}" SelectionEnabled="False" HorizontalOptions="Fill" VerticalOptions="Fill" RowHeight="30" Margin="10">
+            <dg:DataGrid.Columns>
+                <dg:DataGridColumn Title="" HorizontalContentAlignment="Start">
+                    <dg:DataGridColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Text="{Binding Description}" FontAttributes="Bold" FontSize="{Binding FontSize}" />
+                        </DataTemplate>
+                    </dg:DataGridColumn.CellTemplate>
+                </dg:DataGridColumn>
+                <dg:DataGridColumn Title="{Binding Player1Name}">
+                    <dg:DataGridColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Text="{Binding Player1Score}" Style="{StaticResource DataLabel}" />
+                        </DataTemplate>
+                    </dg:DataGridColumn.CellTemplate>
+                </dg:DataGridColumn>
+                <dg:DataGridColumn Title="{Binding Player2Name}">
+                    <dg:DataGridColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Text="{Binding Player2Score}" Style="{StaticResource DataLabel}" />
+                        </DataTemplate>
+                    </dg:DataGridColumn.CellTemplate>
+                </dg:DataGridColumn>
+                <dg:DataGridColumn Title="{Binding Player3Name}">
+                    <dg:DataGridColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Text="{Binding Player3Score}" Style="{StaticResource DataLabel}" />
+                        </DataTemplate>
+                    </dg:DataGridColumn.CellTemplate>
+                </dg:DataGridColumn>
+                <dg:DataGridColumn Title="{Binding Player4Name}">
+                    <dg:DataGridColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Text="{Binding Player4Score}" Style="{StaticResource DataLabel}" />
+                        </DataTemplate>
+                    </dg:DataGridColumn.CellTemplate>
+                </dg:DataGridColumn>
+                <dg:DataGridColumn Title="{Binding Player5Name}">
+                    <dg:DataGridColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Text="{Binding Player5Score}" Style="{StaticResource DataLabel}" />
+                        </DataTemplate>
+                    </dg:DataGridColumn.CellTemplate>
+                </dg:DataGridColumn>
+            </dg:DataGrid.Columns>
+            <dg:DataGrid.RowsBackgroundColorPalette>
+                <dg:PaletteCollection>
+                    <Color>#F2F2F2</Color>
+                    <Color>#FFFFFF</Color>
+                </dg:PaletteCollection>
+            </dg:DataGrid.RowsBackgroundColorPalette>
+        </dg:DataGrid>
+
+        <Button Grid.Row="1" Text="Close" BackgroundColor="DarkBlue" Command="{Binding CloseCommand}" HorizontalOptions="Center" VerticalOptions="Fill" Margin="3" />
+    </Grid>
 </v:PageBase>

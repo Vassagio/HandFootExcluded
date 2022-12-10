@@ -24,11 +24,22 @@
 
         <Grid Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" BackgroundColor="DarkBlue" HorizontalOptions="Fill" VerticalOptions="Fill">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <v:TotalScoreView Grid.Row="0" BindingContext="{Binding TotalScore}" WidthRequest="150" Margin="3,37,3,0" />
-            <Button Grid.Row="1" Text="Summary" Command="{Binding SummaryCommand}"/>
+            <Button Grid.Row="0" Text="X" Command="{Binding CloseCommand}" HorizontalOptions="Start" VerticalOptions="Start" FontSize="20" FontAttributes="Bold">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="BackgroundColor" Value="DarkBlue" />
+                        <Setter Property="BorderColor" Value="DarkBlue"></Setter>
+                        <Setter Property="BorderWidth" Value="0"></Setter>
+                        <Setter Property="Margin" Value="0,-10,0,0"></Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <v:TotalScoreView Grid.Row="1" BindingContext="{Binding TotalScore}" WidthRequest="150" Margin="1,0,1,-3" />
+            <Button Grid.Row="2" Text="Summary" Command="{Binding SummaryCommand}"/>
         </Grid>
 
         <Grid Grid.Column="1" HorizontalOptions="Fill" VerticalOptions="Fill">

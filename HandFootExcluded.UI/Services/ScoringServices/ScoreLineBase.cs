@@ -6,6 +6,8 @@ public interface IScoreLine
     string Name {get;}
     string Initials { get; }
     int Value { get; }
+    bool IsBold {get;}
+    int FontSize {get;}
 }
 
 internal abstract class ScoreLineBase : IScoreLine
@@ -15,6 +17,8 @@ internal abstract class ScoreLineBase : IScoreLine
     public string Initials { get; }
     public int Value { get; }
     protected abstract string Display {get;}
+    public virtual bool IsBold => false;
+    public virtual int FontSize => 15;
 
     protected ScoreLineBase(string initials, int value)
     {

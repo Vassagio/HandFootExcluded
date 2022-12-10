@@ -11,6 +11,8 @@ internal sealed class CumulativeScoreLine : RoundScoreLineBase, ICumulativeScore
     public override string Name => "Cumulative";
     protected override string Display => $"{Initials} {Name}: {Value}";
     public IEnumerable<IRoundTotalScoreLine> RoundTotalScoreLines { get; }
+    public override bool IsBold => true;
+    public override int FontSize => 18;
 
     public CumulativeScoreLine(int roundOrder, string initials, IEnumerable<IRoundTotalScoreLine> roundTotalScoreLines) : base(roundOrder, initials, GetValue(roundTotalScoreLines)) => RoundTotalScoreLines = roundTotalScoreLines;
 
