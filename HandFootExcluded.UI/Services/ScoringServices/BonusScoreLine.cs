@@ -8,8 +8,7 @@ public interface IBonusScoreLine : IRoundScoreLine { }
 internal sealed class BonusScoreLine : RoundScoreLineBase, IBonusScoreLine
 {
     public override int Order => 1;
-    public static readonly int BONUS_AMOUNT = 100;
     public override string Name => "Bonus";
     
-    public BonusScoreLine(int roundOrder, string initials, bool hasBonus) : base(roundOrder, initials, hasBonus ? BONUS_AMOUNT : 0) { }
+    public BonusScoreLine(int roundOrder, string initials, bool hasBonus, int bonusAmount) : base(roundOrder, initials, hasBonus ? bonusAmount : 0 ) { }
 }

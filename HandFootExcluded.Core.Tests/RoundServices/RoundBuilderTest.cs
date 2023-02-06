@@ -23,11 +23,12 @@ public class RoundBuilderTest
         var positionalPlayerFactory = new PositionalPlayerFactory();
         var teamBuilder = new TeamBuilder();
         var orderedPlayers = GetOrderedPlayers();
+        var roundOrdering = GetRoundOrdering();
 
         var builder = BuildRoundBuilder(positionalPlayerFactory, teamBuilder);
 
         var result = builder.WithOrderedPlayers(orderedPlayers)
-                            .WithRoundOrdering(GameService.RoundOrdering)
+                            .WithRoundOrdering(roundOrdering)
                             .Build();
 
         Assert.IsAssignableFrom<IRounds>(result);
@@ -62,6 +63,15 @@ public class RoundBuilderTest
             player4,
             player5
         }.OrderBy(p => p.Order);
+    }
+
+    private static IEnumerable<IRoundOrder> GetRoundOrdering()
+    {
+        yield return new RoundOrder(1, 50, 1, 5, 2, 4);
+        yield return new RoundOrder(2, 75, 2, 3, 4, 5);
+        yield return new RoundOrder(3, 100, 3, 4, 1, 2);
+        yield return new RoundOrder(4, 125, 4, 1, 5, 3);
+        yield return new RoundOrder(5, 150, 5, 2, 3, 1);
     }
 
     private static IRoundBuilder BuildRoundBuilder(IPositionalPlayerFactory? positionalPlayerFactory = null, ITeamBuilder? teamBuilder = null)

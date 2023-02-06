@@ -1,62 +1,156 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<v:PageBase x:TypeArguments="vm:ISettingsPageViewModel" 
+<?xml version="1.0" encoding="utf-8"?>
+
+<v:PageBase x:TypeArguments="vm:ISettingsPageViewModel"
             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             x:Class="HandFootExcluded.UI.Views.SettingsPage"
             xmlns:v="using:HandFootExcluded.UI.Views"
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
-            Title="SettingsPage" >
+            Title="SettingsPage">
     <Border HorizontalOptions="Fill" VerticalOptions="Fill">
-    <Grid HorizontalOptions="Center" VerticalOptions="Center" >
-         <Grid.Resources>
-             <Style TargetType="Editor">
-                 <Setter Property="Margin" Value="10,0"></Setter>
-                 <Setter Property="Keyboard" Value="Text"></Setter>
-                 <Setter Property="VerticalOptions" Value="Fill"></Setter>
-                 <Setter Property="HorizontalOptions" Value="Fill"></Setter>
-                 <Setter Property="FontSize" Value="20"></Setter>
-             </Style>
-             <Style TargetType="Label">
-                 <Setter Property="Margin" Value="10,0"></Setter>
-                 <Setter Property="VerticalOptions" Value="Center"></Setter>
-                 <Setter Property="HorizontalOptions" Value="Fill"></Setter>
-                 <Setter Property="FontSize" Value="20"></Setter>
-                 <Setter Property="FontAttributes" Value="Bold"></Setter>
-             </Style>
-         </Grid.Resources>
-         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        <Grid >
+            <Grid.Resources>
+                <Style TargetType="Grid">
+                    <Setter Property="Margin" Value="10,0"></Setter>
+                </Style>
+                <Style TargetType="Editor">
+                    <Setter Property="Margin" Value="0,0"></Setter>
+                    <Setter Property="Keyboard" Value="Text"></Setter>
+                    <Setter Property="VerticalOptions" Value="Center"></Setter>
+                    <Setter Property="HorizontalOptions" Value="Start"></Setter>
+                    <Setter Property="FontSize" Value="14"></Setter>
+                </Style>
+                <Style TargetType="Label">
+                    <Setter Property="Margin" Value="5,0"></Setter>
+                    <Setter Property="VerticalOptions" Value="Center"></Setter>
+                    <Setter Property="HorizontalOptions" Value="Start"></Setter>
+                    <Setter Property="FontSize" Value="14"></Setter>
+                    <Setter Property="FontAttributes" Value="Bold"></Setter>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Column="0" Grid.Row="0" HorizontalOptions="Start" VerticalOptions="Start">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
 
-        <Label Grid.Row="1" Grid.Column="0" Text="Player 1:" />
-        <Editor Grid.Row="1" Grid.Column="1" Placeholder="Enter Player 1:" Text="{Binding DefaultPlayer1, Mode=TwoWay}"  />
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Players" HorizontalOptions="Start" FontSize="20" />
 
-        <Label Grid.Row="2" Grid.Column="0" Text="Player 2:"/>
-        <Editor Grid.Row="2" Grid.Column="1" Placeholder="Enter Player 2:"  Text="{Binding DefaultPlayer2, Mode=TwoWay}" />
+                <Label Grid.Row="1" Grid.Column="0" Text="1:" />
+                <Editor Grid.Row="1" Grid.Column="1" Placeholder="Enter Player 1:"
+                        Text="{Binding DefaultPlayer1, Mode=TwoWay}" />
 
-        <Label Grid.Row="3" Grid.Column="0" Text="Player 3:"/>
-        <Editor Grid.Row="3" Grid.Column="1" Placeholder="Enter Player 3:"  Text="{Binding DefaultPlayer3, Mode=TwoWay}" />
+                <Label Grid.Row="2" Grid.Column="0" Text="2:" />
+                <Editor Grid.Row="2" Grid.Column="1" Placeholder="Enter Player 2:"
+                        Text="{Binding DefaultPlayer2, Mode=TwoWay}" />
 
-        <Label Grid.Row="4" Grid.Column="0" Text="Player 4:"/>
-        <Editor Grid.Row="4" Grid.Column="1" Placeholder="Enter Player 4:"  Text="{Binding DefaultPlayer4, Mode=TwoWay}" />
+                <Label Grid.Row="3" Grid.Column="0" Text="3:" />
+                <Editor Grid.Row="3" Grid.Column="1" Placeholder="Enter Player 3:"
+                        Text="{Binding DefaultPlayer3, Mode=TwoWay}" />
 
-        <Label Grid.Row="5" Grid.Column="0" Text="Player 5:"/>
-        <Editor Grid.Row="5" Grid.Column="1" Placeholder="Enter Player 5:" Text="{Binding DefaultPlayer5, Mode=TwoWay}" />
+                <Label Grid.Row="4" Grid.Column="0" Text="4:" />
+                <Editor Grid.Row="4" Grid.Column="1" Placeholder="Enter Player 4:"
+                        Text="{Binding DefaultPlayer4, Mode=TwoWay}" />
 
-        <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Text="Ok" HorizontalOptions="Center" Command="{Binding OkCommand}" BackgroundColor="DarkBlue" />
-    </Grid>
+                <Label Grid.Row="5" Grid.Column="0" Text="5:" />
+                <Editor Grid.Row="5" Grid.Column="1" Placeholder="Enter Player 5:"
+                        Text="{Binding DefaultPlayer5, Mode=TwoWay}" />
+
+
+            </Grid>
+
+            <Grid Grid.Column="1" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Start">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Rounds" HorizontalOptions="Start" FontSize="20" />
+
+                <Label Grid.Row="1" Grid.Column="0" Text="1:" />
+                <Editor Grid.Row="1" Grid.Column="1" Placeholder="Enter Round Opening 1:"
+                        Text="{Binding RoundOpening1, Mode=TwoWay}"  Keyboard="Numeric"/>
+
+                <Label Grid.Row="2" Grid.Column="0" Text="2:" />
+                <Editor Grid.Row="2" Grid.Column="1" Placeholder="Enter Round Opening 2:"
+                        Text="{Binding RoundOpening2, Mode=TwoWay}" Keyboard="Numeric"/>
+
+                <Label Grid.Row="3" Grid.Column="0" Text="3:" />
+                <Editor Grid.Row="3" Grid.Column="1" Placeholder="Enter Round Opening 3:"
+                        Text="{Binding RoundOpening3, Mode=TwoWay}" Keyboard="Numeric"/>
+
+                <Label Grid.Row="4" Grid.Column="0" Text="4:" />
+                <Editor Grid.Row="4" Grid.Column="1" Placeholder="Enter Round Opening 4:"
+                        Text="{Binding RoundOpening4, Mode=TwoWay}" Keyboard="Numeric"/>
+
+                <Label Grid.Row="5" Grid.Column="0" Text="5:" />
+                <Editor Grid.Row="5" Grid.Column="1" Placeholder="Enter Round Opening 5:"
+                        Text="{Binding RoundOpening5, Mode=TwoWay}" Keyboard="Numeric"/>
+            </Grid>
+
+            <Grid Grid.Column="2" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Start">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Rules" HorizontalOptions="Start" FontSize="20" />
+
+                <Label Grid.Row="1" Grid.Column="0" Text="Bonus Amount:" />
+                <Editor Grid.Row="1" Grid.Column="1" Placeholder="Enter Bonus Amount:"
+                        Text="{Binding BonusAmount, Mode=TwoWay}" Keyboard="Numeric"/>
+
+                <Label Grid.Row="2" Grid.Column="0" Text="Min Discard Pickup:" />
+                <Editor Grid.Row="2" Grid.Column="1" Placeholder="Enter Min Discard Pickup:"
+                        Text="{Binding MinDiscardPickup, Mode=TwoWay}" Keyboard="Numeric"/>
+
+                <Label Grid.Row="3" Grid.Column="0" Text="Max Discard Pickup:" />
+                <Editor Grid.Row="3" Grid.Column="1" Placeholder="Enter Max Discard Pickup:"
+                        Text="{Binding MaxDiscardPickup, Mode=TwoWay}" Keyboard="Numeric"/>
+
+            </Grid>
+
+            <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Text="Ok" HorizontalOptions="Center"
+                    Command="{Binding OkCommand}" BackgroundColor="DarkBlue" />
+        </Grid>
     </Border>
 </v:PageBase>

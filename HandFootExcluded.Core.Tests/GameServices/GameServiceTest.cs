@@ -36,7 +36,16 @@ public class GameServiceTest
             "Player 5",
         };
 
-        var result = service.CreateGame(players);
+        var roundOpeningAmounts = new List<int>()
+        {
+            50,
+            75,
+            100,
+            125,
+            150,
+        };
+
+        var result = service.CreateGame(players, roundOpeningAmounts);
 
         Assert.IsAssignableFrom<IGame>(result);
     }

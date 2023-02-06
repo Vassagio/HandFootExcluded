@@ -2,16 +2,17 @@
 
 public static class ListExtension
 {
-    private static readonly Random RANDOM = new();
+    private static Random _random;
 
     public static IList<T> Shuffle<T>(this IList<T> list)
     {
+        _random = new Random(Environment.TickCount);
         var unshuffled = list.ToList();
         var n = unshuffled.Count;
         while (n > 1)
         {
             n--;
-            var k = RANDOM.Next(n + 1);
+            var k = _random.Next(n + 1);
             (unshuffled[k], unshuffled[n]) = (unshuffled[n], unshuffled[k]);
         }
         return unshuffled;

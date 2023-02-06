@@ -19,7 +19,7 @@
 
             <ImageButton Source="hfa.jpg" HeightRequest="200" SemanticProperties.Hint="Start a game of Hand Foot Ass" HorizontalOptions="Center" Command="{Binding StartCommand}" BackgroundColor="DarkBlue">
                 <ImageButton.Clip>
-                    <EllipseGeometry RadiusX="90" RadiusY="90" Center="100,100" />
+                    <EllipseGeometry RadiusX="80" RadiusY="80" Center="85,100" />
                 </ImageButton.Clip>
             </ImageButton>
 
