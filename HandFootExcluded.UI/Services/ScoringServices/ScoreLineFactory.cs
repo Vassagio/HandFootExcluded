@@ -5,7 +5,7 @@ namespace HandFootExcluded.UI.Services.ScoringServices;
 
 public interface IScoreLineFactory
 {
-    IScoreLines Create(IGame game, IEnumerable<IRoundViewModel> rounds);
+    IScoreLines Create(IGame game, IEnumerable<IRoundViewModel> rounds, int bonusAmount);
 }
 
 internal sealed class ScoreLineFactory : IScoreLineFactory
@@ -13,38 +13,38 @@ internal sealed class ScoreLineFactory : IScoreLineFactory
     private IReadOnlyList<string> _players;
     private IReadOnlyList<int> _roundOrders;
 
-    public IScoreLines Create(IGame game, IEnumerable<IRoundViewModel> rounds)
+    public IScoreLines Create(IGame game, IEnumerable<IRoundViewModel> rounds, int bonusAmount)
     {
         IScoreLines scoreLines = new ScoreLines();
         _players = game.OrderedPlayers.Select(p => p.Initials).ToList();
         _roundOrders = game.Rounds.Select(r => r.Order).ToList();
 
         foreach (var round in rounds.ToList())
-            scoreLines.Add(CreatePlayerScores(round));
+            scoreLines.Add(CreatePlayerScores(round, bonusAmount));
 
         scoreLines = CreateCumulativeScores(scoreLines);
         return CreateGrandTotalScore(scoreLines);
     }
 
-    private static IScoreLines CreatePlayerScores(IRoundViewModel round)
+    private static IScoreLines CreatePlayerScores(IRoundViewModel round, int bonusAmount)
     {
-        var startingTeamScoreLines = CreateTeamScores(round, round.StartingTeam);
-        var opposingTeamScoreLines = CreateTeamScores(round, round.OpposingTeam);
+        var startingTeamScoreLines = CreateTeamScores(round, round.StartingTeam, bonusAmount);
+        var opposingTeamScoreLines = CreateTeamScores(round, round.OpposingTeam, bonusAmount);
         var excludedPlayerScoreLines = CreateExcludedRoundTotal(round.ExcludedPlayerInitials, round);
 
         return new ScoreLines().Add(startingTeamScoreLines).Add(opposingTeamScoreLines).Add(excludedPlayerScoreLines);
     }
 
-    private static IScoreLines CreateTeamScores(IRoundViewModel round, ITeamViewModel team)
+    private static IScoreLines CreateTeamScores(IRoundViewModel round, ITeamViewModel team, int bonusAmount)
     {
-        var playerScoreLines = CreateRoundTotalScore(round, team, team.PlayerInitials, team.PlayerBonus);
-        var partnerScoreLines = CreateRoundTotalScore(round, team, team.PartnerInitials, team.PartnerBonus);
+        var playerScoreLines = CreateRoundTotalScore(round, team, team.PlayerInitials, team.PlayerBonus, bonusAmount);
+        var partnerScoreLines = CreateRoundTotalScore(round, team, team.PartnerInitials, team.PartnerBonus, bonusAmount);
         return new ScoreLines().Add(playerScoreLines).Add(partnerScoreLines);
     }
 
-    private static IScoreLines CreateRoundTotalScore(IRoundViewModel round, ITeamViewModel team, string initials, bool hasBonus)
+    private static IScoreLines CreateRoundTotalScore(IRoundViewModel round, ITeamViewModel team, string initials, bool hasBonus, int bonusAmount )
     {
-        var bonus = new BonusScoreLine(round.Order, initials, hasBonus);
+        var bonus = new BonusScoreLine(round.Order, initials, hasBonus, bonusAmount);
         var bottom = new BottomScoreLine(round.Order, initials, team.BottomScore);
         var top = new TopScoreLine(round.Order, initials, team.TopScore);
         var roundTotal = CreateRoundTotal(initials, round.Order, bonus, top, bottom);
@@ -56,7 +56,7 @@ internal sealed class ScoreLineFactory : IScoreLineFactory
 
     private static IRoundTotalScoreLine CreateExcludedRoundTotal(string initials, IRoundViewModel round)
     {
-        var bonus = new BonusScoreLine(round.Order, initials, false);
+        var bonus = new BonusScoreLine(round.Order, initials, false, 0);
         var bottom = new BottomScoreLine(round.Order, initials, 0);
         var top = new TopScoreLine(round.Order, initials, 0);
         return new RoundTotalScoreLine(round.Order, initials, bonus, top, bottom);

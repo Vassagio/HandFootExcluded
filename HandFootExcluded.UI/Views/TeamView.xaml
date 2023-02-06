@@ -63,8 +63,8 @@
         <Switch Grid.Row="2" Grid.Column="1" IsToggled="{Binding PlayerBonus, Mode=TwoWay}" />
         <Label Grid.Row="2" Grid.Column="2" Text="{Binding PartnerInitials, Mode=OneWay}" Style="{StaticResource DataLabel}" />
         <Switch Grid.Row="2" Grid.Column="3" IsToggled="{Binding PartnerBonus, Mode=TwoWay}" />
-        <Editor Grid.Row="2" Grid.Column="4" Keyboard="Numeric" Text="{Binding TopScore, Mode=TwoWay}" Style="{StaticResource DataEditor}" MaxLength="4" CursorPosition="0" SelectionLength="4" />
-        <Editor Grid.Row="2" Grid.Column="5" Keyboard="Numeric" Text="{Binding BottomScore, Mode=TwoWay}" Style="{StaticResource DataEditor}" MaxLength="4" CursorPosition="0" SelectionLength="4" />
+        <Editor Grid.Row="2" Grid.Column="4" Keyboard="Numeric" Text="{Binding TopScore, Mode=TwoWay}" Style="{StaticResource DataEditor}" MaxLength="5" CursorPosition="0" SelectionLength="4" />
+        <Editor Grid.Row="2" Grid.Column="5" Keyboard="Numeric" Text="{Binding BottomScore, Mode=TwoWay}" Style="{StaticResource DataEditor}" MaxLength="5" CursorPosition="0" SelectionLength="4" />
         <Label Grid.Row="2" Grid.Column="6" FontAttributes="Bold" Text="{Binding Score, Mode=OneWay}" Style="{StaticResource DataLabel}" />
     </Grid>
 </v:ViewBase>

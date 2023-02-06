@@ -17,11 +17,13 @@ public interface IGamePageViewModel : IViewModel
     IEnumerable<IRoundViewModel> Rounds { get; }
     IRoundViewModel CurrentRound {get;}
     ITotalScoreViewModel TotalScore { get; }
+    int BonusAmount { get; }
 
     ICommand SummaryCommand { get; }
     ICommand PreviousCommand { get; }
     ICommand NextCommand { get; }
     ICommand CloseCommand { get; }
+    ICommand DiscardPickupCommand { get; }
 }
 
 internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
@@ -34,21 +36,30 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
     private IEnumerable<IRoundViewModel> _rounds;
     private IRoundViewModel _currentRound;
     private ITotalScoreViewModel _totalScore;
+    private int _bonusAmount;
+    private int _minDiscardPickup;
+    private int _maxDiscardPickup;
 
     private ICommand _summaryCommand;
     private ICommand _previousCommand;
     private ICommand _nextCommand;
     private ICommand _closeCommand;
+    private ICommand _discardPickupCommand;
 
     public IGame Game { get => _game; set => SetProperty(ref _game, value); }
     public IEnumerable<IRoundViewModel> Rounds { get => _rounds; set => SetProperty(ref _rounds, value); }
     public IRoundViewModel CurrentRound {get =>_currentRound; set => SetProperty(ref _currentRound, value);}
     public ITotalScoreViewModel TotalScore { get => _totalScore; set => SetProperty(ref _totalScore, value); }
+    public int BonusAmount { get => _bonusAmount; set => SetProperty(ref _bonusAmount, value); }
+    public int MinDiscardPickup { get => _minDiscardPickup; set => SetProperty(ref _minDiscardPickup, value); }
+    public int MaxDiscardPickup { get => _maxDiscardPickup; set => SetProperty(ref _maxDiscardPickup, value); }
 
     public ICommand SummaryCommand => _summaryCommand ?? new Command(Summary);
-    public ICommand PreviousCommand => _summaryCommand ?? new Command(Previous);
-    public ICommand NextCommand => _summaryCommand ?? new Command(Next);
-    public ICommand CloseCommand => _summaryCommand ?? new Command(Close);
+    public ICommand PreviousCommand => _previousCommand ?? new Command(Previous);
+    public ICommand NextCommand => _nextCommand ?? new Command(Next);
+    public ICommand CloseCommand => _closeCommand ?? new Command(Close);
+    public ICommand DiscardPickupCommand => _discardPickupCommand ?? new Command(DiscardPickup);
+    
 
     public GamePageViewModel(IGameService gameService, IScoringService scoringService, IAlertService alertService)
     {
@@ -58,19 +69,22 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
 
         _totalScore = new TotalScoreViewModel(new ScoreLines());
 
-        EventAggregator.Instance.RegisterHandler<PlayersChangedEvent>(OnPlayersChanged);
+        EventAggregator.Instance.RegisterHandler<SettingsChangedEvent>(OnSettingsChanged);
         EventAggregator.Instance.RegisterHandler<ScoreChangedEvent>(OnScoreChanged);
     }
 
     private async void OnScoreChanged(ScoreChangedEvent scoreChangedEvent)
     {
-        var scoreLines = await _scoringService.Score(Game, Rounds);
+        var scoreLines = await _scoringService.Score(Game, Rounds, BonusAmount);
         TotalScore = new TotalScoreViewModel(scoreLines.GetGrandTotalLines());
     }
 
-    private void OnPlayersChanged(PlayersChangedEvent playersChangedEvent)
+    private void OnSettingsChanged(SettingsChangedEvent settingsChangedEvent)
     {
-        Game ??= _gameService.CreateGame(playersChangedEvent.Players);
+        BonusAmount = settingsChangedEvent.BonusAmount;
+        MinDiscardPickup = settingsChangedEvent.MinDiscardPickup;
+        MaxDiscardPickup = settingsChangedEvent.MaxDiscardPickup;
+        Game ??= _gameService.CreateGame(settingsChangedEvent.Players, settingsChangedEvent.RoundOpeningAmounts);
         if (Rounds == null || !Rounds.Any())
         {
             var rounds = Game.Rounds.Select(ToViewModel).ToList();
@@ -81,7 +95,7 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
         OnScoreChanged(new ScoreChangedEvent());
     }
 
-    private IRoundViewModel ToViewModel(IRound round) =>
+    private static IRoundViewModel ToViewModel(IRound round) =>
         new RoundViewModel()
         {
             Order = round.Order,
@@ -91,7 +105,7 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
             ExcludedPlayerInitials = round.Players?.Find<IExcludedPlayer>()?.Initials ?? string.Empty
         };
 
-    private ITeamViewModel ToViewModel(ITeam team) =>
+    private static ITeamViewModel ToViewModel(ITeam team) =>
         new TeamViewModel()
         {
             TeamName = team.Name,
@@ -101,7 +115,7 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
 
     private void Summary()
     {
-        var scoreLines = _scoringService.Score(Game, Rounds).Result;
+        var scoreLines = _scoringService.Score(Game, Rounds, BonusAmount).Result;
         EventAggregator.Instance.PostMessage(new ScoreLinesChangedEvent(scoreLines));
         Navigate<ISummaryPage>();
     }
@@ -124,13 +138,12 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
     {
         Action<bool> Callback1() => result =>
         {
-            if (result) 
-            {
-                Game = null;
-                Rounds = new List<IRoundViewModel>();
-                CurrentRound = null;
-                Navigate<ISettingsPage>();
-            }
+            if (!result) return;
+
+            Game = null;
+            Rounds = new List<IRoundViewModel>();
+            CurrentRound = null;
+            Navigate<ISettingsPage>();
         };
 
         Action<bool> Callback2() => result =>
@@ -139,5 +152,12 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
         };
 
         _alertService.ShowActionSheet("What Next?", "New Game", Callback1(), "Quit Game", Callback2());
+    }
+
+    private void DiscardPickup()
+    {
+        var random = new Random(Environment.TickCount);
+        var amount = random.NextInt64(MinDiscardPickup, MaxDiscardPickup);
+        _alertService.ShowAlert("Discard Pickup", $"Pickup {amount} cards from the discard pile.");
     }
 }
