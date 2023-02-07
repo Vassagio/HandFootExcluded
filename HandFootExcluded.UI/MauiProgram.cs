@@ -41,6 +41,7 @@ public static class MauiProgram
                          .AddSingleton<IDeviceOrientationService, DeviceOrientationService>()
                          .AddSingleton<IScoringService, ScoringService>()
                          .AddSingleton<IScoreLineFactory, ScoreLineFactory>()
+                         .AddSingleton<ISecureStorage>(SecureStorage.Default)
                          .AddExtension<CoreDependencies>();
 
     private static IServiceCollection AddViewModels(this IServiceCollection serviceCollection) =>

@@ -2,6 +2,7 @@
 using Bertuzzi.MAUI.EventAggregator;
 using HandFootExcluded.UI.Eventing;
 using HandFootExcluded.UI.Views;
+using Microsoft.Maui.Storage;
 
 namespace HandFootExcluded.UI.ViewModels;
 
@@ -28,29 +29,47 @@ public interface ISettingsPageViewModel : IViewModel
 
 internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewModel
 {
+    private readonly ISecureStorage _secureStorage;
+
     private string _defaultPlayer1 = "William Christopher Chronowski";
     private string _defaultPlayer2 = "Tami Renae Chronowski";
     private string _defaultPlayer3 = "Kaelia Shyenne Chronowski";
     private string _defaultPlayer4 = "Korian Alexa Chronowski";
     private string _defaultPlayer5 = "Jay Michael Looney";
 
-    private int _bonusAmount = 250;
-    private int _minDiscardPickup = 4;
-    private int _maxDiscardPickup = 10;
+    private int _defaultBonusAmount = 250;
+    private int _defaultMinDiscardPickup = 4;
+    private int _defaultMaxDiscardPickup = 10;
 
-    private int _roundOpening1 = 50;
-    private int _roundOpening2 = 75;
-    private int _roundOpening3 = 100;
-    private int _roundOpening4 = 125;
-    private int _roundOpening5 = 150;
+    private int _defaultRoundOpening1 = 50;
+    private int _defaultRoundOpening2 = 75;
+    private int _defaultRoundOpening3 = 100;
+    private int _defaultRoundOpening4 = 125;
+    private int _defaultRoundOpening5 = 150;
+
+    private string _player1;
+    private string _player2;
+    private string _player3;
+    private string _player4;
+    private string _player5;
+
+    private int _bonusAmount;
+    private int _minDiscardPickup;
+    private int _maxDiscardPickup;
+
+    private int _roundOpening1;
+    private int _roundOpening2;
+    private int _roundOpening3;
+    private int _roundOpening4;
+    private int _roundOpening5;
 
     private Command _okCommand;
 
-    public string DefaultPlayer1 { get => _defaultPlayer1; set => SetProperty(ref _defaultPlayer1, value); }
-    public string DefaultPlayer2 { get => _defaultPlayer2; set => SetProperty(ref _defaultPlayer2, value); }
-    public string DefaultPlayer3 { get => _defaultPlayer3; set => SetProperty(ref _defaultPlayer3, value); }
-    public string DefaultPlayer4 { get => _defaultPlayer4; set => SetProperty(ref _defaultPlayer4, value); }
-    public string DefaultPlayer5 { get => _defaultPlayer5; set => SetProperty(ref _defaultPlayer5, value); }
+    public string DefaultPlayer1 { get => _player1; set => SetProperty(ref _player1, value); }
+    public string DefaultPlayer2 { get => _player2; set => SetProperty(ref _player2, value); }
+    public string DefaultPlayer3 { get => _player3; set => SetProperty(ref _player3, value); }
+    public string DefaultPlayer4 { get => _player4; set => SetProperty(ref _player4, value); }
+    public string DefaultPlayer5 { get => _player5; set => SetProperty(ref _player5, value); }
 
     public int BonusAmount { get => _bonusAmount; set => SetProperty(ref _bonusAmount, value); }
     public int MinDiscardPickup { get => _minDiscardPickup; set => SetProperty(ref _minDiscardPickup, value); }
@@ -64,15 +83,21 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
 
     public ICommand OkCommand => _okCommand ?? new Command(Ok);
 
+    public SettingsPageViewModel(ISecureStorage secureStorage)
+    {
+        _secureStorage = secureStorage ?? throw new ArgumentNullException(nameof(secureStorage)); 
+        Load();
+    }
+
     private void Ok()
     {
         var players = new List<string>
         {
-            _defaultPlayer1,
-            _defaultPlayer2,
-            _defaultPlayer3,
-            _defaultPlayer4,
-            _defaultPlayer5
+            _player1,
+            _player2,
+            _player3,
+            _player4,
+            _player5
         };
 
         var roundOpenings = new List<int>
@@ -84,8 +109,60 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
             _roundOpening5
         };
 
+        Save();
         Navigate<IGamePage>();
 
         EventAggregator.Instance.SendMessage(new SettingsChangedEvent(players, roundOpenings, _bonusAmount, _minDiscardPickup, _maxDiscardPickup));
     }
+
+    private async void Save()
+    {
+        await _secureStorage.SetAsync(nameof(DefaultPlayer1), DefaultPlayer1);
+        await _secureStorage.SetAsync(nameof(DefaultPlayer2), DefaultPlayer2);
+        await _secureStorage.SetAsync(nameof(DefaultPlayer3), DefaultPlayer3);
+        await _secureStorage.SetAsync(nameof(DefaultPlayer4), DefaultPlayer4);
+        await _secureStorage.SetAsync(nameof(DefaultPlayer5), DefaultPlayer5);
+
+        await _secureStorage.SetAsync(nameof(RoundOpening1), RoundOpening1.ToString());
+        await _secureStorage.SetAsync(nameof(RoundOpening2), RoundOpening2.ToString());
+        await _secureStorage.SetAsync(nameof(RoundOpening3), RoundOpening3.ToString());
+        await _secureStorage.SetAsync(nameof(RoundOpening4), RoundOpening4.ToString());
+        await _secureStorage.SetAsync(nameof(RoundOpening5), RoundOpening5.ToString());
+
+        await _secureStorage.SetAsync(nameof(BonusAmount), BonusAmount.ToString());
+        await _secureStorage.SetAsync(nameof(MinDiscardPickup), MinDiscardPickup.ToString());
+        await _secureStorage.SetAsync(nameof(MaxDiscardPickup), MaxDiscardPickup.ToString());
+    }
+
+    private async void Load()
+    {
+        DefaultPlayer1 = await Load<string>(nameof(DefaultPlayer1), _defaultPlayer1);
+        DefaultPlayer2 = await Load<string>(nameof(DefaultPlayer2), _defaultPlayer2);
+        DefaultPlayer3 = await Load<string>(nameof(DefaultPlayer3), _defaultPlayer3);
+        DefaultPlayer4 = await Load<string>(nameof(DefaultPlayer4), _defaultPlayer4);
+        DefaultPlayer5 = await Load<string>(nameof(DefaultPlayer5), _defaultPlayer5);
+
+        RoundOpening1 = await Load<int>(nameof(RoundOpening1), _defaultRoundOpening1);
+        RoundOpening2 = await Load<int>(nameof(RoundOpening2), _defaultRoundOpening2);
+        RoundOpening3 = await Load<int>(nameof(RoundOpening3), _defaultRoundOpening3);
+        RoundOpening4 = await Load<int>(nameof(RoundOpening4), _defaultRoundOpening4);
+        RoundOpening5 = await Load<int>(nameof(RoundOpening5), _defaultRoundOpening5);
+
+        BonusAmount = await Load<int>(nameof(BonusAmount), _defaultBonusAmount);
+        MinDiscardPickup = await Load<int>(nameof(MinDiscardPickup), _defaultMinDiscardPickup);
+        MaxDiscardPickup = await Load<int>(nameof(MaxDiscardPickup), _defaultMaxDiscardPickup);
+    }
+
+    private async Task<T> Load<T>(string key, T @default)
+    {
+        if (string.IsNullOrWhiteSpace(key)) return @default;
+        var value = await _secureStorage.GetAsync(key);
+        if (string.IsNullOrWhiteSpace(value)) return @default;
+
+        var converted = Convert.ChangeType(value, typeof(T));
+
+        return converted is T result ? result : @default;
+    }
+
+    
 }
