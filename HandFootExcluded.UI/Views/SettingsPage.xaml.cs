@@ -7,7 +7,7 @@ public interface ISettingsPage : IPageBase<ISettingsPageViewModel>
 
 }
 
-public sealed partial class SettingsPage : PageBase<ISettingsPageViewModel>, ISettingsPage
+public sealed partial class SettingsPage : ISettingsPage
 {
 	public SettingsPage(ISettingsPageViewModel viewModel) : base(viewModel)
 	{

@@ -1,15 +1,13 @@
-﻿using System.Runtime.CompilerServices;
-using HandFootExcluded.Common;
+﻿using HandFootExcluded.Common;
 using HandFootExcluded.Core.GameServices;
 using HandFootExcluded.Core.PlayerServices;
-using HandFootExcluded.Core.Teamservices;
 using HandFootExcluded.Core.TeamServices;
 
 namespace HandFootExcluded.Core.RoundServices;
 
 public interface IRoundBuilder
 {
-    IRoundBuilderRounds WithOrderedPlayers(IOrderedEnumerable<IOrderedPlayer> orderedPlayers);
+    IRoundBuilderRounds WithOrderedPlayers(IReadOnlyList<IOrderedPlayer> orderedPlayers);
 }
 
 public interface IRoundBuilderRounds
@@ -19,14 +17,13 @@ public interface IRoundBuilderRounds
 
 public interface IRoundBuilderBuild : IBuilder<IRounds>
 {
-
 }
 
 public sealed class RoundBuilder : BuilderBase<RoundBuilder, IRounds>, IRoundBuilder, IRoundBuilderRounds, IRoundBuilderBuild
 {
     private readonly IPositionalPlayerFactory _positionalPlayerFactory;
     private readonly ITeamBuilder _teamBuilder;
-    private IOrderedEnumerable<IOrderedPlayer> _orderedPlayers;
+    private IReadOnlyList<IOrderedPlayer> _orderedPlayers;
     private IEnumerable<IRoundOrder> _roundOrdering;
 
     public RoundBuilder(IPositionalPlayerFactory positionalPlayerFactory, ITeamBuilder teamBuilder)
@@ -35,7 +32,7 @@ public sealed class RoundBuilder : BuilderBase<RoundBuilder, IRounds>, IRoundBui
         _teamBuilder = teamBuilder ?? throw new ArgumentNullException(nameof(teamBuilder));
     }
 
-    public IRoundBuilderRounds WithOrderedPlayers(IOrderedEnumerable<IOrderedPlayer> orderedPlayers) => SetProperty(ref _orderedPlayers, orderedPlayers);
+    public IRoundBuilderRounds WithOrderedPlayers(IReadOnlyList<IOrderedPlayer> orderedPlayers) => SetProperty(ref _orderedPlayers, orderedPlayers);
     public IRoundBuilderBuild WithRoundOrdering(IEnumerable<IRoundOrder> roundOrdering) => SetProperty(ref _roundOrdering, roundOrdering);
 
     protected override IRounds BuildInternal()
@@ -68,7 +65,7 @@ public sealed class RoundBuilder : BuilderBase<RoundBuilder, IRounds>, IRoundBui
             FindPlayer<IOpposingPlayer>(_orderedPlayers, roundOrder.OpposingPlayer),
             FindPlayer<IOpposingPartner>(_orderedPlayers, roundOrder.OpposingPartner)
         };
-        
+
         return positionalPlayers.Add(FindExcludedPlayer(_orderedPlayers, positionalPlayers));
     }
 
@@ -80,14 +77,20 @@ public sealed class RoundBuilder : BuilderBase<RoundBuilder, IRounds>, IRoundBui
 
     private IExcludedPlayer FindExcludedPlayer(IEnumerable<IOrderedPlayer> orderedPlayers, IPlayers positionalPlayers)
     {
-        var excludedPlayer = orderedPlayers.OfType<OrderedPlayer>().Except(positionalPlayers.OfType<OrderedPlayer>(), OrderPlayerComparer.Instance).FirstOrDefault();
+        var excludedPlayer = orderedPlayers.OfType<OrderedPlayer>()
+                                           .Except(positionalPlayers.OfType<OrderedPlayer>(), OrderPlayerComparer.Instance)
+                                           .FirstOrDefault();
         return _positionalPlayerFactory.Create<IExcludedPlayer>(excludedPlayer) as IExcludedPlayer;
     }
 
     private ITeams GetTeams(IPlayers players) =>
         new Teams
         {
-            _teamBuilder.WithPlayer(players.Find<IStartingPlayer>()).WithPartner(players.Find<IStartingPartner>()).Build(),
-            _teamBuilder.WithPlayer(players.Find<IOpposingPlayer>()).WithPartner(players.Find<IOpposingPartner>()).Build()
+            _teamBuilder.WithPlayer(players.Find<IStartingPlayer>())
+                        .WithPartner(players.Find<IStartingPartner>())
+                        .Build(),
+            _teamBuilder.WithPlayer(players.Find<IOpposingPlayer>())
+                        .WithPartner(players.Find<IOpposingPartner>())
+                        .Build()
         };
 }

@@ -1,5 +1,5 @@
 ﻿using HandFootExcluded.Core.PlayerServices;
-using HandFootExcluded.Core.Teamservices;
+using HandFootExcluded.Core.TeamServices;
 
 namespace HandFootExcluded.Core.RoundServices;
 
@@ -11,4 +11,6 @@ public interface IRound
     ITeams Teams { get; }
 }
 
-internal sealed record Round(int Order, int OpenAmount, IPlayers Players, ITeams Teams) : IRound { }
+internal sealed record Round(int Order, int OpenAmount, IPlayers Players, ITeams Teams) : IRound
+{
+}

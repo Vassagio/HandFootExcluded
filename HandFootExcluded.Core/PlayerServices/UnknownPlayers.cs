@@ -8,7 +8,9 @@ public sealed class UnknownPlayers : IPlayers
 
     private UnknownPlayers() { }
 
-    public IEnumerator<IPositionalPlayer> GetEnumerator() => Enumerable.Empty<IPositionalPlayer>().GetEnumerator();
+    public IEnumerator<IPositionalPlayer> GetEnumerator() =>
+        Enumerable.Empty<IPositionalPlayer>()
+                  .GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     public IPlayers Add(IPositionalPlayer player) => this;
     public void AddRange(IEnumerable<IPositionalPlayer> players) { }

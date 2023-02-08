@@ -7,7 +7,7 @@ public interface ITeamView : IViewBase<ITeamViewModel>
 
 }
 
-public partial class TeamView : ViewBase<ITeamViewModel>, ITeamView
+public partial class TeamView : ITeamView
 {
 	public TeamView() 
 	{

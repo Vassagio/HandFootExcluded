@@ -5,7 +5,8 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:v="using:HandFootExcluded.UI.Views"
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
-            x:Class="HandFootExcluded.UI.Views.TotalScoreView">
+            xmlns:poco="using:HandFootExcluded.UI.Services.ScoringServices"
+            x:Class="HandFootExcluded.UI.Views.TotalScoreView" x:DataType="vm:ITotalScoreViewModel">
 
     <Border Stroke="White" BackgroundColor="DarkBlue" VerticalOptions="Fill" HorizontalOptions="Fill" Margin="10,0,10,5">
         <Border.StrokeShape>
@@ -26,7 +27,7 @@
             <Label Grid.Row="0" Text="Scores" TextColor="White" VerticalOptions="Fill" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="20" Margin="0,10,0,0" />
             <ListView Grid.Row="1" ItemsSource="{Binding ScoreLines}" VerticalOptions="Fill" HorizontalOptions="Fill" Margin="0,10,0,0" RowHeight="100" HasUnevenRows="True">
                 <ListView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="poco:IScoreLine">
                         <ViewCell>
                             <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
                                 <Grid.ColumnDefinitions>

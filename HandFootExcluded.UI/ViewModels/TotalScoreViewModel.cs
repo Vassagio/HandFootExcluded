@@ -11,7 +11,7 @@ internal sealed class TotalScoreViewModel : ViewModelBase, ITotalScoreViewModel
 {
     private IScoreLines _scoreLines;
 
-    public IScoreLines ScoreLines { get => _scoreLines; set => SetProperty(ref _scoreLines, value); }
-
     public TotalScoreViewModel(IScoreLines scoreLines) => ScoreLines = scoreLines;
+
+    public IScoreLines ScoreLines { get => _scoreLines; set => SetProperty(ref _scoreLines, value); }
 }

@@ -13,7 +13,7 @@ internal sealed partial class TeamBuilder : BuilderBase<TeamBuilder, ITeam>, ITe
 {
     private sealed class StartingTeam : Team<IStartingPlayer, IStartingPartner>, IStartingTeam
     {
-        public override string Name => "Starting Team";
         public StartingTeam(IStartingPlayer player, IStartingPartner partner) : base(player, partner) { }
+        public override string Name => "Starting Team";
     }
 }

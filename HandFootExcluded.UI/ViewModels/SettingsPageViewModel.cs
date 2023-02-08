@@ -2,7 +2,6 @@
 using Bertuzzi.MAUI.EventAggregator;
 using HandFootExcluded.UI.Eventing;
 using HandFootExcluded.UI.Views;
-using Microsoft.Maui.Storage;
 
 namespace HandFootExcluded.UI.ViewModels;
 
@@ -31,21 +30,27 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
 {
     private readonly ISecureStorage _secureStorage;
 
-    private string _defaultPlayer1 = "William Christopher Chronowski";
-    private string _defaultPlayer2 = "Tami Renae Chronowski";
-    private string _defaultPlayer3 = "Kaelia Shyenne Chronowski";
-    private string _defaultPlayer4 = "Korian Alexa Chronowski";
-    private string _defaultPlayer5 = "Jay Michael Looney";
+    private int _bonusAmount;
 
-    private int _defaultBonusAmount = 250;
-    private int _defaultMinDiscardPickup = 4;
-    private int _defaultMaxDiscardPickup = 10;
+    private readonly int _defaultBonusAmount = 250;
+    private readonly int _defaultMaxDiscardPickup = 10;
+    private readonly int _defaultMinDiscardPickup = 4;
 
-    private int _defaultRoundOpening1 = 50;
-    private int _defaultRoundOpening2 = 75;
-    private int _defaultRoundOpening3 = 100;
-    private int _defaultRoundOpening4 = 125;
-    private int _defaultRoundOpening5 = 150;
+    private readonly string _defaultPlayer1 = "William Christopher Chronowski";
+    private readonly string _defaultPlayer2 = "Tami Renae Chronowski";
+    private readonly string _defaultPlayer3 = "Kaelia Shyenne Chronowski";
+    private readonly string _defaultPlayer4 = "Korian Alexa Chronowski";
+    private readonly string _defaultPlayer5 = "Jay Michael Looney";
+
+    private readonly int _defaultRoundOpening1 = 50;
+    private readonly int _defaultRoundOpening2 = 75;
+    private readonly int _defaultRoundOpening3 = 100;
+    private readonly int _defaultRoundOpening4 = 125;
+    private readonly int _defaultRoundOpening5 = 150;
+    private int _maxDiscardPickup;
+    private int _minDiscardPickup;
+
+    private Command _okCommand;
 
     private string _player1;
     private string _player2;
@@ -53,17 +58,17 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
     private string _player4;
     private string _player5;
 
-    private int _bonusAmount;
-    private int _minDiscardPickup;
-    private int _maxDiscardPickup;
-
     private int _roundOpening1;
     private int _roundOpening2;
     private int _roundOpening3;
     private int _roundOpening4;
     private int _roundOpening5;
 
-    private Command _okCommand;
+    public SettingsPageViewModel(ISecureStorage secureStorage)
+    {
+        _secureStorage = secureStorage ?? throw new ArgumentNullException(nameof(secureStorage));
+        Load();
+    }
 
     public string DefaultPlayer1 { get => _player1; set => SetProperty(ref _player1, value); }
     public string DefaultPlayer2 { get => _player2; set => SetProperty(ref _player2, value); }
@@ -82,12 +87,6 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
     public int RoundOpening5 { get => _roundOpening5; set => SetProperty(ref _roundOpening5, value); }
 
     public ICommand OkCommand => _okCommand ?? new Command(Ok);
-
-    public SettingsPageViewModel(ISecureStorage secureStorage)
-    {
-        _secureStorage = secureStorage ?? throw new ArgumentNullException(nameof(secureStorage)); 
-        Load();
-    }
 
     private void Ok()
     {
@@ -136,21 +135,21 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
 
     private async void Load()
     {
-        DefaultPlayer1 = await Load<string>(nameof(DefaultPlayer1), _defaultPlayer1);
-        DefaultPlayer2 = await Load<string>(nameof(DefaultPlayer2), _defaultPlayer2);
-        DefaultPlayer3 = await Load<string>(nameof(DefaultPlayer3), _defaultPlayer3);
-        DefaultPlayer4 = await Load<string>(nameof(DefaultPlayer4), _defaultPlayer4);
-        DefaultPlayer5 = await Load<string>(nameof(DefaultPlayer5), _defaultPlayer5);
+        DefaultPlayer1 = await Load(nameof(DefaultPlayer1), _defaultPlayer1);
+        DefaultPlayer2 = await Load(nameof(DefaultPlayer2), _defaultPlayer2);
+        DefaultPlayer3 = await Load(nameof(DefaultPlayer3), _defaultPlayer3);
+        DefaultPlayer4 = await Load(nameof(DefaultPlayer4), _defaultPlayer4);
+        DefaultPlayer5 = await Load(nameof(DefaultPlayer5), _defaultPlayer5);
 
-        RoundOpening1 = await Load<int>(nameof(RoundOpening1), _defaultRoundOpening1);
-        RoundOpening2 = await Load<int>(nameof(RoundOpening2), _defaultRoundOpening2);
-        RoundOpening3 = await Load<int>(nameof(RoundOpening3), _defaultRoundOpening3);
-        RoundOpening4 = await Load<int>(nameof(RoundOpening4), _defaultRoundOpening4);
-        RoundOpening5 = await Load<int>(nameof(RoundOpening5), _defaultRoundOpening5);
+        RoundOpening1 = await Load(nameof(RoundOpening1), _defaultRoundOpening1);
+        RoundOpening2 = await Load(nameof(RoundOpening2), _defaultRoundOpening2);
+        RoundOpening3 = await Load(nameof(RoundOpening3), _defaultRoundOpening3);
+        RoundOpening4 = await Load(nameof(RoundOpening4), _defaultRoundOpening4);
+        RoundOpening5 = await Load(nameof(RoundOpening5), _defaultRoundOpening5);
 
-        BonusAmount = await Load<int>(nameof(BonusAmount), _defaultBonusAmount);
-        MinDiscardPickup = await Load<int>(nameof(MinDiscardPickup), _defaultMinDiscardPickup);
-        MaxDiscardPickup = await Load<int>(nameof(MaxDiscardPickup), _defaultMaxDiscardPickup);
+        BonusAmount = await Load(nameof(BonusAmount), _defaultBonusAmount);
+        MinDiscardPickup = await Load(nameof(MinDiscardPickup), _defaultMinDiscardPickup);
+        MaxDiscardPickup = await Load(nameof(MaxDiscardPickup), _defaultMaxDiscardPickup);
     }
 
     private async Task<T> Load<T>(string key, T @default)
@@ -163,6 +162,4 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
 
         return converted is T result ? result : @default;
     }
-
-    
 }

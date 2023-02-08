@@ -11,8 +11,6 @@ public interface IRounds : IEnumerable<IRound>
 internal sealed class Rounds : IRounds
 {
     private readonly ISet<IRound> _rounds = new HashSet<IRound>();
-    public int Count => _rounds.Count;
-    public bool IsReadOnly => _rounds.IsReadOnly;
 
     public Rounds() { }
 

@@ -5,7 +5,7 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:v="using:HandFootExcluded.UI.Views"
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
-            x:Class="HandFootExcluded.UI.Views.TeamView">
+            x:Class="HandFootExcluded.UI.Views.TeamView" x:DataType="vm:ITeamViewModel">
 
     <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
         <Grid.Resources>

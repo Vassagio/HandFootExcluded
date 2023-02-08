@@ -13,8 +13,6 @@ public interface IPlayers : IEnumerable<IPositionalPlayer>
 internal sealed class Players : IPlayers
 {
     private readonly ISet<IPositionalPlayer> _players = new HashSet<IPositionalPlayer>();
-    public int Count => _players.Count;
-    public bool IsReadOnly => _players.IsReadOnly;
 
     public Players() { }
 
@@ -39,8 +37,9 @@ internal sealed class Players : IPlayers
             _players.Add(player);
     }
 
-    public TPositionalPlayer Find<TPositionalPlayer>() where TPositionalPlayer : class, IPositionalPlayer => 
-        _players.OfType<TPositionalPlayer>().SingleOrElse(UnknownPlayer.Instance as TPositionalPlayer);
+    public TPositionalPlayer Find<TPositionalPlayer>() where TPositionalPlayer : class, IPositionalPlayer =>
+        _players.OfType<TPositionalPlayer>()
+                .SingleOrElse(UnknownPlayer.Instance as TPositionalPlayer);
 
     public IEnumerator<IPositionalPlayer> GetEnumerator() => _players.GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

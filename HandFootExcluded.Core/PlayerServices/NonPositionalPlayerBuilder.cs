@@ -14,16 +14,16 @@ public interface INonPositionalPlayerBuilderName : IBuilder
     INonPositionalPlayerBuilderBuild WithLastName(string lastName);
 }
 
-public interface INonPositionalPlayerBuilderBuild : IBuilder<INonPositionalPlayer> { }
+public interface INonPositionalPlayerBuilderBuild : IBuilder<INonPositionalPlayer>
+{
+}
 
 internal sealed partial class NonPositionalPlayerBuilder : BuilderBase<NonPositionalPlayerBuilder, INonPositionalPlayer>, INonPositionalPlayerBuilder, INonPositionalPlayerBuilderName, INonPositionalPlayerBuilderBuild
 {
     private string _firstName;
-    private string _middleName = string.Empty;
-    private string _lastName;
     private string _fullName;
-
-    private int _order;
+    private string _lastName;
+    private string _middleName = string.Empty;
 
     public INonPositionalPlayerBuilderName WithFirstName(string firstName) => SetProperty(ref _firstName, firstName);
 
@@ -44,7 +44,10 @@ internal sealed partial class NonPositionalPlayerBuilder : BuilderBase<NonPositi
 
     private static (string FirstName, string MiddleName, string LastName) Parse(string name)
     {
-        var parsedName = name.Trim().RemoveMultipleSpaces().Split(' ').ToList();
+        var parsedName = name.Trim()
+                             .RemoveMultipleSpaces()
+                             .Split(' ')
+                             .ToList();
         return parsedName.Count switch
         {
             1 => (parsedName.First(), string.Empty, string.Empty),

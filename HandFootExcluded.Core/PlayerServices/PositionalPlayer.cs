@@ -20,6 +20,6 @@ public interface IPositionalPlayer : IOrderedPlayer
 [DebuggerDisplay("{Display,nq}")]
 internal abstract record PositionalPlayerBase(PlayerPositionType Position, int Order, string FullName, string FirstName, string MiddleName, string LastName, string Initials) : OrderedPlayer(Order, FullName, FirstName, MiddleName, LastName, Initials), IPositionalPlayer
 {
-    protected abstract string Display {get;}
+    protected abstract string Display { get; }
     public override string ToString() => Display;
 }

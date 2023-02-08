@@ -4,7 +4,7 @@ namespace HandFootExcluded.UI.Views;
 
 public interface ISummaryPage : IPageBase<ISummaryPageViewModel> { }
 
-public partial class SummaryPage : PageBase<ISummaryPageViewModel>, ISummaryPage
+public partial class SummaryPage : ISummaryPage
 {
     public SummaryPage(ISummaryPageViewModel viewModel) : base(viewModel)
     {

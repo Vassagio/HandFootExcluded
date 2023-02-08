@@ -7,17 +7,17 @@
             xmlns:v="using:HandFootExcluded.UI.Views"
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
             xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
-            Title="SummaryPage">
+            Title="SummaryPage" x:DataType="vm:ISummaryPageViewModel">
     <ContentPage.Resources>
         <Style TargetType="Label" x:Key="DataLabel">
             <Setter Property="VerticalOptions" Value="Fill" />
             <Setter Property="HorizontalOptions" Value="Fill" />
             <Setter Property="VerticalTextAlignment" Value="Center" />
             <Setter Property="HorizontalTextAlignment" Value="Center" />
-            <Setter Property="FontSize" Value="{Binding FontSize}" />
+            <Setter Property="FontSize" Value="{Binding FontSize}" x:DataType="vm:ISummaryLine"/>
             <Setter Property="FontAttributes" Value="None" />
             <Style.Triggers>
-                <DataTrigger TargetType="Label" Binding="{Binding IsBold}" Value="True">
+                <DataTrigger TargetType="Label" Binding="{Binding IsBold}" Value="True" x:DataType="vm:ISummaryLine">
                     <Setter Property="FontAttributes" Value="Bold" />
                 </DataTrigger>
             </Style.Triggers>
@@ -33,42 +33,42 @@
             <dg:DataGrid.Columns>
                 <dg:DataGridColumn Title="" HorizontalContentAlignment="Start">
                     <dg:DataGridColumn.CellTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="vm:ISummaryLine">
                             <Label Text="{Binding Description}" FontAttributes="Bold" FontSize="{Binding FontSize}" />
                         </DataTemplate>
                     </dg:DataGridColumn.CellTemplate>
                 </dg:DataGridColumn>
                 <dg:DataGridColumn Title="{Binding Player1Name}">
                     <dg:DataGridColumn.CellTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="vm:ISummaryLine">
                             <Label Text="{Binding Player1Score}" Style="{StaticResource DataLabel}" />
                         </DataTemplate>
                     </dg:DataGridColumn.CellTemplate>
                 </dg:DataGridColumn>
                 <dg:DataGridColumn Title="{Binding Player2Name}">
                     <dg:DataGridColumn.CellTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="vm:ISummaryLine">
                             <Label Text="{Binding Player2Score}" Style="{StaticResource DataLabel}" />
                         </DataTemplate>
                     </dg:DataGridColumn.CellTemplate>
                 </dg:DataGridColumn>
                 <dg:DataGridColumn Title="{Binding Player3Name}">
                     <dg:DataGridColumn.CellTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="vm:ISummaryLine">
                             <Label Text="{Binding Player3Score}" Style="{StaticResource DataLabel}" />
                         </DataTemplate>
                     </dg:DataGridColumn.CellTemplate>
                 </dg:DataGridColumn>
                 <dg:DataGridColumn Title="{Binding Player4Name}">
                     <dg:DataGridColumn.CellTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="vm:ISummaryLine">
                             <Label Text="{Binding Player4Score}" Style="{StaticResource DataLabel}" />
                         </DataTemplate>
                     </dg:DataGridColumn.CellTemplate>
                 </dg:DataGridColumn>
                 <dg:DataGridColumn Title="{Binding Player5Name}">
                     <dg:DataGridColumn.CellTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="vm:ISummaryLine">
                             <Label Text="{Binding Player5Score}" Style="{StaticResource DataLabel}" />
                         </DataTemplate>
                     </dg:DataGridColumn.CellTemplate>

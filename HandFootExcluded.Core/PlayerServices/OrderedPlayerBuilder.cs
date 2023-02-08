@@ -12,7 +12,9 @@ public interface IOrderedPlayerOrder
     IOrderedPlayerBuilderBuild WithOrder(int order);
 }
 
-public interface IOrderedPlayerBuilderBuild : IBuilder<IOrderedPlayer> { }
+public interface IOrderedPlayerBuilderBuild : IBuilder<IOrderedPlayer>
+{
+}
 
 internal class OrderedPlayerBuilder : BuilderBase<OrderedPlayerBuilder, IOrderedPlayer>, IOrderedPlayerBuilder, IOrderedPlayerOrder, IOrderedPlayerBuilderBuild
 {

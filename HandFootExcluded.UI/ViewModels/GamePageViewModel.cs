@@ -1,13 +1,14 @@
-﻿using Bertuzzi.MAUI.EventAggregator;
+﻿using System.Windows.Input;
+using Bertuzzi.MAUI.EventAggregator;
 using HandFootExcluded.Core.GameServices;
 using HandFootExcluded.Core.PlayerServices;
 using HandFootExcluded.Core.RoundServices;
 using HandFootExcluded.Core.TeamServices;
 using HandFootExcluded.UI.Eventing;
+using HandFootExcluded.UI.Services;
+using HandFootExcluded.UI.Services.GameHistoryServices;
 using HandFootExcluded.UI.Services.ScoringServices;
 using HandFootExcluded.UI.Views;
-using System.Windows.Input;
-using HandFootExcluded.UI.Services;
 
 namespace HandFootExcluded.UI.ViewModels;
 
@@ -15,7 +16,7 @@ public interface IGamePageViewModel : IViewModel
 {
     IGame Game { get; }
     IEnumerable<IRoundViewModel> Rounds { get; }
-    IRoundViewModel CurrentRound {get;}
+    IRoundViewModel CurrentRound { get; }
     ITotalScoreViewModel TotalScore { get; }
     int BonusAmount { get; }
 
@@ -28,43 +29,32 @@ public interface IGamePageViewModel : IViewModel
 
 internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
 {
+    private readonly IAlertService _alertService;
+    private readonly IGameHistoryService _gameHistoryService;
     private readonly IGameService _gameService;
     private readonly IScoringService _scoringService;
-    private readonly IAlertService _alertService;
-
-    private IGame _game;
-    private IEnumerable<IRoundViewModel> _rounds;
-    private IRoundViewModel _currentRound;
-    private ITotalScoreViewModel _totalScore;
     private int _bonusAmount;
-    private int _minDiscardPickup;
-    private int _maxDiscardPickup;
-
-    private ICommand _summaryCommand;
-    private ICommand _previousCommand;
-    private ICommand _nextCommand;
     private ICommand _closeCommand;
+    private IRoundViewModel _currentRound;
     private ICommand _discardPickupCommand;
 
-    public IGame Game { get => _game; set => SetProperty(ref _game, value); }
-    public IEnumerable<IRoundViewModel> Rounds { get => _rounds; set => SetProperty(ref _rounds, value); }
-    public IRoundViewModel CurrentRound {get =>_currentRound; set => SetProperty(ref _currentRound, value);}
-    public ITotalScoreViewModel TotalScore { get => _totalScore; set => SetProperty(ref _totalScore, value); }
-    public int BonusAmount { get => _bonusAmount; set => SetProperty(ref _bonusAmount, value); }
+    private IGame _game;
+    private int _maxDiscardPickup;
+    private int _minDiscardPickup;
+    private ICommand _nextCommand;
+    private ICommand _previousCommand;
+    private IEnumerable<IRoundViewModel> _rounds;
+
+    private ICommand _summaryCommand;
+    private ITotalScoreViewModel _totalScore;
     public int MinDiscardPickup { get => _minDiscardPickup; set => SetProperty(ref _minDiscardPickup, value); }
     public int MaxDiscardPickup { get => _maxDiscardPickup; set => SetProperty(ref _maxDiscardPickup, value); }
 
-    public ICommand SummaryCommand => _summaryCommand ?? new Command(Summary);
-    public ICommand PreviousCommand => _previousCommand ?? new Command(Previous);
-    public ICommand NextCommand => _nextCommand ?? new Command(Next);
-    public ICommand CloseCommand => _closeCommand ?? new Command(Close);
-    public ICommand DiscardPickupCommand => _discardPickupCommand ?? new Command(DiscardPickup);
-    
-
-    public GamePageViewModel(IGameService gameService, IScoringService scoringService, IAlertService alertService)
+    public GamePageViewModel(IGameService gameService, IScoringService scoringService, IGameHistoryService gameHistoryService, IAlertService alertService)
     {
         _gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
         _scoringService = scoringService ?? throw new ArgumentNullException(nameof(scoringService));
+        _gameHistoryService = gameHistoryService ?? throw new ArgumentNullException(nameof(gameHistoryService));
         _alertService = alertService ?? throw new ArgumentNullException(nameof(alertService));
 
         _totalScore = new TotalScoreViewModel(new ScoreLines());
@@ -72,6 +62,18 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
         EventAggregator.Instance.RegisterHandler<SettingsChangedEvent>(OnSettingsChanged);
         EventAggregator.Instance.RegisterHandler<ScoreChangedEvent>(OnScoreChanged);
     }
+
+    public IGame Game { get => _game; set => SetProperty(ref _game, value); }
+    public IEnumerable<IRoundViewModel> Rounds { get => _rounds; set => SetProperty(ref _rounds, value); }
+    public IRoundViewModel CurrentRound { get => _currentRound; set => SetProperty(ref _currentRound, value); }
+    public ITotalScoreViewModel TotalScore { get => _totalScore; set => SetProperty(ref _totalScore, value); }
+    public int BonusAmount { get => _bonusAmount; set => SetProperty(ref _bonusAmount, value); }
+
+    public ICommand SummaryCommand => SetCommand(ref _summaryCommand, Summary);
+    public ICommand PreviousCommand => SetCommand(ref _previousCommand, Previous);
+    public ICommand NextCommand => SetCommand(ref _nextCommand, Next);
+    public ICommand CloseCommand => SetCommand(ref _closeCommand, Close);
+    public ICommand DiscardPickupCommand => SetCommand(ref _discardPickupCommand, DiscardPickup);
 
     private async void OnScoreChanged(ScoreChangedEvent scoreChangedEvent)
     {
@@ -85,9 +87,11 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
         MinDiscardPickup = settingsChangedEvent.MinDiscardPickup;
         MaxDiscardPickup = settingsChangedEvent.MaxDiscardPickup;
         Game ??= _gameService.CreateGame(settingsChangedEvent.Players, settingsChangedEvent.RoundOpeningAmounts);
+
         if (Rounds == null || !Rounds.Any())
         {
-            var rounds = Game.Rounds.Select(ToViewModel).ToList();
+            var rounds = Game.Rounds.Select(ToViewModel)
+                             .ToList();
             Rounds = rounds;
             CurrentRound = Rounds.FirstOrDefault();
         }
@@ -96,17 +100,18 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
     }
 
     private static IRoundViewModel ToViewModel(IRound round) =>
-        new RoundViewModel()
+        new RoundViewModel
         {
             Order = round.Order,
             OpenAmount = round.OpenAmount,
             StartingTeam = ToViewModel(round.Teams.Find<IStartingTeam>()),
             OpposingTeam = ToViewModel(round.Teams.Find<IOpposingTeam>()),
-            ExcludedPlayerInitials = round.Players?.Find<IExcludedPlayer>()?.Initials ?? string.Empty
+            ExcludedPlayerInitials = round.Players?.Find<IExcludedPlayer>()
+                                         ?.Initials ?? string.Empty
         };
 
     private static ITeamViewModel ToViewModel(ITeam team) =>
-        new TeamViewModel()
+        new TeamViewModel
         {
             TeamName = team.Name,
             PlayerInitials = team.Player.Initials,
@@ -115,7 +120,8 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
 
     private void Summary()
     {
-        var scoreLines = _scoringService.Score(Game, Rounds, BonusAmount).Result;
+        var scoreLines = _scoringService.Score(Game, Rounds, BonusAmount)
+                                        .Result;
         EventAggregator.Instance.PostMessage(new ScoreLinesChangedEvent(scoreLines));
         Navigate<ISummaryPage>();
     }
@@ -130,28 +136,38 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
     private void Next()
     {
         var nextRound = Rounds.SingleOrDefault(r => r.Order == _currentRound.Order + 1);
+
         if (nextRound != null)
+        {
             CurrentRound = nextRound;
+        }
+        else
+        {
+            _gameHistoryService.Save(_game);
+            Summary();
+        }
     }
 
     private void Close()
     {
-        Action<bool> Callback1() => result =>
-        {
-            if (!result) return;
+        Action<bool> NewGameCallback() =>
+            result =>
+            {
+                if (!result) return;
 
-            Game = null;
-            Rounds = new List<IRoundViewModel>();
-            CurrentRound = null;
-            Navigate<ISettingsPage>();
-        };
+                Game = null;
+                Rounds = new List<IRoundViewModel>();
+                CurrentRound = null;
+                Navigate<IMainPage>();
+            };
 
-        Action<bool> Callback2() => result =>
-        {
-            if (result) Application.Current?.Quit();
-        };
+        Action<bool> QuitGameCallback() =>
+            result =>
+            {
+                if (result) Application.Current?.Quit();
+            };
 
-        _alertService.ShowActionSheet("What Next?", "New Game", Callback1(), "Quit Game", Callback2());
+        _alertService.ShowActionSheet("What Next?", "New Game", NewGameCallback(), "Quit Game", QuitGameCallback());
     }
 
     private void DiscardPickup()

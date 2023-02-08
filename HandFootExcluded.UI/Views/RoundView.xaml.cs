@@ -7,7 +7,7 @@ public interface IRoundView : IViewBase<IRoundViewModel>
 
 }
 
-public partial class RoundView : ViewBase<IRoundViewModel>, IRoundView
+public partial class RoundView : IRoundView
 {
 	public RoundView() 
 	{

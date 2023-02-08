@@ -7,7 +7,7 @@ public interface IGamePage : IPageBase<IGamePageViewModel>
 
 }
 
-public partial class GamePage : PageBase<IGamePageViewModel>, IGamePage
+public partial class GamePage : IGamePage
 {
 	public GamePage(IGamePageViewModel viewModel) : base(viewModel)
 	{

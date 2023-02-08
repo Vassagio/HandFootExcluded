@@ -1,8 +1,8 @@
-﻿using System.Diagnostics;
+﻿namespace HandFootExcluded.Core.PlayerServices;
 
-namespace HandFootExcluded.Core.PlayerServices;
-
-public interface IExcludedPlayer : IPositionalPlayer { }
+public interface IExcludedPlayer : IPositionalPlayer
+{
+}
 
 internal sealed partial class PositionalPlayerFactory
 {

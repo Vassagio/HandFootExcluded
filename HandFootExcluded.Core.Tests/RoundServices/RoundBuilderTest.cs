@@ -22,7 +22,7 @@ public class RoundBuilderTest
     {
         var positionalPlayerFactory = new PositionalPlayerFactory();
         var teamBuilder = new TeamBuilder();
-        var orderedPlayers = GetOrderedPlayers();
+        var orderedPlayers = GetOrderedPlayers().ToList();
         var roundOrdering = GetRoundOrdering();
 
         var builder = BuildRoundBuilder(positionalPlayerFactory, teamBuilder);

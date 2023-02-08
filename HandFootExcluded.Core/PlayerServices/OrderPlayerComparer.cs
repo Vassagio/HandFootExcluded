@@ -4,6 +4,8 @@ public sealed class OrderPlayerComparer : IEqualityComparer<IOrderedPlayer>
 {
     public static readonly OrderPlayerComparer Instance = new();
 
+    private OrderPlayerComparer() { }
+
     public bool Equals(IOrderedPlayer x, IOrderedPlayer y)
     {
         if (ReferenceEquals(x, y)) return true;
@@ -14,6 +16,4 @@ public sealed class OrderPlayerComparer : IEqualityComparer<IOrderedPlayer>
     }
 
     public int GetHashCode(IOrderedPlayer obj) => obj.Order;
-
-    private OrderPlayerComparer(){ }
 }

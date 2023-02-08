@@ -5,7 +5,7 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:v="using:HandFootExcluded.UI.Views"
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
-            x:Class="HandFootExcluded.UI.Views.RoundView">
+            x:Class="HandFootExcluded.UI.Views.RoundView" x:DataType="vm:IRoundViewModel">
     <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -17,7 +17,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Grid.Column="1" BackgroundColor="DarkBlue" HorizontalOptions="Fill" VerticalOptions="Fill">
+        <Grid Grid.Row="0" Grid.Column="0" BackgroundColor="DarkBlue" HorizontalOptions="Fill" VerticalOptions="Fill">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -31,10 +31,10 @@
             </HorizontalStackLayout>
         </Grid>
 
-        <v:TeamView Grid.Row="1" Grid.Column="1" BindingContext="{Binding StartingTeam}" BackgroundColor="LightBlue" />
-        <v:TeamView Grid.Row="2" Grid.Column="1" BindingContext="{Binding OpposingTeam}" BackgroundColor="AliceBlue" />
+        <v:TeamView Grid.Row="1" Grid.Column="0" BindingContext="{Binding StartingTeam}" BackgroundColor="LightBlue" />
+        <v:TeamView Grid.Row="2" Grid.Column="0" BindingContext="{Binding OpposingTeam}" BackgroundColor="AliceBlue" />
 
-        <HorizontalStackLayout Grid.Row="3" Grid.Column="1" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="MediumVioletRed">
+        <HorizontalStackLayout Grid.Row="3" Grid.Column="0" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="MediumVioletRed">
             <Entry Margin="3,0" IsReadOnly="True" Text="Excluded Player:" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontAttributes="Bold" FontSize="20" />
             <Entry Margin="3,0" IsReadOnly="True" Text="{Binding ExcludedPlayerInitials}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontAttributes="Bold" FontSize="20" />
         </HorizontalStackLayout>

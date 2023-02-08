@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 
 namespace HandFootExcluded.Common;
 
@@ -39,6 +40,30 @@ public abstract class BindableItem : INotifyPropertyChanged, IBindableItem
         OnPropertyChanged(propertyName);
 
         return true;
+    }
+
+    protected ICommand SetCommand(ref ICommand command, Action execute)
+    {
+        command ??= new Command(execute);
+        return command;
+    }
+
+    protected ICommand SetCommand(ref ICommand command, Action execute, Func<bool> canExecute)
+    {
+        command ??= new Command(execute, canExecute);
+        return command;
+    }
+
+    protected ICommand SetCommand<T>(ref ICommand command, Action<T> execute)
+    {
+        command ??= new Command<T>(execute);
+        return command;
+    }
+
+    protected ICommand SetCommand<T>(ref ICommand command, Action<T> execute, Func<T, bool> canExecute) 
+    {
+        command ??= new Command<T>(execute, canExecute);
+        return command;
     }
 
     private void OnPropertyChanged([CallerMemberName] string name = "")

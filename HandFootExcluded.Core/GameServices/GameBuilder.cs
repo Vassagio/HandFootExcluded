@@ -6,7 +6,7 @@ namespace HandFootExcluded.Core.GameServices;
 
 public interface IRoundOrder
 {
-    int Order {get;}
+    int Order { get; }
     int OpenAmount { get; }
     int StartingPlayer { get; }
     int StartingPartner { get; }
@@ -26,7 +26,9 @@ public interface IGameBuilderRoundOrdering : IBuilder
     IGameBuilderBuild WithRoundOrdering(IEnumerable<IRoundOrder> roundOrdering);
 }
 
-public interface IGameBuilderBuild : IBuilder<IGame> { }
+public interface IGameBuilderBuild : IBuilder<IGame>
+{
+}
 
 internal sealed partial class GameBuilder : BuilderBase<GameBuilder, IGame>, IGameBuilder, IGameBuilderRoundOrdering, IGameBuilderBuild
 {
@@ -48,8 +50,7 @@ internal sealed partial class GameBuilder : BuilderBase<GameBuilder, IGame>, IGa
     {
         if (_nonPositionalPlayers == null || !_nonPositionalPlayers.Any()) return UnknownGame.Instance;
 
-
-        var orderedPlayers = Shuffle(_nonPositionalPlayers);
+        var orderedPlayers = Shuffle(_nonPositionalPlayers).ToList();
         var rounds = _roundBuilder.WithOrderedPlayers(orderedPlayers)
                                   .WithRoundOrdering(_roundOrdering)
                                   .Build();
@@ -59,12 +60,14 @@ internal sealed partial class GameBuilder : BuilderBase<GameBuilder, IGame>, IGa
 
     private IOrderedEnumerable<IOrderedPlayer> Shuffle(IEnumerable<INonPositionalPlayer> unshuffledPlayers)
     {
-        var shuffledPlayers = unshuffledPlayers.ToList().Shuffle();
+        var shuffledPlayers = unshuffledPlayers.ToList()
+                                               .Shuffle();
         var orderedPlayers = new List<IOrderedPlayer>();
         for (var i = 1; i <= shuffledPlayers.Count; i++)
-            orderedPlayers.Add(_orderedPlayerBuilder.WithPlayer(shuffledPlayers[i - 1]).WithOrder(i).Build());
+            orderedPlayers.Add(_orderedPlayerBuilder.WithPlayer(shuffledPlayers[i - 1])
+                                                    .WithOrder(i)
+                                                    .Build());
 
         return orderedPlayers.OrderBy(p => p.Order);
     }
-
 }

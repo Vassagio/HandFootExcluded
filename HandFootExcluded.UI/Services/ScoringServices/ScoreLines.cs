@@ -39,18 +39,25 @@ internal sealed class ScoreLines : IScoreLines
         return this;
     }
 
-    public IEnumerable<string> GetPlayers() => _lines.Select(l => l.Initials).Distinct();
-    public IEnumerable<int> GetRoundOrders() => _lines.OfType<IRoundScoreLine>().Select(l => l.RoundOrder).Distinct();
+    public IEnumerable<string> GetPlayers() =>
+        _lines.Select(l => l.Initials)
+              .Distinct();
+    public IEnumerable<int> GetRoundOrders() =>
+        _lines.OfType<IRoundScoreLine>()
+              .Select(l => l.RoundOrder)
+              .Distinct();
     public IScoreLines GetTotalScoreLines(int roundOrder)
     {
         var roundTotalScoreLines = _lines.OfType<IRoundTotalScoreLine>();
-        return new ScoreLines(roundTotalScoreLines.Where(l => l.RoundOrder == roundOrder).OrderByDescending(l => l.Value));
+        return new ScoreLines(roundTotalScoreLines.Where(l => l.RoundOrder == roundOrder)
+                                                  .OrderByDescending(l => l.Value));
     }
 
     public IScoreLines GetTotalScoreLines()
     {
         var roundTotalScoreLines = _lines.OfType<IRoundTotalScoreLine>();
-        return new ScoreLines(roundTotalScoreLines.OrderBy(l => l.RoundOrder).ThenByDescending(l => l.Value));
+        return new ScoreLines(roundTotalScoreLines.OrderBy(l => l.RoundOrder)
+                                                  .ThenByDescending(l => l.Value));
     }
 
     public IScoreLines GetCumulativeLines()

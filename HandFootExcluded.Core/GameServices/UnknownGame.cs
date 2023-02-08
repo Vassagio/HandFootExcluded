@@ -6,10 +6,12 @@ namespace HandFootExcluded.Core.GameServices;
 public sealed class UnknownGame : IGame
 {
     public static readonly UnknownGame Instance = new();
-    private static readonly IOrderedEnumerable<IOrderedPlayer> _orderedPlayers = Enumerable.Empty<IOrderedPlayer>().OrderBy(p => p.Order);
+
+    private static readonly IReadOnlyList<IOrderedPlayer> Players = Enumerable.Empty<IOrderedPlayer>()
+                                                                                      .OrderBy(p => p.Order).ToList();
+
+    private UnknownGame() { }
 
     public IRounds Rounds => UnknownRounds.Instance;
-    public IOrderedEnumerable<IOrderedPlayer> OrderedPlayers => _orderedPlayers;
-
-    private UnknownGame() {}
+    public IReadOnlyList<IOrderedPlayer> OrderedPlayers => Players;
 }

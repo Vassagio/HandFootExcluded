@@ -9,6 +9,12 @@ public interface IRoundTotalScoreLine : IRoundScoreLine
 
 internal sealed class RoundTotalScoreLine : RoundScoreLineBase, IRoundTotalScoreLine
 {
+    public RoundTotalScoreLine(int roundOrder, string initials, IBonusScoreLine bonusScoreLine, ITopScoreLine topScoreLine, IBottomScoreLine bottomScoreLine) : base(roundOrder, initials, GetValue(bonusScoreLine, topScoreLine, bottomScoreLine))
+    {
+        BonusScore = bonusScoreLine;
+        TopScore = topScoreLine;
+        BottomScore = bottomScoreLine;
+    }
     public override int Order => 4;
     public override string Name => "Round";
     public IBonusScoreLine BonusScore { get; }
@@ -16,13 +22,6 @@ internal sealed class RoundTotalScoreLine : RoundScoreLineBase, IRoundTotalScore
     public IBottomScoreLine BottomScore { get; }
     public override bool IsBold => true;
     public override int FontSize => 18;
-
-    public RoundTotalScoreLine(int roundOrder, string initials, IBonusScoreLine bonusScoreLine, ITopScoreLine topScoreLine, IBottomScoreLine bottomScoreLine) : base(roundOrder, initials, GetValue(bonusScoreLine, topScoreLine, bottomScoreLine))
-    {
-        BonusScore = bonusScoreLine;
-        TopScore = topScoreLine;
-        BottomScore = bottomScoreLine;
-    }
 
     private static int GetValue(IBonusScoreLine bonusScoreLine, ITopScoreLine topScoreLine, IBottomScoreLine bottomScoreLine) => bonusScoreLine.Value + topScoreLine.Value + bottomScoreLine.Value;
 }

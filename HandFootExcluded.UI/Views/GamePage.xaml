@@ -6,7 +6,7 @@
             x:Class="HandFootExcluded.UI.Views.GamePage"
             xmlns:v="using:HandFootExcluded.UI.Views"
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
-            Title="GamePage">
+            Title="GamePage" x:DataType="vm:IGamePageViewModel">
     <Grid VerticalOptions="Fill" HorizontalOptions="Fill" BackgroundColor="DarkBlue">
         <Grid.Resources>
             <Style TargetType="Button">

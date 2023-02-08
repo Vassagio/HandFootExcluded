@@ -1,6 +1,4 @@
 ﻿using HandFootExcluded.UI.Services;
-using HandFootExcluded.UI.ViewModels;
-using HandFootExcluded.UI.Views;
 
 namespace HandFootExcluded.UI;
 
@@ -13,7 +11,7 @@ public partial class AppShell : Shell
         _deviceOrientationService = deviceOrientationService ?? throw new ArgumentNullException(nameof(deviceOrientationService));
 
         InitializeComponent();
-        
+
         MainContent.Content = MauiProgram.Services.GetService<IMainPage>();
     }
 

@@ -7,7 +7,7 @@ public interface ITotalScoreView : IViewBase<ITotalScoreViewModel>
 
 }
 
-public partial class TotalScoreView : ViewBase<ITotalScoreViewModel>, ITotalScoreView
+public partial class TotalScoreView : ITotalScoreView
 {
 	public TotalScoreView()
 	{

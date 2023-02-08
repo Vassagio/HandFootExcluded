@@ -1,6 +1,8 @@
 ﻿namespace HandFootExcluded.Core.PlayerServices;
 
-public interface IOpposingPartner : IPositionalPlayer { }
+public interface IOpposingPartner : IPositionalPlayer
+{
+}
 
 internal sealed partial class PositionalPlayerFactory
 {

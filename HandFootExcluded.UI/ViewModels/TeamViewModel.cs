@@ -17,14 +17,14 @@ public interface ITeamViewModel : IViewModel
 
 internal sealed class TeamViewModel : ViewModelBase, ITeamViewModel
 {
-    private string _teamName;
-    private string _playerInitials;
-    private bool _playerBonus = false;
-    private string _partnerInitials;
-    private bool _partnerBonus = false;
-    private int _topScore;
     private int _bottomScore;
+    private bool _partnerBonus;
+    private string _partnerInitials;
+    private bool _playerBonus;
+    private string _playerInitials;
     private int _score;
+    private string _teamName;
+    private int _topScore;
 
     public string TeamName { get => _teamName; set => SetProperty(ref _teamName, value); }
     public string PlayerInitials { get => _playerInitials; set => SetProperty(ref _playerInitials, value); }
@@ -35,11 +35,9 @@ internal sealed class TeamViewModel : ViewModelBase, ITeamViewModel
     public int BottomScore { get => _bottomScore; set => SetProperty(ref _bottomScore, value, OnScoreChanged); }
     public int Score { get => _score; set => SetProperty(ref _score, value); }
 
- 
-
     private void OnScoreChanged()
     {
-        Score = TopScore + BottomScore; 
+        Score = TopScore + BottomScore;
         EventAggregator.Instance.SendMessage(new ScoreChangedEvent());
     }
 }

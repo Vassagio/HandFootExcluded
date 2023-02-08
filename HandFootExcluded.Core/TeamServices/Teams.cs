@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 using HandFootExcluded.Common;
-using HandFootExcluded.Core.TeamServices;
 
-namespace HandFootExcluded.Core.Teamservices;
+namespace HandFootExcluded.Core.TeamServices;
 
 public interface ITeams : IEnumerable<ITeam>
 {
@@ -14,8 +13,6 @@ public interface ITeams : IEnumerable<ITeam>
 internal sealed class Teams : ITeams
 {
     private readonly ISet<ITeam> _teams = new HashSet<ITeam>();
-    public int Count => _teams.Count;
-    public bool IsReadOnly => _teams.IsReadOnly;
 
     public Teams() { }
 
@@ -36,12 +33,13 @@ internal sealed class Teams : ITeams
 
     public void AddRange(IEnumerable<ITeam> teams)
     {
-        foreach (var Team in teams.Where(p => p is not UnknownTeam))
-            _teams.Add(Team);
+        foreach (var team in teams.Where(p => p is not UnknownTeam))
+            _teams.Add(team);
     }
 
     public TTeam Find<TTeam>() where TTeam : class, ITeam =>
-        _teams.OfType<TTeam>().SingleOrElse(UnknownTeam.Instance as TTeam);
+        _teams.OfType<TTeam>()
+              .SingleOrElse(UnknownTeam.Instance as TTeam);
 
     public IEnumerator<ITeam> GetEnumerator() => _teams.GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

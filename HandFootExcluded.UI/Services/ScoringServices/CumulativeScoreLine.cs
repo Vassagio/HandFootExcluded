@@ -7,14 +7,14 @@ public interface ICumulativeScoreLine : IRoundScoreLine
 
 internal sealed class CumulativeScoreLine : RoundScoreLineBase, ICumulativeScoreLine
 {
+    protected override string Display => $"{Initials} {Name}: {Value}";
+
+    public CumulativeScoreLine(int roundOrder, string initials, IEnumerable<IRoundTotalScoreLine> roundTotalScoreLines) : base(roundOrder, initials, GetValue(roundTotalScoreLines)) => RoundTotalScoreLines = roundTotalScoreLines;
     public override int Order => 5;
     public override string Name => "Cumulative";
-    protected override string Display => $"{Initials} {Name}: {Value}";
     public IEnumerable<IRoundTotalScoreLine> RoundTotalScoreLines { get; }
     public override bool IsBold => true;
     public override int FontSize => 18;
-
-    public CumulativeScoreLine(int roundOrder, string initials, IEnumerable<IRoundTotalScoreLine> roundTotalScoreLines) : base(roundOrder, initials, GetValue(roundTotalScoreLines)) => RoundTotalScoreLines = roundTotalScoreLines;
 
     private static int GetValue(IEnumerable<IRoundTotalScoreLine> roundTotalScoreLines) => roundTotalScoreLines.Sum(l => l.Value);
 }

@@ -15,12 +15,14 @@ public interface ITeamBuilderPartner : IBuilder
     ITeamBuilderBuild WithPartner(IOpposingPartner partner);
 }
 
-public interface ITeamBuilderBuild : IBuilder<ITeam> { }
+public interface ITeamBuilderBuild : IBuilder<ITeam>
+{
+}
 
 internal sealed partial class TeamBuilder : BuilderBase<TeamBuilder, ITeam>, ITeamBuilder, ITeamBuilderPartner, ITeamBuilderBuild
 {
-    private IPositionalPlayer _player;
     private IPositionalPlayer _partner;
+    private IPositionalPlayer _player;
     public ITeamBuilderPartner WithPlayer(IStartingPlayer player) => SetProperty(ref _player, player);
     public ITeamBuilderPartner WithPlayer(IOpposingPlayer player) => SetProperty(ref _player, player);
     public ITeamBuilderBuild WithPartner(IStartingPartner partner) => SetProperty(ref _partner, partner);

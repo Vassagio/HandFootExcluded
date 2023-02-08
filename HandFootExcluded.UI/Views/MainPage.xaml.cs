@@ -5,7 +5,7 @@ namespace HandFootExcluded.UI;
 
 public interface IMainPage : IPageBase<IMainPageViewModel> { }
 
-public sealed partial class MainPage : PageBase<IMainPageViewModel>, IMainPage
+public sealed partial class MainPage : IMainPage
 {
     public MainPage(IMainPageViewModel viewModel) : base(viewModel)
     {

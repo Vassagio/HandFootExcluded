@@ -6,7 +6,7 @@
             x:Class="HandFootExcluded.UI.Views.SettingsPage"
             xmlns:v="using:HandFootExcluded.UI.Views"
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
-            Title="SettingsPage">
+            Title="SettingsPage" x:DataType="vm:ISettingsPageViewModel">
     <Border HorizontalOptions="Fill" VerticalOptions="Fill">
         <Grid>
             <Grid.Resources>
