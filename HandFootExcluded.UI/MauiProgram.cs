@@ -3,6 +3,7 @@ using HandFootExcluded.UI.Services;
 using HandFootExcluded.UI.ViewModels;
 using HandFootExcluded.UI.Views;
 using HandFootExcluded.Core;
+using HandFootExcluded.UI.Services.ConfigurationServices;
 using HandFootExcluded.UI.Services.GameHistoryServices;
 using HandFootExcluded.UI.Services.ScoringServices;
 
@@ -18,6 +19,7 @@ public static class MauiProgram
 
         builder
             .UseMauiApp<App>()
+           
            .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -44,6 +46,7 @@ public static class MauiProgram
                          .AddSingleton<IScoreLineFactory, ScoreLineFactory>()
                          .AddSingleton(SecureStorage.Default)
                          .AddSingleton<IGameHistoryService, GameHistoryService>()
+                         .AddSingleton<IConfigurationManager, ConfigurationManager>()
                          .AddExtension<CoreDependencies>();
 
     private static IServiceCollection AddViewModels(this IServiceCollection serviceCollection) =>

@@ -143,7 +143,7 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
         }
         else
         {
-            _gameHistoryService.Save(_game);
+            _gameHistoryService.Save(_game, _rounds);
             Summary();
         }
     }

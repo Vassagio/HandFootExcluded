@@ -61,23 +61,23 @@
 
                 <Label Grid.Row="1" Grid.Column="0" Text="1:" />
                 <Editor Grid.Row="1" Grid.Column="1" Placeholder="Enter Player 1:"
-                        Text="{Binding DefaultPlayer1, Mode=TwoWay}" />
+                        Text="{Binding Player1, Mode=TwoWay}" />
 
                 <Label Grid.Row="2" Grid.Column="0" Text="2:" />
                 <Editor Grid.Row="2" Grid.Column="1" Placeholder="Enter Player 2:"
-                        Text="{Binding DefaultPlayer2, Mode=TwoWay}" />
+                        Text="{Binding Player2, Mode=TwoWay}" />
 
                 <Label Grid.Row="3" Grid.Column="0" Text="3:" />
                 <Editor Grid.Row="3" Grid.Column="1" Placeholder="Enter Player 3:"
-                        Text="{Binding DefaultPlayer3, Mode=TwoWay}" />
+                        Text="{Binding Player3, Mode=TwoWay}" />
 
                 <Label Grid.Row="4" Grid.Column="0" Text="4:" />
                 <Editor Grid.Row="4" Grid.Column="1" Placeholder="Enter Player 4:"
-                        Text="{Binding DefaultPlayer4, Mode=TwoWay}" />
+                        Text="{Binding Player4, Mode=TwoWay}" />
 
                 <Label Grid.Row="5" Grid.Column="0" Text="5:" />
                 <Editor Grid.Row="5" Grid.Column="1" Placeholder="Enter Player 5:"
-                        Text="{Binding DefaultPlayer5, Mode=TwoWay}" />
+                        Text="{Binding Player5, Mode=TwoWay}" />
 
 
             </Grid>
