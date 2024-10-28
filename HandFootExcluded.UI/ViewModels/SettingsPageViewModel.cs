@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using Bertuzzi.MAUI.EventAggregator;
+using HandFootExcluded.Core.PlayerServices;
 using HandFootExcluded.UI.Eventing;
 using HandFootExcluded.UI.Views;
 
@@ -12,6 +13,13 @@ public interface ISettingsPageViewModel : IViewModel
     string DefaultPlayer3 { get; }
     string DefaultPlayer4 { get; }
     string DefaultPlayer5 { get; }
+
+    bool RandomExcludedPlayer { get; }
+    bool ExcludedPlayer1 { get; }
+    bool ExcludedPlayer2 { get; }
+    bool ExcludedPlayer3 { get; }
+    bool ExcludedPlayer4 { get; }
+    bool ExcludedPlayer5 { get; }
 
     int BonusAmount { get; }
     int MinDiscardPickup { get; }
@@ -34,6 +42,13 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
     private string _defaultPlayer4 = "Korian Alexa Chronowski";
     private string _defaultPlayer5 = "Jay Michael Looney";
 
+    private bool _randomExcludedPlayer = true;
+    private bool _excludedPlayer1 = false;
+    private bool _excludedPlayer2 = false;
+    private bool _excludedPlayer3 = false;
+    private bool _excludedPlayer4 = false;
+    private bool _excludedPlayer5 = false;
+
     private int _bonusAmount = 250;
     private int _minDiscardPickup = 4;
     private int _maxDiscardPickup = 10;
@@ -52,6 +67,13 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
     public string DefaultPlayer4 { get => _defaultPlayer4; set => SetProperty(ref _defaultPlayer4, value); }
     public string DefaultPlayer5 { get => _defaultPlayer5; set => SetProperty(ref _defaultPlayer5, value); }
 
+    public bool RandomExcludedPlayer { get => _randomExcludedPlayer; set => SetProperty(ref _randomExcludedPlayer, value); }
+    public bool ExcludedPlayer1 { get => _excludedPlayer1; set => SetProperty(ref _excludedPlayer1, value); }
+    public bool ExcludedPlayer2 { get => _excludedPlayer2; set => SetProperty(ref _excludedPlayer2, value); }
+    public bool ExcludedPlayer3 { get => _excludedPlayer3; set => SetProperty(ref _excludedPlayer3, value); }
+    public bool ExcludedPlayer4 { get => _excludedPlayer4; set => SetProperty(ref _excludedPlayer4, value); }
+    public bool ExcludedPlayer5 { get => _excludedPlayer5; set => SetProperty(ref _excludedPlayer5, value); }
+
     public int BonusAmount { get => _bonusAmount; set => SetProperty(ref _bonusAmount, value); }
     public int MinDiscardPickup { get => _minDiscardPickup; set => SetProperty(ref _minDiscardPickup, value); }
     public int MaxDiscardPickup { get => _maxDiscardPickup; set => SetProperty(ref _maxDiscardPickup, value); }
@@ -66,13 +88,13 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
 
     private void Ok()
     {
-        var players = new List<string>
+        var players = new List<IPlayerSetting>
         {
-            _defaultPlayer1,
-            _defaultPlayer2,
-            _defaultPlayer3,
-            _defaultPlayer4,
-            _defaultPlayer5
+            PlayerSetting.Create(_defaultPlayer1, _excludedPlayer1),
+            PlayerSetting.Create(_defaultPlayer2, _excludedPlayer2),
+            PlayerSetting.Create(_defaultPlayer3, _excludedPlayer3),
+            PlayerSetting.Create(_defaultPlayer4, _excludedPlayer4),
+            PlayerSetting.Create(_defaultPlayer5, _excludedPlayer5)
         };
 
         var roundOpenings = new List<int>

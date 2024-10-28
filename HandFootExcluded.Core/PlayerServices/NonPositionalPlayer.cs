@@ -10,10 +10,11 @@ public interface INonPositionalPlayer
     string MiddleName { get; }
     string LastName { get; }
     string Initials { get; }
+    bool IsExcludedFirst { get; }
 }
 
 [DebuggerDisplay("{Display,nq}")]
-internal abstract record NonPositionalPlayerBase(string FullName, string FirstName, string MiddleName, string LastName, string Initials) : INonPositionalPlayer
+internal abstract record NonPositionalPlayerBase(string FullName, string FirstName, string MiddleName, string LastName, string Initials, bool IsExcludedFirst = false) : INonPositionalPlayer
 {
     private string Display => Initials.PadRight(3, ' ');
 

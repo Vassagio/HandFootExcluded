@@ -51,6 +51,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
 
@@ -59,22 +60,27 @@
                 <Label Grid.Row="1" Grid.Column="0" Text="1:" />
                 <Editor Grid.Row="1" Grid.Column="1" Placeholder="Enter Player 1:"
                         Text="{Binding DefaultPlayer1, Mode=TwoWay}" />
+                <RadioButton Grid.Row="1" Grid.Column="2" GroupName="excludedGroup" IsChecked="{Binding ExcludedPlayer1, Mode=TwoWay}"></RadioButton>
 
                 <Label Grid.Row="2" Grid.Column="0" Text="2:" />
                 <Editor Grid.Row="2" Grid.Column="1" Placeholder="Enter Player 2:"
                         Text="{Binding DefaultPlayer2, Mode=TwoWay}" />
+                <RadioButton Grid.Row="2" Grid.Column="2" GroupName="excludedGroup" IsChecked="{Binding ExcludedPlayer2, Mode=TwoWay}"></RadioButton>
 
                 <Label Grid.Row="3" Grid.Column="0" Text="3:" />
                 <Editor Grid.Row="3" Grid.Column="1" Placeholder="Enter Player 3:"
                         Text="{Binding DefaultPlayer3, Mode=TwoWay}" />
+                <RadioButton Grid.Row="3" Grid.Column="2" GroupName="excludedGroup" IsChecked="{Binding ExcludedPlayer3, Mode=TwoWay}"></RadioButton>
 
                 <Label Grid.Row="4" Grid.Column="0" Text="4:" />
                 <Editor Grid.Row="4" Grid.Column="1" Placeholder="Enter Player 4:"
                         Text="{Binding DefaultPlayer4, Mode=TwoWay}" />
+                <RadioButton Grid.Row="4" Grid.Column="2" GroupName="excludedGroup" IsChecked="{Binding ExcludedPlayer4, Mode=TwoWay}"></RadioButton>
 
                 <Label Grid.Row="5" Grid.Column="0" Text="5:" />
                 <Editor Grid.Row="5" Grid.Column="1" Placeholder="Enter Player 5:"
                         Text="{Binding DefaultPlayer5, Mode=TwoWay}" />
+                <RadioButton Grid.Row="5" Grid.Column="2" GroupName="excludedGroup" IsChecked="{Binding ExcludedPlayer5, Mode=TwoWay}"></RadioButton>
 
 
             </Grid>

@@ -27,13 +27,13 @@ public class GameServiceTest
         var gameBuilder = new GameBuilder(orderedPlayerBuilder, roundBuilder);
         var service = BuildGameService(gameBuilder, nonPositionalPlayerBuilder);
 
-        var players = new List<string>()
+        var players = new List<IPlayerSetting>()
         {
-            "Player 1",
-            "Player 2",
-            "Player 3",
-            "Player 4",
-            "Player 5",
+            PlayerSetting.Create("Player 1", false),
+            PlayerSetting.Create("Player 2", false),
+            PlayerSetting.Create("Player 3", false),
+            PlayerSetting.Create("Player 4", false),
+            PlayerSetting.Create("Player 5", false),
         };
 
         var roundOpeningAmounts = new List<int>()

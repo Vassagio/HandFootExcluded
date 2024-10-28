@@ -4,7 +4,7 @@ namespace HandFootExcluded.Core.GameServices;
 
 public interface IGameService
 {
-    IGame CreateGame(IEnumerable<string> playerNames, IEnumerable<int> roundOpeningAmounts);
+    IGame CreateGame(IEnumerable<IPlayerSetting> playerSettings, IEnumerable<int> roundOpeningAmounts);
 }
 
 internal sealed class GameService : IGameService
@@ -18,16 +18,16 @@ internal sealed class GameService : IGameService
         _nonPositionalPlayerBuilder = nonPositionalPlayerBuilder ?? throw new ArgumentNullException(nameof(nonPositionalPlayerBuilder));
     }
 
-    public IGame CreateGame(IEnumerable<string> playerNames, IEnumerable<int> roundOpeningAmounts)
+    public IGame CreateGame(IEnumerable<IPlayerSetting> playerSettings, IEnumerable<int> roundOpeningAmounts)
     {
-        var players = CreatePlayers(playerNames);
+        var players = CreatePlayers(playerSettings);
         var roundOrdering = CreateRoundOrdering(roundOpeningAmounts.ToList());
 
         return _gameBuilder.WithPlayers(players).WithRoundOrdering(roundOrdering).Build();
     }
 
-    private IEnumerable<INonPositionalPlayer> CreatePlayers(IEnumerable<string> playerNames) => 
-        playerNames.Select(playerName => _nonPositionalPlayerBuilder.WithFullName(playerName).Build()).ToList();
+    private IEnumerable<INonPositionalPlayer> CreatePlayers(IEnumerable<IPlayerSetting> playerSettings) =>
+        playerSettings.Select(playerSetting => _nonPositionalPlayerBuilder.WithFullName(playerSetting.Name).IsExcluded(playerSetting.Excluded).Build()).ToList();
 
     private static IEnumerable<IRoundOrder> CreateRoundOrdering(IReadOnlyList<int> roundOpeningAmounts)
     {
