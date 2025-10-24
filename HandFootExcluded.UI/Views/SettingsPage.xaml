@@ -156,7 +156,7 @@
             </Grid>
 
             <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Text="Ok" HorizontalOptions="Center"
-                    Command="{Binding OkCommand}" BackgroundColor="DarkBlue" />
+                    Command="{Binding OkCommand}" BackgroundColor="DarkBlue" TextColor="White" />
         </Grid>
     </Border>
 </v:PageBase>

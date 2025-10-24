@@ -53,11 +53,11 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
     private int _minDiscardPickup = 4;
     private int _maxDiscardPickup = 10;
 
-    private int _roundOpening1 = 50;
-    private int _roundOpening2 = 75;
+    private int _roundOpening1 = 100;
+    private int _roundOpening2 = 100;
     private int _roundOpening3 = 100;
-    private int _roundOpening4 = 125;
-    private int _roundOpening5 = 150;
+    private int _roundOpening4 = 100;
+    private int _roundOpening5 = 100;
 
     private Command _okCommand;
 

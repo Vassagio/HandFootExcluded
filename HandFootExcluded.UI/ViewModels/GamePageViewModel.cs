@@ -7,6 +7,7 @@ using HandFootExcluded.UI.Eventing;
 using HandFootExcluded.UI.Services.ScoringServices;
 using HandFootExcluded.UI.Views;
 using System.Windows.Input;
+using HandFootExcluded.Common;
 using HandFootExcluded.UI.Services;
 
 namespace HandFootExcluded.UI.ViewModels;
@@ -157,7 +158,25 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
     private void DiscardPickup()
     {
         var random = new Random(Environment.TickCount);
-        var amount = random.NextInt64(MinDiscardPickup, MaxDiscardPickup);
+
+
+        var shuffledWeightedList = GetShuffledWeightedList();
+        var amount = shuffledWeightedList[random.Next(shuffledWeightedList.Count)];
         _alertService.ShowAlert("Discard Pickup", $"Pickup {amount} cards from the discard pile.");
+    }
+
+    private IList<int> GetShuffledWeightedList()
+    {
+        const int defaultPickup = 8;
+        var weightedList = new List<int>();
+
+        for (var i = MinDiscardPickup; i < MaxDiscardPickup; i++)
+        {
+            var weight = Math.Abs(defaultPickup - (defaultPickup - i));
+
+            for (var j = 1; j < weight; j++) weightedList.Add(i);
+        }
+
+        return weightedList.Shuffle();
     }
 }

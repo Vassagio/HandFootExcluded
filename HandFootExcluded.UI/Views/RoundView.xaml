@@ -27,17 +27,17 @@
                 <RowDefinition Height="60"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Entry x:Name="roundLabel" Grid.Column="0" MaximumHeightRequest="50" Text="{Binding Order, StringFormat='Round {0}'}" IsReadOnly="True" TextColor="White" HorizontalOptions="Fill" VerticalOptions="Center" VerticalTextAlignment="Center" FontSize="30" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+            <Label x:Name="roundLabel" Grid.Column="0" MaximumHeightRequest="50" Text="{Binding Order, StringFormat='Round {0}'}" TextColor="White" HorizontalOptions="Fill" VerticalOptions="Center" VerticalTextAlignment="Center" FontSize="28" FontAttributes="Bold" HorizontalTextAlignment="Center" Margin="0,0,0,10"/>
             <HorizontalStackLayout Grid.Column="2" BackgroundColor="DarkBlue" HorizontalOptions="End" VerticalOptions="Fill">
-                <Entry Margin="3,0" Text="Open:" FontAttributes="Bold" IsReadOnly="True" TextColor="Yellow" HorizontalOptions="Fill" VerticalOptions="Fill" FontSize="14" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
-                <Entry Margin="0,0,10,0" Text="{Binding OpenAmount}" IsReadOnly="True" TextColor="Yellow" HorizontalOptions="Fill" VerticalOptions="Fill" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                <Label Margin="3,0" Text="Open:" FontAttributes="Bold" TextColor="Yellow" HorizontalOptions="Fill" VerticalOptions="Fill" FontSize="14" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                <Label Margin="0,0,10,0" Text="{Binding OpenAmount}" TextColor="Yellow" HorizontalOptions="Fill" VerticalOptions="Fill" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
             </HorizontalStackLayout>
         </Grid>
 
-        <v:TeamView Grid.Row="1" Grid.Column="1" BindingContext="{Binding StartingTeam}" BackgroundColor="LightBlue" />
-        <v:TeamView Grid.Row="2" Grid.Column="1" BindingContext="{Binding OpposingTeam}" BackgroundColor="AliceBlue" />
+        <v:TeamView Grid.Row="1" BindingContext="{Binding StartingTeam}" BackgroundColor="#60C71585" />
+        <v:TeamView Grid.Row="2" BindingContext="{Binding OpposingTeam}" BackgroundColor="#6034E2E2" />
 
-        <HorizontalStackLayout Grid.Row="3" Grid.Column="1" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="MediumVioletRed">
+        <HorizontalStackLayout Grid.Row="3" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="MediumVioletRed">
             <Label Margin="3,0" Text="Excluded Player:" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontAttributes="Bold" FontSize="20" />
             <Label Margin="3,0" Text="{Binding ExcludedPlayerInitials}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontAttributes="Bold" FontSize="20" />
         </HorizontalStackLayout>
