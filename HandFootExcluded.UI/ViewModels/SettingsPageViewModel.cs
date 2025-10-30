@@ -1,13 +1,19 @@
-﻿using System.Windows.Input;
+﻿using AndroidX.ConstraintLayout.Helper.Widget;
 using Bertuzzi.MAUI.EventAggregator;
+using HandFootExcluded.Core;
 using HandFootExcluded.Core.PlayerServices;
 using HandFootExcluded.UI.Eventing;
 using HandFootExcluded.UI.Views;
+using System.Windows.Input;
+using HandFootExcluded.UI.Services;
+using Xamarin.Google.Crypto.Tink.Proto;
 
 namespace HandFootExcluded.UI.ViewModels;
 
 public interface ISettingsPageViewModel : IViewModel
 {
+    List<IPlayerSetting> PlayerSettings { get; }
+
     string DefaultPlayer1 { get; }
     string DefaultPlayer2 { get; }
     string DefaultPlayer3 { get; }
@@ -25,6 +31,7 @@ public interface ISettingsPageViewModel : IViewModel
     int MinDiscardPickup { get; }
     int MaxDiscardPickup { get; }
 
+    List<int> RoundOpenings { get;  }
     int RoundOpening1 { get; }
     int RoundOpening2 { get; }
     int RoundOpening3 { get; }
@@ -32,10 +39,12 @@ public interface ISettingsPageViewModel : IViewModel
     int RoundOpening5 { get; }
 
     ICommand OkCommand { get; }
+    ICommand LoadCommand { get; }
 }
 
 internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewModel
 {
+    private readonly IJsonService _jsonService;
     private string _defaultPlayer1 = "William Christopher Chronowski";
     private string _defaultPlayer2 = "Tami Renae Chronowski";
     private string _defaultPlayer3 = "Kaelia Shyenne Chronowski";
@@ -60,6 +69,9 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
     private int _roundOpening5 = 100;
 
     private Command _okCommand;
+    private Command _loadCommand;
+
+    public List<IPlayerSetting> PlayerSettings { get; set; }
 
     public string DefaultPlayer1 { get => _defaultPlayer1; set => SetProperty(ref _defaultPlayer1, value); }
     public string DefaultPlayer2 { get => _defaultPlayer2; set => SetProperty(ref _defaultPlayer2, value); }
@@ -78,6 +90,7 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
     public int MinDiscardPickup { get => _minDiscardPickup; set => SetProperty(ref _minDiscardPickup, value); }
     public int MaxDiscardPickup { get => _maxDiscardPickup; set => SetProperty(ref _maxDiscardPickup, value); }
 
+    public List<int> RoundOpenings { get; set; }
     public int RoundOpening1 { get => _roundOpening1; set => SetProperty(ref _roundOpening1, value); }
     public int RoundOpening2 { get => _roundOpening2; set => SetProperty(ref _roundOpening2, value); }
     public int RoundOpening3 { get => _roundOpening3; set => SetProperty(ref _roundOpening3, value); }
@@ -85,10 +98,18 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
     public int RoundOpening5 { get => _roundOpening5; set => SetProperty(ref _roundOpening5, value); }
 
     public ICommand OkCommand => _okCommand ?? new Command(Ok);
+    public ICommand LoadCommand => _loadCommand ?? new Command(Load);
 
-    private void Ok()
+
+    public SettingsPageViewModel() {}
+    public SettingsPageViewModel(IJsonService jsonService)
     {
-        var players = new List<IPlayerSetting>
+        _jsonService = jsonService ?? throw new ArgumentNullException(nameof(jsonService));
+    }
+
+    private async void Ok()
+    {
+        PlayerSettings = new List<IPlayerSetting>
         {
             PlayerSetting.Create(_defaultPlayer1, _excludedPlayer1),
             PlayerSetting.Create(_defaultPlayer2, _excludedPlayer2),
@@ -97,7 +118,7 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
             PlayerSetting.Create(_defaultPlayer5, _excludedPlayer5)
         };
 
-        var roundOpenings = new List<int>
+        RoundOpenings = new List<int>
         {
             _roundOpening1,
             _roundOpening2,
@@ -106,8 +127,39 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
             _roundOpening5
         };
 
+        await _jsonService.SaveAsync<SettingsPageViewModel>(this, "settings.json");
+
         Navigate<IGamePage>();
 
-        EventAggregator.Instance.SendMessage(new SettingsChangedEvent(players, roundOpenings, _bonusAmount, _minDiscardPickup, _maxDiscardPickup));
+        EventAggregator.Instance.SendMessage(new SettingsChangedEvent(PlayerSettings, RoundOpenings, _bonusAmount, _minDiscardPickup, _maxDiscardPickup));
+    }
+
+
+    private async void Load()
+    {
+        var gamePageViewModel = await _jsonService.LoadAsync<GamePageViewModel>("game.json");
+        var settingsPageViewModel = await _jsonService.LoadAsync<SettingsPageViewModel>("settings.json");
+
+        settingsPageViewModel.PlayerSettings = new List<IPlayerSetting>
+        {
+            PlayerSetting.Create(settingsPageViewModel.DefaultPlayer1, settingsPageViewModel.ExcludedPlayer1),
+            PlayerSetting.Create(settingsPageViewModel.DefaultPlayer2, settingsPageViewModel.ExcludedPlayer2),
+            PlayerSetting.Create(settingsPageViewModel.DefaultPlayer3, settingsPageViewModel.ExcludedPlayer3),
+            PlayerSetting.Create(settingsPageViewModel.DefaultPlayer4, settingsPageViewModel.ExcludedPlayer4),
+            PlayerSetting.Create(settingsPageViewModel.DefaultPlayer5, settingsPageViewModel.ExcludedPlayer5)
+        };
+
+        settingsPageViewModel.RoundOpenings = new List<int>
+        {
+            settingsPageViewModel.RoundOpening1,
+            settingsPageViewModel.RoundOpening2,
+            settingsPageViewModel.RoundOpening3,
+            settingsPageViewModel.RoundOpening4,
+            settingsPageViewModel.RoundOpening5
+        };
+
+        Navigate<IGamePage>();
+
+        EventAggregator.Instance.SendMessage(new GameLoadedEvent(gamePageViewModel, settingsPageViewModel));
     }
 }

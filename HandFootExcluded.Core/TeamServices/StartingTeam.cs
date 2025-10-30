@@ -1,5 +1,4 @@
-﻿using HandFootExcluded.Common;
-using HandFootExcluded.Core.PlayerServices;
+﻿using HandFootExcluded.Core.PlayerServices;
 
 namespace HandFootExcluded.Core.TeamServices;
 
@@ -9,11 +8,8 @@ public interface IStartingTeam : ITeam<IStartingPlayer, IStartingPartner>
     new IStartingPartner Partner { get; }
 }
 
-internal sealed partial class TeamBuilder : BuilderBase<TeamBuilder, ITeam>, ITeamBuilder, ITeamBuilderPartner, ITeamBuilderBuild
+internal sealed class StartingTeam : Team<IStartingPlayer, IStartingPartner>, IStartingTeam
 {
-    private sealed class StartingTeam : Team<IStartingPlayer, IStartingPartner>, IStartingTeam
-    {
-        public override string Name => "Starting Team";
-        public StartingTeam(IStartingPlayer player, IStartingPartner partner) : base(player, partner) { }
-    }
+    public StartingTeam(IStartingPlayer player, IStartingPartner partner) : base(player, partner) { }
+    public override string Name => "Starting Team";
 }

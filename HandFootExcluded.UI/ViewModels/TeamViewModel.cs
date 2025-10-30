@@ -1,5 +1,7 @@
 ﻿using Bertuzzi.MAUI.EventAggregator;
 using HandFootExcluded.UI.Eventing;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace HandFootExcluded.UI.ViewModels;
 
@@ -35,11 +37,22 @@ internal sealed class TeamViewModel : ViewModelBase, ITeamViewModel
     public int BottomScore { get => _bottomScore; set => SetProperty(ref _bottomScore, value, OnScoreChanged); }
     public int Score { get => _score; set => SetProperty(ref _score, value); }
 
- 
-
     private void OnScoreChanged()
     {
         Score = TopScore + BottomScore; 
         EventAggregator.Instance.SendMessage(new ScoreChangedEvent());
+    }
+}
+
+public class TeamViewModelConverter : JsonConverter<ITeamViewModel>
+{
+    public override ITeamViewModel Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        return JsonSerializer.Deserialize<TeamViewModel>(ref reader, options);
+    }
+
+    public override void Write(Utf8JsonWriter writer, ITeamViewModel value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(writer, (TeamViewModel)value, options);
     }
 }

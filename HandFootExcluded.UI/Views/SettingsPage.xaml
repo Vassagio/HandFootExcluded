@@ -155,8 +155,12 @@
 
             </Grid>
 
-            <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Text="Ok" HorizontalOptions="Center"
-                    Command="{Binding OkCommand}" BackgroundColor="DarkBlue" TextColor="White" />
+            <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  Orientation="Horizontal" HorizontalOptions="Center">
+            <Button Text="Ok" HorizontalOptions="Start"
+                    Command="{Binding OkCommand}" BackgroundColor="DarkBlue" TextColor="White" Margin="2,0"/>
+            <Button Text="Load" HorizontalOptions="End"
+                    Command="{Binding LoadCommand}" BackgroundColor="DarkBlue" TextColor="White" Margin="2,0"/>
+            </StackLayout>
         </Grid>
     </Border>
 </v:PageBase>
