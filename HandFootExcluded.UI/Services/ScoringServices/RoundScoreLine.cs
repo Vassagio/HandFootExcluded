@@ -1,4 +1,5 @@
-﻿using static System.Formats.Asn1.AsnWriter;
+﻿using System.Text.Json.Serialization;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace HandFootExcluded.UI.Services.ScoringServices;
 
@@ -10,8 +11,11 @@ public interface IRoundScoreLine : IScoreLine
 
 internal abstract class RoundScoreLineBase : ScoreLineBase, IRoundScoreLine
 {
-    public int RoundOrder { get; }
+    public int RoundOrder { get; set; }
+
+    [JsonIgnore]
     protected override string Display => $"{Initials} {Name} {RoundOrder}: {Value}";
 
+    protected RoundScoreLineBase() : base() {}
     protected RoundScoreLineBase(int roundOrder, string initials, int value) : base(initials, value) => RoundOrder = roundOrder;
 }

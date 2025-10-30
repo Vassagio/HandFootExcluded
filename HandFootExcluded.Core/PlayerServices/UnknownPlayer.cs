@@ -10,6 +10,8 @@ public sealed class UnknownPlayer : IPositionalPlayer
     public string MiddleName => string.Empty;
     public string LastName => string.Empty;
     public string Initials => string.Empty;
+    public bool IsExcludedFirst => false;
+
     public int Order => -1;
 
     private UnknownPlayer() { }

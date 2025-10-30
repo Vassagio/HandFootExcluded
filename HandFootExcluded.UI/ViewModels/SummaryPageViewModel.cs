@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Text.Json.Serialization;
+using System.Windows.Input;
 using Bertuzzi.MAUI.EventAggregator;
 using HandFootExcluded.UI.Eventing;
 using HandFootExcluded.UI.Services.ScoringServices;
@@ -53,6 +54,8 @@ internal sealed class SummaryPageViewModel : ViewModelBase, ISummaryPageViewMode
     public string Player3Name { get => _player3Name; set => SetProperty(ref _player3Name, value); }
     public string Player4Name { get => _player4Name; set => SetProperty(ref _player4Name, value); }
     public string Player5Name { get => _player5Name; set => SetProperty(ref _player5Name, value); }
+
+    [JsonIgnore]
     public ICommand CloseCommand => _closeCommand ?? new Command(Close);
 
     public SummaryPageViewModel() { EventAggregator.Instance.RegisterHandler<ScoreLinesChangedEvent>(OnScoreLinesChanged); }

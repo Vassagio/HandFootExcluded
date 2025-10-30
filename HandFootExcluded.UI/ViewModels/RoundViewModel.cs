@@ -1,7 +1,5 @@
-﻿using Bertuzzi.MAUI.EventAggregator;
-using HandFootExcluded.Common;
-using HandFootExcluded.UI.Eventing;
-using HandFootExcluded.UI.Services.ScoringServices;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace HandFootExcluded.UI.ViewModels;
 
@@ -16,8 +14,6 @@ public interface IRoundViewModel : IViewModel
 
 internal sealed class RoundViewModel : ViewModelBase, IRoundViewModel
 {
-
-
     private int _order;
     private int _openAmount;
     private ITeamViewModel _startingTeam;
@@ -30,4 +26,17 @@ internal sealed class RoundViewModel : ViewModelBase, IRoundViewModel
     public ITeamViewModel StartingTeam { get => _startingTeam; set => SetProperty(ref _startingTeam, value); }
     public ITeamViewModel OpposingTeam { get => _opposingTeam; set => SetProperty(ref _opposingTeam, value); }
     public string ExcludedPlayerInitials { get => _excludedPlayerInitials; set => SetProperty(ref _excludedPlayerInitials, value); }
+}
+
+public class RoundViewModelConverter : JsonConverter<IRoundViewModel>
+{
+    public override IRoundViewModel Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        return JsonSerializer.Deserialize<RoundViewModel>(ref reader, options);
+    }
+
+    public override void Write(Utf8JsonWriter writer, IRoundViewModel value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(writer, (RoundViewModel)value, options);
+    }
 }

@@ -2,5 +2,5 @@
 
 internal sealed partial class NonPositionalPlayerBuilder 
 {
-    private record Player(string FirstName, string MiddleName, string LastName) : NonPositionalPlayerBase(GetFullName(FirstName, MiddleName, LastName), FirstName, MiddleName, LastName, GetInitials(FirstName, MiddleName, LastName)) { }
+    private record Player(string FirstName, string MiddleName, string LastName, bool IsExcludedFirst = false) : NonPositionalPlayerBase(GetFullName(FirstName, MiddleName, LastName), FirstName, MiddleName, LastName, GetInitials(FirstName, MiddleName, LastName), IsExcludedFirst) { }
 }

@@ -4,30 +4,35 @@ namespace HandFootExcluded.Core.PlayerServices;
 
 public interface INonPositionalPlayerBuilder : IBuilder
 {
-    INonPositionalPlayerBuilderBuild WithFullName(string fullName);
+    INonPositionalPlayerBuilderExclude WithFullName(string fullName);
     INonPositionalPlayerBuilderName WithFirstName(string firstName);
 }
 
 public interface INonPositionalPlayerBuilderName : IBuilder
 {
     INonPositionalPlayerBuilderName WithMiddleName(string middleName);
-    INonPositionalPlayerBuilderBuild WithLastName(string lastName);
+    INonPositionalPlayerBuilderExclude WithLastName(string lastName);
+}
+
+public interface INonPositionalPlayerBuilderExclude : IBuilder
+{
+    INonPositionalPlayerBuilderBuild IsExcluded(bool isExcluded);
 }
 
 public interface INonPositionalPlayerBuilderBuild : IBuilder<INonPositionalPlayer> { }
 
-internal sealed partial class NonPositionalPlayerBuilder : BuilderBase<NonPositionalPlayerBuilder, INonPositionalPlayer>, INonPositionalPlayerBuilder, INonPositionalPlayerBuilderName, INonPositionalPlayerBuilderBuild
+internal sealed partial class NonPositionalPlayerBuilder : BuilderBase<NonPositionalPlayerBuilder, INonPositionalPlayer>, INonPositionalPlayerBuilder, INonPositionalPlayerBuilderName, INonPositionalPlayerBuilderExclude, INonPositionalPlayerBuilderBuild
 {
     private string _firstName;
     private string _middleName = string.Empty;
     private string _lastName;
     private string _fullName;
-
+    private bool _isExcluded;
     private int _order;
 
     public INonPositionalPlayerBuilderName WithFirstName(string firstName) => SetProperty(ref _firstName, firstName);
 
-    public INonPositionalPlayerBuilderBuild WithFullName(string fullName)
+    public INonPositionalPlayerBuilderExclude WithFullName(string fullName)
     {
         if (string.IsNullOrWhiteSpace(fullName)) fullName = string.Empty;
 
@@ -40,7 +45,9 @@ internal sealed partial class NonPositionalPlayerBuilder : BuilderBase<NonPositi
     }
 
     public INonPositionalPlayerBuilderName WithMiddleName(string middleName) => SetProperty(ref _middleName, middleName);
-    public INonPositionalPlayerBuilderBuild WithLastName(string lastName) => SetProperty(ref _lastName, lastName);
+    public INonPositionalPlayerBuilderExclude WithLastName(string lastName) => SetProperty(ref _lastName, lastName);
+
+    public INonPositionalPlayerBuilderBuild IsExcluded(bool isExcluded) => SetProperty(ref _isExcluded, isExcluded);
 
     private static (string FirstName, string MiddleName, string LastName) Parse(string name)
     {
@@ -61,6 +68,6 @@ internal sealed partial class NonPositionalPlayerBuilder : BuilderBase<NonPositi
         if (string.IsNullOrWhiteSpace(_middleName)) _middleName = string.Empty;
         if (string.IsNullOrWhiteSpace(_lastName)) return UnknownPlayer.Instance;
 
-        return new Player(_firstName.Trim(), _middleName.Trim(), _lastName.Trim());
+        return new Player(_firstName.Trim(), _middleName.Trim(), _lastName.Trim(), _isExcluded);
     }
 }

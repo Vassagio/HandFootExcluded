@@ -2,10 +2,7 @@
 
 public interface IStartingPlayer : IPositionalPlayer { }
 
-internal sealed partial class PositionalPlayerFactory
+internal record StartingPlayer(IOrderedPlayer OrderedPlayer) : PositionalPlayerBase(PlayerPositionType.StartingPlayer, OrderedPlayer.Order, OrderedPlayer.FullName, OrderedPlayer.FirstName, OrderedPlayer.MiddleName, OrderedPlayer.LastName, OrderedPlayer.Initials), IStartingPlayer
 {
-    private record StartingPlayer(IOrderedPlayer OrderedPlayer) : PositionalPlayerBase(PlayerPositionType.StartingPlayer, OrderedPlayer.Order, OrderedPlayer.FullName, OrderedPlayer.FirstName, OrderedPlayer.MiddleName, OrderedPlayer.LastName, OrderedPlayer.Initials), IStartingPlayer
-    {
-        protected override string Display => $"Starting Player: {Initials,-3}";
-    }
+    protected override string Display => $"Starting Player: {Initials,-3}";
 }

@@ -2,10 +2,7 @@
 
 public interface IOpposingPlayer : IPositionalPlayer { }
 
-internal sealed partial class PositionalPlayerFactory
+internal record OpposingPlayer(IOrderedPlayer OrderedPlayer) : PositionalPlayerBase(PlayerPositionType.OpposingPlayer, OrderedPlayer.Order, OrderedPlayer.FullName, OrderedPlayer.FirstName, OrderedPlayer.MiddleName, OrderedPlayer.LastName, OrderedPlayer.Initials), IOpposingPlayer
 {
-    private record OpposingPlayer(IOrderedPlayer OrderedPlayer) : PositionalPlayerBase(PlayerPositionType.OpposingPlayer, OrderedPlayer.Order, OrderedPlayer.FullName, OrderedPlayer.FirstName, OrderedPlayer.MiddleName, OrderedPlayer.LastName, OrderedPlayer.Initials), IOpposingPlayer
-    {
-        protected override string Display => $"Opposing Player: {Initials,-3}";
-    }
+    protected override string Display => $"Opposing Player: {Initials,-3}";
 }

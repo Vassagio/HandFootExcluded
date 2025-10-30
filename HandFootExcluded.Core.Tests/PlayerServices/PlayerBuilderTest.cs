@@ -28,6 +28,7 @@ public class PlayerBuilderTest
 
         var result = builder
                     .WithFullName(fullName)
+                    .IsExcluded(false)
                     .Build();
 
         Assert.IsAssignableFrom<INonPositionalPlayer>(result);
@@ -48,6 +49,7 @@ public class PlayerBuilderTest
         var builder = BuildPlayerBuilder();
 
         var result = builder.WithFullName(fullName)
+                            .IsExcluded(false)
                             .Build();
 
         Assert.IsType<UnknownPlayer>(result);
@@ -62,6 +64,7 @@ public class PlayerBuilderTest
 
         var result = builder.WithFirstName(firstName)
                             .WithLastName(lastName)
+                            .IsExcluded(false)
                             .Build();
 
         Assert.IsAssignableFrom<INonPositionalPlayer>(result);
@@ -85,6 +88,7 @@ public class PlayerBuilderTest
 
         var result = builder.WithFirstName(firstName)
                             .WithLastName(lastName)
+                            .IsExcluded(false)
                             .Build();
 
         Assert.IsType<UnknownPlayer>(result);
@@ -107,6 +111,7 @@ public class PlayerBuilderTest
         var result = builder.WithFirstName(firstName)
                             .WithMiddleName(middleName)
                             .WithLastName(lastName)
+                            .IsExcluded(false)
                             .Build();
 
         Assert.IsAssignableFrom<INonPositionalPlayer>(result);
@@ -131,6 +136,7 @@ public class PlayerBuilderTest
         var result = builder.WithFirstName(firstName)
                             .WithMiddleName(middleName)
                             .WithLastName(lastName)
+                            .IsExcluded(false)
                             .Build();
 
         Assert.IsType<UnknownPlayer>(result);

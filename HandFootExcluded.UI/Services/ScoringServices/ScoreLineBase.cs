@@ -1,4 +1,8 @@
-﻿namespace HandFootExcluded.UI.Services.ScoringServices;
+﻿using HandFootExcluded.UI.ViewModels;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace HandFootExcluded.UI.Services.ScoringServices;
 
 public interface IScoreLine
 {
@@ -14,11 +18,16 @@ internal abstract class ScoreLineBase : IScoreLine
 {
     public abstract int Order {get;}
     public abstract string Name { get; }
-    public string Initials { get; }
-    public int Value { get; }
+    public string Initials { get; set; }
+    public int Value { get; set; }
     protected abstract string Display {get;}
     public virtual bool IsBold => false;
     public virtual int FontSize => 15;
+
+    protected ScoreLineBase()
+    {
+
+    }
 
     protected ScoreLineBase(string initials, int value)
     {
