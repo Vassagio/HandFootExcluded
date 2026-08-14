@@ -16,6 +16,7 @@
             <Setter Property="HorizontalTextAlignment" Value="Center" />
             <Setter Property="FontSize" Value="{Binding FontSize}" />
             <Setter Property="FontAttributes" Value="None" />
+            <Setter Property="TextColor" Value="Black" />
             <Style.Triggers>
                 <DataTrigger TargetType="Label" Binding="{Binding IsBold}" Value="True">
                     <Setter Property="FontAttributes" Value="Bold" />
@@ -34,7 +35,7 @@
                 <dg:DataGridColumn Title="" HorizontalContentAlignment="Start">
                     <dg:DataGridColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Text="{Binding Description}" FontAttributes="Bold" FontSize="{Binding FontSize}" />
+                            <Label Text="{Binding Description}" FontAttributes="Bold" FontSize="{Binding FontSize}" TextColor="Black"/>
                         </DataTemplate>
                     </dg:DataGridColumn.CellTemplate>
                 </dg:DataGridColumn>

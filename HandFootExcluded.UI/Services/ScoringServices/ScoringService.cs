@@ -5,7 +5,7 @@ namespace HandFootExcluded.UI.Services.ScoringServices;
 
 public interface IScoringService
 {
-    Task<IScoreLines> Score(IGame game, IEnumerable<IRoundViewModel> rounds, int bonusAmount);
+    Task<IScoreLines> Score(IGame game, IEnumerable<IRoundViewModel> rounds, IDictionary<int, int> individualBonusAmounts, int teamBonusAmount);
 }
 
 internal sealed class ScoringService : IScoringService
@@ -14,5 +14,5 @@ internal sealed class ScoringService : IScoringService
 
     public ScoringService(IScoreLineFactory scoreLineFactory) => _scoreLineFactory = scoreLineFactory ?? throw new ArgumentNullException(nameof(scoreLineFactory));
 
-    public async Task<IScoreLines> Score(IGame game, IEnumerable<IRoundViewModel> rounds, int bonusAmount) => _scoreLineFactory.Create(game, rounds, bonusAmount);
+    public async Task<IScoreLines> Score(IGame game, IEnumerable<IRoundViewModel> rounds, IDictionary<int, int> individualBonusAmounts, int teamBonusAmount) => _scoreLineFactory.Create(game, rounds, individualBonusAmounts, teamBonusAmount);
 }

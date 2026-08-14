@@ -27,7 +27,13 @@ public interface ISettingsPageViewModel : IViewModel
     bool ExcludedPlayer4 { get; }
     bool ExcludedPlayer5 { get; }
 
-    int BonusAmount { get; }
+    IDictionary<int, int> IndividualBonusAmounts { get; }
+    int NoIndividualBonusAmount { get; }
+    int IndividualBonusAmount1 { get; }
+    int IndividualBonusAmount2 { get; }
+    int IndividualBonusAmount3 { get; }
+    int IndividualBonusAmount4 { get; }
+    int TeamBonusAmount { get; }
     int MinDiscardPickup { get; }
     int MaxDiscardPickup { get; }
 
@@ -45,6 +51,7 @@ public interface ISettingsPageViewModel : IViewModel
 internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewModel
 {
     private readonly IJsonService _jsonService;
+    private readonly IAlertService _alertService;
     private string _defaultPlayer1 = "William Christopher Chronowski";
     private string _defaultPlayer2 = "Tami Renae Chronowski";
     private string _defaultPlayer3 = "Kaelia Shyenne Chronowski";
@@ -58,7 +65,12 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
     private bool _excludedPlayer4 = false;
     private bool _excludedPlayer5 = false;
 
-    private int _bonusAmount = 250;
+    private int _noIndividualBonusAmount = 0;
+    private int _individualBonusAmount1 = 250;
+    private int _individualBonusAmount2 = 350;
+    private int _individualBonusAmount3 = 500;
+    private int _individualBonusAmount4 = 750;
+    private int _teamBonusAmount = 100;
     private int _minDiscardPickup = 4;
     private int _maxDiscardPickup = 10;
 
@@ -86,7 +98,13 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
     public bool ExcludedPlayer4 { get => _excludedPlayer4; set => SetProperty(ref _excludedPlayer4, value); }
     public bool ExcludedPlayer5 { get => _excludedPlayer5; set => SetProperty(ref _excludedPlayer5, value); }
 
-    public int BonusAmount { get => _bonusAmount; set => SetProperty(ref _bonusAmount, value); }
+    public IDictionary<int, int> IndividualBonusAmounts { get; set; }
+    public int NoIndividualBonusAmount { get => _noIndividualBonusAmount; set => SetProperty(ref _noIndividualBonusAmount, value); }
+    public int IndividualBonusAmount1 { get => _individualBonusAmount1; set => SetProperty(ref _individualBonusAmount1, value); }
+    public int IndividualBonusAmount2 { get => _individualBonusAmount2; set => SetProperty(ref _individualBonusAmount2, value); }
+    public int IndividualBonusAmount3 { get => _individualBonusAmount3; set => SetProperty(ref _individualBonusAmount3, value); }
+    public int IndividualBonusAmount4 { get => _individualBonusAmount4; set => SetProperty(ref _individualBonusAmount4, value); }
+    public int TeamBonusAmount { get => _teamBonusAmount; set => SetProperty(ref _teamBonusAmount, value); }
     public int MinDiscardPickup { get => _minDiscardPickup; set => SetProperty(ref _minDiscardPickup, value); }
     public int MaxDiscardPickup { get => _maxDiscardPickup; set => SetProperty(ref _maxDiscardPickup, value); }
 
@@ -102,9 +120,10 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
 
 
     public SettingsPageViewModel() {}
-    public SettingsPageViewModel(IJsonService jsonService)
+    public SettingsPageViewModel(IJsonService jsonService, IAlertService alertService)
     {
         _jsonService = jsonService ?? throw new ArgumentNullException(nameof(jsonService));
+        _alertService = alertService ?? throw new ArgumentNullException(nameof(alertService));
     }
 
     private async void Ok()
@@ -127,11 +146,20 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
             _roundOpening5
         };
 
+        IndividualBonusAmounts = new Dictionary<int, int>
+        {
+            { 0, _noIndividualBonusAmount },
+            { 1, _individualBonusAmount1 },
+            { 2, _individualBonusAmount2 },
+            { 3, _individualBonusAmount3 },
+            { 4, _individualBonusAmount4 }
+        };
+
         await _jsonService.SaveAsync<SettingsPageViewModel>(this, "settings.json");
 
         Navigate<IGamePage>();
 
-        EventAggregator.Instance.SendMessage(new SettingsChangedEvent(PlayerSettings, RoundOpenings, _bonusAmount, _minDiscardPickup, _maxDiscardPickup));
+        EventAggregator.Instance.SendMessage(new SettingsChangedEvent(PlayerSettings, RoundOpenings, IndividualBonusAmounts, TeamBonusAmount ,_minDiscardPickup, _maxDiscardPickup));
     }
 
 
@@ -139,6 +167,13 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
     {
         var gamePageViewModel = await _jsonService.LoadAsync<GamePageViewModel>("game.json");
         var settingsPageViewModel = await _jsonService.LoadAsync<SettingsPageViewModel>("settings.json");
+
+        if (gamePageViewModel is null || settingsPageViewModel is null)
+        {
+            await _alertService.ShowAlertAsync("Load Error", "No saved game found to load.  Starting new game.");
+            Ok();
+            return;
+        }
 
         settingsPageViewModel.PlayerSettings = new List<IPlayerSetting>
         {

@@ -20,7 +20,8 @@ public interface IGamePageViewModel : IViewModel
     IEnumerable<IRoundViewModel> Rounds { get; }
     IRoundViewModel CurrentRound {get;}
     ITotalScoreViewModel TotalScore { get; }
-    int BonusAmount { get; }
+    IDictionary<int, int> IndividualBonusAmounts { get; }
+    int TeamBonusAmount { get; }
     int MinDiscardPickup { get; }
     int MaxDiscardPickup { get; }
 
@@ -42,7 +43,8 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
     private IEnumerable<IRoundViewModel> _rounds;
     private IRoundViewModel _currentRound;
     private ITotalScoreViewModel _totalScore;
-    private int _bonusAmount;
+    private IDictionary<int, int> _individualBonusAmounts;
+    private int _teamBonusAmount;
     private int _minDiscardPickup;
     private int _maxDiscardPickup;
 
@@ -58,7 +60,8 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
     public IEnumerable<IRoundViewModel> Rounds { get => _rounds; set => SetProperty(ref _rounds, value); }
     public IRoundViewModel CurrentRound {get =>_currentRound; set => SetProperty(ref _currentRound, value);}
     public ITotalScoreViewModel TotalScore { get => _totalScore; set => SetProperty(ref _totalScore, value); }
-    public int BonusAmount { get => _bonusAmount; set => SetProperty(ref _bonusAmount, value); }
+    public IDictionary<int, int> IndividualBonusAmounts { get => _individualBonusAmounts; set => SetProperty(ref _individualBonusAmounts, value); }
+    public int TeamBonusAmount { get => _teamBonusAmount; set => SetProperty(ref _teamBonusAmount, value); }
     public int MinDiscardPickup { get => _minDiscardPickup; set => SetProperty(ref _minDiscardPickup, value); }
     public int MaxDiscardPickup { get => _maxDiscardPickup; set => SetProperty(ref _maxDiscardPickup, value); }
 
@@ -91,7 +94,7 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
 
     private async void OnScoreChanged(ScoreChangedEvent scoreChangedEvent)
     {
-        var scoreLines = await _scoringService.Score(Game, Rounds, BonusAmount);
+        var scoreLines = await _scoringService.Score(Game, Rounds, IndividualBonusAmounts, TeamBonusAmount);
         TotalScore = new TotalScoreViewModel(scoreLines.GetGrandTotalLines());
     }
 
@@ -100,7 +103,8 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
         if (gameLoadedEvent?.GamePageViewModel is not { } gamePageViewModel) return;
         if (gameLoadedEvent?.SettingsPageViewModel is not { } settingsPageViewModel) return;
 
-        BonusAmount = gamePageViewModel.BonusAmount;
+        IndividualBonusAmounts = gamePageViewModel.IndividualBonusAmounts;
+        TeamBonusAmount = gamePageViewModel.TeamBonusAmount;
         MinDiscardPickup = gamePageViewModel.MinDiscardPickup;
         MaxDiscardPickup = gamePageViewModel.MaxDiscardPickup;
         Game ??= _gameService.CreateGame(settingsPageViewModel.PlayerSettings, settingsPageViewModel.RoundOpenings);
@@ -112,7 +116,8 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
 
     private void OnSettingsChanged(SettingsChangedEvent settingsChangedEvent)
     {
-        BonusAmount = settingsChangedEvent.BonusAmount;
+        IndividualBonusAmounts = settingsChangedEvent.IndividualBonusAmounts;
+        TeamBonusAmount = settingsChangedEvent.TeamBonusAmount;
         MinDiscardPickup = settingsChangedEvent.MinDiscardPickup;
         MaxDiscardPickup = settingsChangedEvent.MaxDiscardPickup;
         Game ??= _gameService.CreateGame(settingsChangedEvent.Players, settingsChangedEvent.RoundOpeningAmounts);
@@ -146,7 +151,7 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
 
     private void Summary()
     {
-        var scoreLines = _scoringService.Score(Game, Rounds, BonusAmount).Result;
+        var scoreLines = _scoringService.Score(Game, Rounds, IndividualBonusAmounts, TeamBonusAmount).Result;
         EventAggregator.Instance.PostMessage(new ScoreLinesChangedEvent(scoreLines));
         Navigate<ISummaryPage>();
     }

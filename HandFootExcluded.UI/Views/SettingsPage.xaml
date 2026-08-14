@@ -132,6 +132,10 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -141,16 +145,32 @@
 
                 <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Rules" HorizontalOptions="Start" FontSize="20" />
 
-                <Label Grid.Row="1" Grid.Column="0" Text="Bonus Amount:" />
-                <Editor Grid.Row="1" Grid.Column="1" Placeholder="Enter Bonus Amount:"
-                        Text="{Binding BonusAmount, Mode=TwoWay}" Keyboard="Numeric"/>
+                <Label Grid.Row="1" Grid.Column="0" Text="Bonus Amount 1:" />
+                <Editor Grid.Row="1" Grid.Column="1" Placeholder="Enter Bonus Amount 1:"
+                        Text="{Binding IndividualBonusAmount1, Mode=TwoWay}" Keyboard="Numeric"/>
 
-                <Label Grid.Row="2" Grid.Column="0" Text="Min Discard Pickup:" />
-                <Editor Grid.Row="2" Grid.Column="1" Placeholder="Enter Min Discard Pickup:"
+                <Label Grid.Row="2" Grid.Column="0" Text="Bonus Amount 2:" />
+                <Editor Grid.Row="2" Grid.Column="1" Placeholder="Enter Bonus Amount 2:"
+                        Text="{Binding IndividualBonusAmount2, Mode=TwoWay}" Keyboard="Numeric"/>
+
+                <Label Grid.Row="3" Grid.Column="0" Text="Bonus Amount 3:" />
+                <Editor Grid.Row="3" Grid.Column="1" Placeholder="Enter Bonus Amount 3:"
+                        Text="{Binding IndividualBonusAmount3, Mode=TwoWay}" Keyboard="Numeric"/>
+
+                <Label Grid.Row="4" Grid.Column="0" Text="Bonus Amount 4:" />
+                <Editor Grid.Row="4" Grid.Column="1" Placeholder="Enter Bonus Amount 4:"
+                        Text="{Binding IndividualBonusAmount4, Mode=TwoWay}" Keyboard="Numeric"/>
+
+                <Label Grid.Row="5" Grid.Column="0" Text="Team Bonus Amount:" />
+                <Editor Grid.Row="5" Grid.Column="1" Placeholder="Enter Team Bonus Amount 4:"
+                        Text="{Binding TeamBonusAmount, Mode=TwoWay}" Keyboard="Numeric"/>
+
+                <Label Grid.Row="6" Grid.Column="0" Text="Min Discard Pickup:" />
+                <Editor Grid.Row="6" Grid.Column="1" Placeholder="Enter Min Discard Pickup:"
                         Text="{Binding MinDiscardPickup, Mode=TwoWay}" Keyboard="Numeric"/>
 
-                <Label Grid.Row="3" Grid.Column="0" Text="Max Discard Pickup:" />
-                <Editor Grid.Row="3" Grid.Column="1" Placeholder="Enter Max Discard Pickup:"
+                <Label Grid.Row="7" Grid.Column="0" Text="Max Discard Pickup:" />
+                <Editor Grid.Row="7" Grid.Column="1" Placeholder="Enter Max Discard Pickup:"
                         Text="{Binding MaxDiscardPickup, Mode=TwoWay}" Keyboard="Numeric"/>
 
             </Grid>
