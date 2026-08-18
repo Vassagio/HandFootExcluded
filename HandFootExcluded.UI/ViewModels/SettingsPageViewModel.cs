@@ -45,6 +45,7 @@ public interface ISettingsPageViewModel : IViewModel
     int RoundOpening5 { get; }
 
     ICommand OkCommand { get; }
+    ICommand CloseCommand { get; }
     ICommand LoadCommand { get; }
 }
 
@@ -81,6 +82,7 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
     private int _roundOpening5 = 100;
 
     private Command _okCommand;
+    private Command _closeCommand;
     private Command _loadCommand;
 
     public List<IPlayerSetting> PlayerSettings { get; set; }
@@ -116,6 +118,7 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
     public int RoundOpening5 { get => _roundOpening5; set => SetProperty(ref _roundOpening5, value); }
 
     public ICommand OkCommand => _okCommand ?? new Command(Ok);
+    public ICommand CloseCommand => _closeCommand ?? new Command(Close);
     public ICommand LoadCommand => _loadCommand ?? new Command(Load);
 
 
@@ -162,6 +165,17 @@ internal sealed class SettingsPageViewModel : ViewModelBase, ISettingsPageViewMo
         EventAggregator.Instance.SendMessage(new SettingsChangedEvent(PlayerSettings, RoundOpenings, IndividualBonusAmounts, TeamBonusAmount ,_minDiscardPickup, _maxDiscardPickup));
     }
 
+    private void Close()
+    {
+        
+        Action<bool> Callback1() => result =>
+        {
+            if (result)
+                Application.Current?.Quit();
+        };
+
+        _alertService.ShowConfirmation("Are you sure?", "Quit Game", Callback1());
+    }
 
     private async void Load()
     {
