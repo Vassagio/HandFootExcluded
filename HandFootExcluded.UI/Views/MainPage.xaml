@@ -1,29 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<v:PageBase x:TypeArguments="vm:IMainPageViewModel" 
+<v:PageBase x:TypeArguments="vm:IMainPageViewModel"
             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:v="using:HandFootExcluded.UI.Views"
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
             x:Class="HandFootExcluded.UI.MainPage">
 
-    <ScrollView>
-        <VerticalStackLayout VerticalOptions="Center">
-            <Label Text="Hand Foot Ass" SemanticProperties.HeadingLevel="Level1" FontSize="32" HorizontalOptions="Center" />
+    <Grid RowDefinitions="*,Auto,Auto,Auto,*" RowSpacing="5" Padding="20">
 
-            <!--<Image Source="hfa.jpg" HeightRequest="200" HorizontalOptions="Center">
-                <Image.Clip>
-                    <EllipseGeometry RadiusX="90" RadiusY="90" Center="100,100" />
-                </Image.Clip>
-            </Image>-->
-
-
-            <ImageButton Source="hfaimage.jpg" HeightRequest="200" SemanticProperties.Hint="Start a game of Hand Foot Ass" HorizontalOptions="Center" Command="{Binding StartCommand}" BackgroundColor="DarkBlue">
-                <ImageButton.Clip>
-                    <EllipseGeometry RadiusX="80" RadiusY="80" Center="165,100" />
-                </ImageButton.Clip>
-            </ImageButton>
-
+        <!-- Title -->
+        <VerticalStackLayout Grid.Row="1" Spacing="4">
+            <Label Text="Hand, Foot &amp; Ass"
+                   SemanticProperties.HeadingLevel="Level1"
+                   FontSize="34"
+                   FontAttributes="Bold"
+                   TextColor="DarkBlue"
+                   HorizontalOptions="Center" />
         </VerticalStackLayout>
-    </ScrollView>
 
+        <!-- Circular image button -->
+        <Border Grid.Row="2"
+                HorizontalOptions="Center"
+                StrokeShape="Ellipse"
+                Stroke="DarkBlue"
+                StrokeThickness="4"
+                HeightRequest="200"
+                WidthRequest="200"
+                Padding="0">
+            <Border.Shadow>
+                <Shadow Brush="Black" Opacity="0.35" Radius="12" Offset="0,6" />
+            </Border.Shadow>
+            <ImageButton Source="hfaimage.png"
+                         Aspect="AspectFill"
+                         SemanticProperties.Hint="Start a game of Hand Foot Ass"
+                         Command="{Binding StartCommand}" />
+        </Border>
+
+        <!-- Explicit start button -->
+        <Button Grid.Row="3"
+                Text="Start Game"
+                Command="{Binding StartCommand}"
+                BackgroundColor="DarkBlue"
+                TextColor="White"
+                FontAttributes="Bold"
+                CornerRadius="24"
+                HeightRequest="48"
+                WidthRequest="200"
+                HorizontalOptions="Center"
+                Margin="0,4,0,0" />
+
+    </Grid>
 </v:PageBase>
