@@ -1,84 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <v:PageBase x:TypeArguments="vm:IGamePageViewModel"
             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             x:Class="HandFootExcluded.UI.Views.GamePage"
             xmlns:v="using:HandFootExcluded.UI.Views"
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
-            Title="GamePage">
-    <Grid VerticalOptions="Fill" HorizontalOptions="Fill" BackgroundColor="DarkBlue">
+            Title="Game">
+
+    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="0"
+          Padding="4" BackgroundColor="#0F1B3D">
+
         <Grid.Resources>
+            <!-- Bordered action button, matches the Open pill styling -->
             <Style TargetType="Button">
-                <Setter Property="BackgroundColor" Value="DarkBlue" />
-                <Setter Property="BorderColor" Value="White"></Setter>
-                <Setter Property="BorderWidth" Value="1"></Setter>
-                <Setter Property="TextColor" Value="White"></Setter>
-                <Setter Property="Margin" Value="13,0"></Setter>
+                <Setter Property="BackgroundColor" Value="#1E2F5C" />
+                <Setter Property="BorderColor" Value="#3A4E80" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="Padding" Value="14,8" />
             </Style>
         </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="0" Grid.Column="0" BackgroundColor="DarkBlue" HorizontalOptions="Fill"
-              VerticalOptions="Fill">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Button Grid.Row="0" Text="X" Command="{Binding CloseCommand}" HorizontalOptions="Start"
-                    VerticalOptions="Start" FontSize="20" FontAttributes="Bold">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="BackgroundColor" Value="DarkBlue" />
-                        <Setter Property="BorderColor" Value="DarkBlue"></Setter>
-                        <Setter Property="BorderWidth" Value="0"></Setter>
-                        <Setter Property="TextColor" Value="White"></Setter>
-                        <Setter Property="Margin" Value="0,-10,0,0"></Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <v:TotalScoreView Grid.Row="1" BindingContext="{Binding TotalScore}" WidthRequest="150" Margin="1,0,1,-3" />
-            <Button Grid.Row="2" Text="Summary" Command="{Binding SummaryCommand}" />
+        <!-- Left rail: close, running scores, summary -->
+        <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto" RowSpacing="1">
+
+            <Button Grid.Row="0" Text="✕"
+                    Command="{Binding CloseCommand}"
+                    HorizontalOptions="Start"
+                    FontSize="16"
+                    BackgroundColor="Transparent"
+                    BorderWidth="0"
+                    Padding="2,0"
+                    SemanticProperties.Hint="Close the game" />
+
+            <v:TotalScoreView Grid.Row="1"
+                              BindingContext="{Binding TotalScore}"
+                              WidthRequest="150" />
+
+  
         </Grid>
 
-        <Grid Grid.Column="1" HorizontalOptions="Fill" VerticalOptions="Fill">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-            </Grid.RowDefinitions>
+        <!-- Main area: round + bottom action bar -->
+        <Grid Grid.Column="1" RowDefinitions="*,Auto" RowSpacing="5">
 
-            <Grid Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill">
-                <v:RoundView BindingContext="{Binding CurrentRound}" />
-            </Grid>
+            <v:RoundView Grid.Row="0" BindingContext="{Binding CurrentRound}" />
 
-            <Grid Grid.Row="1" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="DarkBlue" Margin="3,3,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0" HorizontalOptions="Start">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Text="Discard Pickup" Command="{Binding DiscardPickupCommand}" Margin="0,0"></Button>
-                </Grid>
-                <Grid Grid.Column="1" HorizontalOptions="End">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Text="Previous" Command="{Binding PreviousCommand}" Margin="3,0" TextColor="White"></Button>
-                    <Button Grid.Column="1" Text="Next" Command="{Binding NextCommand}" Margin="3,0" TextColor="White"></Button>
-                </Grid>
+            <!-- Bottom action bar -->
+            <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="5" >
+                <Button Grid.Column="0" Text="Discard Pickup"
+                        Command="{Binding DiscardPickupCommand}" />
+
+                <Button Grid.Column="2" Text="◀ Previous"
+                        Command="{Binding PreviousCommand}" />
+                <Button Grid.Column="3" Text="Next ▶"
+                        Command="{Binding NextCommand}"
+                        BackgroundColor="#F5C518"
+                        TextColor="#0F1B3D"
+                        FontAttributes="Bold"
+                        BorderWidth="0" />
             </Grid>
         </Grid>
-
-        <Grid Grid.Column="2" BackgroundColor="DarkBlue" WidthRequest="10"></Grid>
     </Grid>
 </v:PageBase>

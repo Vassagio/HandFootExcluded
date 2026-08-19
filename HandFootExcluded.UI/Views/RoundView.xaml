@@ -1,45 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <v:ViewBase x:TypeArguments="vm:IRoundViewModel"
             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:v="using:HandFootExcluded.UI.Views"
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
             x:Class="HandFootExcluded.UI.Views.RoundView">
-    <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Grid.Column="0" BackgroundColor="DarkBlue" HorizontalOptions="Fill" VerticalOptions="Fill">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="60"></RowDefinition>
-            </Grid.RowDefinitions>
+    <Grid RowDefinitions="Auto,*,*,Auto" RowSpacing="5" 
+          BackgroundColor="#0F1B3D">
 
-            <Label x:Name="roundLabel" Grid.Column="0" MaximumHeightRequest="50" Text="{Binding Order, StringFormat='Round {0}'}" TextColor="White" HorizontalOptions="Fill" VerticalOptions="Center" VerticalTextAlignment="Center" FontSize="28" FontAttributes="Bold" HorizontalTextAlignment="Center" Margin="0,0,0,10"/>
-            <HorizontalStackLayout Grid.Column="2" BackgroundColor="DarkBlue" HorizontalOptions="End" VerticalOptions="Fill">
-                <Label Margin="3,0" Text="Open:" FontAttributes="Bold" TextColor="Yellow" HorizontalOptions="Fill" VerticalOptions="Fill" FontSize="14" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
-                <Label Margin="0,0,10,0" Text="{Binding OpenAmount}" TextColor="Yellow" HorizontalOptions="Fill" VerticalOptions="Fill" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
-            </HorizontalStackLayout>
+        <!-- Header bar -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Padding="0">
+            <Label Grid.Column="0"
+                   Text="{Binding Order, StringFormat='Round {0}'}"
+                   TextColor="White" FontSize="26" FontAttributes="Bold"
+                   VerticalOptions="Center" />
+
+            <!-- Open amount as a pill badge -->
+            <Border Grid.Column="2"
+                    BackgroundColor="#1E2F5C"
+                    Stroke="#F5C518" StrokeThickness="1.5"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="12,4"
+                    VerticalOptions="Center">
+                <HorizontalStackLayout Spacing="6">
+                    <Label Text="Open" TextColor="#F5C518" FontSize="14"
+                           FontAttributes="Bold" VerticalOptions="Center" />
+                    <Label Text="{Binding OpenAmount}" TextColor="White"
+                           FontSize="16" FontAttributes="Bold" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Border>
         </Grid>
 
-        <v:TeamView Grid.Row="1" BindingContext="{Binding StartingTeam}" BackgroundColor="#60C71585" />
-        <v:TeamView Grid.Row="2" BindingContext="{Binding OpposingTeam}" BackgroundColor="#6034E2E2" />
+        <!-- Team cards -->
+        <Border Grid.Row="1" StrokeShape="RoundRectangle 12" StrokeThickness="0"
+                BackgroundColor="#2AC71585">
+            <v:TeamView BindingContext="{Binding StartingTeam}" />
+        </Border>
 
-        <HorizontalStackLayout Grid.Row="3" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="MediumVioletRed">
-            <Label Margin="3,0" Text="Excluded Player:" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontAttributes="Bold" FontSize="20" />
-            <Label Margin="3,0" Text="{Binding ExcludedPlayerInitials}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontAttributes="Bold" FontSize="20" />
-        </HorizontalStackLayout>
+        <Border Grid.Row="2" StrokeShape="RoundRectangle 12" StrokeThickness="0"
+                BackgroundColor="#2A34E2E2">
+            <v:TeamView BindingContext="{Binding OpposingTeam}" />
+        </Border>
+
+        <!-- Excluded player strip -->
+        <Border Grid.Row="3" StrokeShape="RoundRectangle 10" StrokeThickness="0"
+                BackgroundColor="#C2185B" Padding="10,6">
+            <HorizontalStackLayout Spacing="8" HorizontalOptions="Start">
+                <Label Text="Excluded:" TextColor="White"
+                       FontSize="18" VerticalOptions="Center" FontAttributes="Bold"/>
+                <Label Text="{Binding ExcludedPlayerInitials}" TextColor="White"
+                       FontSize="16" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+        </Border>
     </Grid>
 </v:ViewBase>

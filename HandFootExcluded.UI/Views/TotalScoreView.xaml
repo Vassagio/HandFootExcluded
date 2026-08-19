@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <v:ViewBase x:TypeArguments="vm:ITotalScoreViewModel"
             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -7,40 +6,45 @@
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
             x:Class="HandFootExcluded.UI.Views.TotalScoreView">
 
-    <Border Stroke="White" BackgroundColor="DarkBlue" VerticalOptions="Fill" HorizontalOptions="Fill" Margin="10,0,10,5">
-        <Border.StrokeShape>
-            <RoundRectangle CornerRadius="0,40,40,0" />
-        </Border.StrokeShape>
+    <Border StrokeThickness="0" Margin="8,0,8,5"
+            StrokeShape="RoundRectangle 16">
         <Border.Background>
-            <LinearGradientBrush StartPoint="0,.7" EndPoint="1,.9">
-                <GradientStop Color="DarkBlue" Offset="0.003" />
-                <GradientStop Color="MediumVioletRed" Offset=".8" />
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#1E2F5C" Offset="0" />
+                <GradientStop Color="#0F1B3D" Offset="1" />
             </LinearGradientBrush>
         </Border.Background>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+        <Border.Shadow>
+            <Shadow Brush="Black" Opacity="0.4" Radius="10" Offset="0,4" />
+        </Border.Shadow>
 
-            <Label Grid.Row="0" Text="Scores" TextColor="White" VerticalOptions="Fill" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="20" Margin="0,10,0,0" />
-            <ListView Grid.Row="1" ItemsSource="{Binding ScoreLines}" VerticalOptions="Fill" HorizontalOptions="Fill" Margin="0,10,0,0" RowHeight="100" HasUnevenRows="True">
-                <ListView.ItemTemplate>
+        <Grid RowDefinitions="Auto,Auto,*" Padding="12,10">
+
+            <Button Grid.Row="0" Text="Scores" FontSize="20" FontAttributes="Bold"
+                    Command="{Binding SummaryCommand}" Margin="0,0,0,5"/>
+
+            <!-- Score lines: no ListView, no scrolling -->
+            <FlexLayout Grid.Row="2"
+                        Direction="Column"
+                        JustifyContent="SpaceEvenly"
+                        BindableLayout.ItemsSource="{Binding ScoreLines}">
+                <BindableLayout.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
-                            <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Margin="20,9,5,9" Text="{Binding Initials, StringFormat='{0}:'}" TextColor="White" VerticalOptions="Center" />
-                                <Label Grid.Column="1" Margin="5,9,20,9" Text="{Binding Value}" TextColor="White" HorizontalTextAlignment="End" VerticalOptions="Center" />
-                            </Grid>
-                        </ViewCell>
+                        <Grid ColumnDefinitions="Auto,*"
+                              FlexLayout.Grow="1">
+                            <Label Grid.Column="0"
+                                   Text="{Binding Initials, StringFormat='{0}:'}"
+                                   TextColor="#9FB3E8" FontSize="15"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding Value}"
+                                   TextColor="White" FontSize="16" FontAttributes="Bold"
+                                   HorizontalTextAlignment="End"
+                                   VerticalOptions="Center" />
+                        </Grid>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout>
         </Grid>
     </Border>
-
 </v:ViewBase>

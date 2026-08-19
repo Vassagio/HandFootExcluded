@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <v:ViewBase x:TypeArguments="vm:ITeamViewModel"
             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -7,64 +6,68 @@
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
             x:Class="HandFootExcluded.UI.Views.TeamView">
 
-    <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
+    <Grid RowDefinitions="Auto,Auto,*" Padding="10,6" RowSpacing="2"
+          ColumnDefinitions="Auto,Auto,5*,Auto,Auto,5*,40*,40*,20*">
+
         <Grid.Resources>
             <Style TargetType="Label" x:Key="HeaderLabel">
-                <Setter Property="FontSize" Value="17" />
-                <Setter Property="HorizontalOptions" Value="Fill" />
-                <Setter Property="VerticalOptions" Value="Center" />
-                <Setter Property="HorizontalTextAlignment" Value="Center" />
-                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="TextColor" Value="#9FB3E8" />
                 <Setter Property="FontAttributes" Value="Bold" />
-            </Style>
-            <Style TargetType="Editor" x:Key="DataEditor">
-                <Setter Property="Margin" Value="2" />
-                <Setter Property="FontSize" Value="15" />
-                <Setter Property="HorizontalOptions" Value="Fill" />
-                <Setter Property="VerticalOptions" Value="Center" />
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
-                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
             </Style>
             <Style TargetType="Label" x:Key="DataLabel">
-                <Setter Property="Margin" Value="2" />
-                <Setter Property="FontSize" Value="15" />
-                <Setter Property="HorizontalOptions" Value="Fill" />
-                <Setter Property="VerticalOptions" Value="Fill" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="TextColor" Value="White" />
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
-                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+            <Style TargetType="Entry" x:Key="ScoreEntry">
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="Keyboard" Value="Numeric" />
+                <Setter Property="MaxLength" Value="5" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="BackgroundColor" Value="#331E2F5C" />
+                <Setter Property="Margin" Value="4,0" />
+            </Style>
+            <Style TargetType="Switch">
+                <Setter Property="OnColor" Value="#F5C518" />
+                <Setter Property="ThumbColor" Value="White" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
             </Style>
         </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
 
-        <Entry Margin="5,0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" IsReadOnly="True" Text="{Binding TeamName}" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" HorizontalOptions="Fill" VerticalOptions="Fill" FontAttributes="Bold" FontSize="20" />
+        <!-- Team name -->
+        <Label Grid.Row="0" Grid.ColumnSpan="7"
+               Text="{Binding TeamName}"
+               TextColor="White" FontSize="18" FontAttributes="Bold" />
 
-        <Label Grid.Row="1" Grid.Column="0" Text="Player" Style="{StaticResource HeaderLabel}" />
-        <Label Grid.Row="1" Grid.Column="1" Text="Bonus" Style="{StaticResource HeaderLabel}" />
-        <Label Grid.Row="1" Grid.Column="2" Text="Partner" Style="{StaticResource HeaderLabel}" />
-        <Label Grid.Row="1" Grid.Column="3" Text="Bonus" Style="{StaticResource HeaderLabel}" />
-        <Label Grid.Row="1" Grid.Column="4" Text="Top" Style="{StaticResource HeaderLabel}" />
-        <Label Grid.Row="1" Grid.Column="5" Text="Bottom" Style="{StaticResource HeaderLabel}" />
-        <Label Grid.Row="1" Grid.Column="6" Text="Score" Style="{StaticResource HeaderLabel}" />
+        <!-- Column headers -->
+        <Label Grid.Row="1" Grid.Column="0" Text="Player"  Style="{StaticResource HeaderLabel}" />
+        <Label Grid.Row="1" Grid.Column="1" Text="Bonus"   Style="{StaticResource HeaderLabel}" />
+        <Label Grid.Row="1" Grid.Column="3" Text="Partner" Style="{StaticResource HeaderLabel}" />
+        <Label Grid.Row="1" Grid.Column="4" Text="Bonus"   Style="{StaticResource HeaderLabel}" />
+        <Label Grid.Row="1" Grid.Column="6" Text="Top"     Style="{StaticResource HeaderLabel}" />
+        <Label Grid.Row="1" Grid.Column="7" Text="Bottom"  Style="{StaticResource HeaderLabel}" />
+        <Label Grid.Row="1" Grid.Column="8" Text="Score"   Style="{StaticResource HeaderLabel}" HorizontalOptions="End"/>
 
-        <Label Grid.Row="2" Grid.Column="0" Text="{Binding PlayerInitials, Mode=OneWay}" Style="{StaticResource DataLabel}" />
+        <!-- Data row -->
+        <Label  Grid.Row="2" Grid.Column="0" Text="{Binding PlayerInitials, Mode=OneWay}"
+                Style="{StaticResource DataLabel}" />
         <Switch Grid.Row="2" Grid.Column="1" IsToggled="{Binding PlayerBonus, Mode=TwoWay}" />
-        <Label Grid.Row="2" Grid.Column="2" Text="{Binding PartnerInitials, Mode=OneWay}" Style="{StaticResource DataLabel}" />
-        <Switch Grid.Row="2" Grid.Column="3" IsToggled="{Binding PartnerBonus, Mode=TwoWay}" />
-        <Editor Grid.Row="2" Grid.Column="4" Keyboard="Numeric" Text="{Binding TopScore, Mode=TwoWay}" Style="{StaticResource DataEditor}" MaxLength="5" CursorPosition="0" SelectionLength="4" />
-        <Editor Grid.Row="2" Grid.Column="5" Keyboard="Numeric" Text="{Binding BottomScore, Mode=TwoWay}" Style="{StaticResource DataEditor}" MaxLength="5" CursorPosition="0" SelectionLength="4" />
-        <Label Grid.Row="2" Grid.Column="6" FontAttributes="Bold" Text="{Binding Score, Mode=OneWay}" Style="{StaticResource DataLabel}" />
+        <Label  Grid.Row="2" Grid.Column="3" Text="{Binding PartnerInitials, Mode=OneWay}"
+                Style="{StaticResource DataLabel}" />
+        <Switch Grid.Row="2" Grid.Column="4" IsToggled="{Binding PartnerBonus, Mode=TwoWay}" />
+        <Entry  Grid.Row="2" Grid.Column="6" Text="{Binding TopScore, Mode=TwoWay}"
+                Style="{StaticResource ScoreEntry}" />
+        <Entry  Grid.Row="2" Grid.Column="7" Text="{Binding BottomScore, Mode=TwoWay}"
+                Style="{StaticResource ScoreEntry}" />
+        <Label  Grid.Row="2" Grid.Column="8" Text="{Binding Score, Mode=OneWay}"
+                Style="{StaticResource DataLabel}"
+                FontAttributes="Bold" TextColor="#F5C518" HorizontalOptions="End"/>
     </Grid>
 </v:ViewBase>

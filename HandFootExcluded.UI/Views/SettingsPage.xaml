@@ -5,56 +5,82 @@
             xmlns:v="using:HandFootExcluded.UI.Views"
             xmlns:vm="using:HandFootExcluded.UI.ViewModels"
             Title="Settings">
-    <Border Padding="10" HorizontalOptions="Fill" VerticalOptions="Fill">
-        <Grid RowDefinitions="Auto,*,Auto" ColumnSpacing="20">
-            <Grid.Resources>
-                <Style TargetType="Entry">
-                    <Setter Property="FontSize" Value="14" />
-                    <Setter Property="VerticalOptions" Value="Center" />
-                    <Setter Property="HeightRequest" Value="35"></Setter>
-                </Style>
-                <Style TargetType="Label">
-                    <Setter Property="FontSize" Value="14" />
-                    <Setter Property="FontAttributes" Value="Bold" />
-                    <Setter Property="VerticalOptions" Value="Center" />
-                    <Setter Property="HeightRequest" Value="35"></Setter>
-                </Style>
-                <Style TargetType="Label" x:Key="SectionHeader">
-                    <Setter Property="FontSize" Value="20" />
-                    <Setter Property="FontAttributes" Value="Bold" />
-                    <Setter Property="VerticalOptions" Value="End" />
-                </Style>
-                <Style TargetType="Entry" x:Key="NumericEntry" BasedOn="{StaticResource {x:Type Entry}}">
-                    <Setter Property="Keyboard" Value="Numeric" />
-                    <Setter Property="WidthRequest" Value="80" />
-                    <Setter Property="HorizontalTextAlignment" Value="End"></Setter>
-                </Style>
-                <Style TargetType="Button">
-                    <Setter Property="BackgroundColor" Value="DarkBlue" />
-                    <Setter Property="TextColor" Value="White" />
-                    <Setter Property="Margin" Value="4,0" />
-                    <Setter Property="WidthRequest" Value="90" />
-                </Style>
-                <Style TargetType="RadioButton">
-                    <Setter Property="HorizontalOptions" Value="Start" />
-                    <Setter Property="VerticalOptions" Value="Center" />
-                </Style>
-            </Grid.Resources>
 
-            <!-- Content row -->
-            <Grid Grid.Row="1" ColumnDefinitions="45*,25*,30*" ColumnSpacing="5" VerticalOptions="Start">
+    <Grid RowDefinitions="*,Auto" RowSpacing="1"
+          Padding="5, 3" BackgroundColor="#0F1B3D">
 
-                <!-- Players -->
-                <Grid Grid.Column="0"
-                      RowDefinitions="30,Auto,Auto,Auto,Auto,Auto"
+        <Grid.Resources>
+            <Style TargetType="Entry">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="PlaceholderColor" Value="#5A6B99" />
+                <Setter Property="BackgroundColor" Value="#331E2F5C" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="VerticalTextAlignment" Value="Center"></Setter>
+                <Setter Property="HeightRequest" Value="35" />
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="HeightRequest" Value="35" />
+            </Style>
+            <Style TargetType="Label" x:Key="SectionHeader">
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="VerticalOptions" Value="End" />
+            </Style>
+            <Style TargetType="Label" x:Key="ColumnHint">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="TextColor" Value="#9FB3E8" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+            <Style TargetType="Entry" x:Key="NumericEntry">
+                <Setter Property="Keyboard" Value="Numeric" />
+                <Setter Property="WidthRequest" Value="80" />
+                <Setter Property="HorizontalTextAlignment" Value="End" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#1E2F5C" />
+                <Setter Property="BorderColor" Value="#3A4E80" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="Margin" Value="4,0" />
+                <Setter Property="WidthRequest" Value="90" />
+            </Style>
+            <Style TargetType="Button" x:Key="PrimaryButton">
+                <Setter Property="BackgroundColor" Value="#F5C518" />
+                <Setter Property="TextColor" Value="#0F1B3D" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="BorderWidth" Value="0" />
+            </Style>
+            <Style TargetType="RadioButton">
+                <Setter Property="BackgroundColor" Value="#1E2F5C" />
+                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+        </Grid.Resources>
+
+        <!-- Content row -->
+        <Grid Grid.Row="0" ColumnDefinitions="45*,25*,30*" ColumnSpacing="8" VerticalOptions="Start">
+
+            <!-- Players card -->
+            <Border Grid.Column="0" StrokeThickness="0"
+                    StrokeShape="RoundRectangle 12"
+                    BackgroundColor="#1E2F5C" Padding="5,3">
+                <Grid RowDefinitions="30,Auto,Auto,Auto,Auto,Auto"
                       ColumnDefinitions="Auto,*,Auto"
                       RowSpacing="1" ColumnSpacing="2">
                     <Label Grid.Row="0" Grid.ColumnSpan="2" Text="Players" Style="{StaticResource SectionHeader}" />
-                    <Label Grid.Row="0" Grid.Column="2" Text="Exclude." FontSize="12" VerticalOptions="Center"  />
+                    <Label Grid.Row="0" Grid.Column="2" Text="Exclude" Style="{StaticResource ColumnHint}" />
 
                     <Label Grid.Row="1" Text="1:" />
                     <Entry Grid.Row="1" Grid.Column="1" Placeholder="Player 1"
-                           Text="{Binding DefaultPlayer1, Mode=TwoWay}"/>
+                           Text="{Binding DefaultPlayer1, Mode=TwoWay}" />
                     <RadioButton Grid.Row="1" Grid.Column="2" GroupName="excludedGroup"
                                  IsChecked="{Binding ExcludedPlayer1, Mode=TwoWay}" />
 
@@ -82,10 +108,14 @@
                     <RadioButton Grid.Row="5" Grid.Column="2" GroupName="excludedGroup"
                                  IsChecked="{Binding ExcludedPlayer5, Mode=TwoWay}" />
                 </Grid>
+            </Border>
 
-                <!-- Rounds -->
-                <Grid Grid.Column="1"
-                      RowDefinitions="30,Auto,Auto,Auto,Auto,Auto"
+            <!-- Rounds card -->
+            <Border Grid.Column="1" StrokeThickness="0"
+                    StrokeShape="RoundRectangle 12"
+                    BackgroundColor="#1E2F5C" Padding="5,3"
+                    VerticalOptions="Start">
+                <Grid RowDefinitions="30,Auto,Auto,Auto,Auto,Auto"
                       ColumnDefinitions="Auto,*"
                       RowSpacing="1" ColumnSpacing="2">
                     <Label Grid.ColumnSpan="2" Text="Rounds" Style="{StaticResource SectionHeader}" />
@@ -110,10 +140,14 @@
                     <Entry Grid.Row="5" Grid.Column="1" Style="{StaticResource NumericEntry}"
                            Placeholder="Opening 5" Text="{Binding RoundOpening5, Mode=TwoWay}" />
                 </Grid>
+            </Border>
 
-                <!-- Rules -->
-                <Grid Grid.Column="2"
-                      RowDefinitions="30,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+            <!-- Rules card -->
+            <Border Grid.Column="2" StrokeThickness="0"
+                    StrokeShape="RoundRectangle 12"
+                    BackgroundColor="#1E2F5C" Padding="5,3"
+                    VerticalOptions="Start">
+                <Grid RowDefinitions="30,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
                       ColumnDefinitions="Auto,*"
                       RowSpacing="1" ColumnSpacing="2">
                     <Label Grid.ColumnSpan="2" Text="Rules" Style="{StaticResource SectionHeader}" />
@@ -146,17 +180,17 @@
                     <Entry Grid.Row="7" Grid.Column="1" Style="{StaticResource NumericEntry}"
                            Text="{Binding MaxDiscardPickup, Mode=TwoWay}" />
                 </Grid>
-            </Grid>
+            </Border>
+        </Grid>
 
-            <!-- Buttons -->
-            <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Start" >
-                <Button Text="Load" Command="{Binding LoadCommand}" />
-            </HorizontalStackLayout>
-
-            <HorizontalStackLayout Grid.Row="2" HorizontalOptions="End" >
-                <Button Text="Ok" Command="{Binding OkCommand}" />
+        <!-- Buttons -->
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto">
+            <Button Grid.Column="0" Text="Load" Command="{Binding LoadCommand}" />
+            <HorizontalStackLayout Grid.Column="2">
                 <Button Text="Close" Command="{Binding CloseCommand}" />
+                <Button Text="Ok" Command="{Binding OkCommand}"
+                        Style="{StaticResource PrimaryButton}" />
             </HorizontalStackLayout>
         </Grid>
-    </Border>
+    </Grid>
 </v:PageBase>

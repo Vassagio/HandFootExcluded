@@ -25,7 +25,6 @@ public interface IGamePageViewModel : IViewModel
     int MinDiscardPickup { get; }
     int MaxDiscardPickup { get; }
 
-    ICommand SummaryCommand { get; }
     ICommand PreviousCommand { get; }
     ICommand NextCommand { get; }
     ICommand CloseCommand { get; }
@@ -48,7 +47,6 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
     private int _minDiscardPickup;
     private int _maxDiscardPickup;
 
-    private ICommand _summaryCommand;
     private ICommand _previousCommand;
     private ICommand _nextCommand;
     private ICommand _closeCommand;
@@ -65,8 +63,6 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
     public int MinDiscardPickup { get => _minDiscardPickup; set => SetProperty(ref _minDiscardPickup, value); }
     public int MaxDiscardPickup { get => _maxDiscardPickup; set => SetProperty(ref _maxDiscardPickup, value); }
 
-    [JsonIgnore]
-    public ICommand SummaryCommand => _summaryCommand ?? new Command(Summary);
     [JsonIgnore]
     public ICommand PreviousCommand => _previousCommand ?? new Command(Previous);
     [JsonIgnore]
@@ -95,7 +91,7 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
     private async void OnScoreChanged(ScoreChangedEvent scoreChangedEvent)
     {
         var scoreLines = await _scoringService.Score(Game, Rounds, IndividualBonusAmounts, TeamBonusAmount);
-        TotalScore = new TotalScoreViewModel(scoreLines.GetGrandTotalLines());
+        TotalScore = new TotalScoreViewModel(scoreLines);
     }
 
     private void OnGameLoaded(GameLoadedEvent gameLoadedEvent)
@@ -149,13 +145,6 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
             PartnerInitials = team.Partner.Initials
         };
 
-    private void Summary()
-    {
-        var scoreLines = _scoringService.Score(Game, Rounds, IndividualBonusAmounts, TeamBonusAmount).Result;
-        EventAggregator.Instance.PostMessage(new ScoreLinesChangedEvent(scoreLines));
-        Navigate<ISummaryPage>();
-    }
-
     private void Previous()
     {
         _jsonService.SaveAsync(this, "game.json");
@@ -196,24 +185,20 @@ internal sealed class GamePageViewModel : ViewModelBase, IGamePageViewModel
     {
         var random = new Random(Environment.TickCount);
 
-
         var shuffledWeightedList = GetShuffledWeightedList();
         var amount = shuffledWeightedList[random.Next(shuffledWeightedList.Count)];
         _alertService.ShowAlert("Discard Pickup", $"Pickup {amount} cards from the discard pile.");
     }
 
-    private IList<int> GetShuffledWeightedList()
+    private IReadOnlyList<int> GetShuffledWeightedList()
     {
-        const int defaultPickup = 8;
-        var weightedList = new List<int>();
+        var numbers = Enumerable.Range(MinDiscardPickup, MaxDiscardPickup - MinDiscardPickup + 1).ToList();
+        const int peak = 8;
+        var maxDistance = numbers.Max(n => Math.Abs(n - peak)); // 4
 
-        for (var i = MinDiscardPickup; i < MaxDiscardPickup; i++)
-        {
-            var weight = Math.Abs(defaultPickup - (defaultPickup - i));
-
-            for (var j = 1; j < weight; j++) weightedList.Add(i);
-        }
-
-        return weightedList.Shuffle();
+        return numbers
+            .SelectMany(n => Enumerable.Repeat(n, (int)Math.Pow(maxDistance + 1 - Math.Abs(n - peak), 2)))
+            .Shuffle()
+            .ToList();
     }
 }
